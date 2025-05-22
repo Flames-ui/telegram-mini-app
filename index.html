@@ -4,6 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anointed Flames TV</title>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase functions
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.firebasestorage.app",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+      measurementId: "G-CZR5508L92"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
   <style>
     body {
       margin: 0;
@@ -118,4 +141,4 @@
   </footer>
 
 </body>
-</html>
+    </html>

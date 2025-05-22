@@ -7,139 +7,115 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #00aaff;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
+      color: white;
+      overflow-x: hidden;
     }
-
-    header {
-      background: url('https://i.imgur.com/NKMqZbD.jpg') no-repeat center center/cover;
-      height: 80vh;
+    .hero {
+      background: url('https://images.unsplash.com/photo-1605819208453-06656cfe7b4f') no-repeat center center/cover;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      color: #fff;
+      padding: 0 20px;
     }
-
-    header h1 {
-      font-size: 3rem;
-      margin: 0;
+    .hero h1 {
+      font-size: 3em;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
     }
-
-    header p {
-      font-size: 1.2rem;
-      margin-top: 1rem;
+    .hero p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 20px 0;
     }
-
     .buttons {
-      margin-top: 2rem;
+      margin-top: 20px;
     }
-
-    .buttons a button {
-      background-color: #00aaff;
-      color: #fff;
+    .buttons a {
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .buttons button {
+      background: #0072ff;
       border: none;
-      padding: 12px 24px;
-      margin: 10px;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1em;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
+      transition: 0.3s;
     }
-
-    .buttons a button:hover {
-      background-color: #0088cc;
+    .buttons button:hover {
+      background: #0051cc;
     }
-
-    section {
-      padding: 50px 20px;
-      text-align: center;
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 60px 20px;
+      background: #111;
     }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .card {
-      background-color: #111;
-      border: 1px solid #00aaff;
+    .feature-card {
+      background: #1b1b2f;
       border-radius: 10px;
-      padding: 20px;
-      width: 280px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 0 10px #0072ff55;
     }
-
-    .card img {
-      max-width: 100%;
-      border-radius: 8px;
+    .feature-card h3 {
+      color: #00c6ff;
+      margin-bottom: 10px;
     }
-
-    .card p {
-      margin-top: 10px;
+    .feature-card p {
       color: #ccc;
     }
-
     footer {
-      background-color: #111;
-      color: #00aaff;
-      text-align: center;
+      background: #000;
       padding: 20px;
-      font-size: 0.9rem;
+      text-align: center;
+      font-size: 0.9em;
+      color: #888;
+    }
+    footer span {
+      color: #00c6ff;
     }
   </style>
 </head>
 <body>
 
-  <header>
+  <section class="hero">
     <h1>Welcome to Anointed Flames TV</h1>
-    <p>Touch lives, earn money, and spread the gospel through your content.</p>
+    <p>Touch lives. Create gospel content. Earn every time your message reaches the world.</p>
     <div class="buttons">
       <a href="signup.html"><button>Sign Up</button></a>
       <a href="signin.html"><button>Sign In</button></a>
     </div>
-  </header>
-
-  <section>
-    <h2>Popular Gospel Posts</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="https://i.imgur.com/5W9IRpE.jpg" alt="Gospel Post">
-        <p>Ignite the Flame - Youth revival mission now trending!</p>
-      </div>
-      <div class="card">
-        <img src="https://i.imgur.com/pLwz3wO.jpg" alt="Sermon">
-        <p>10 Ways to Preach Effectively on Campus</p>
-      </div>
-    </div>
   </section>
 
-  <section>
-    <h2>Earnings Dashboard Preview</h2>
-    <div class="cards">
-      <div class="card">
-        <p>Total Clicks: <strong>2,340</strong></p>
-        <p>Total Earnings: <strong>₦4,680</strong></p>
-        <p>Referrals: <strong>102</strong></p>
-      </div>
-      <div class="card">
-        <p>Foreign Traffic Bonus: <strong>₦1,200</strong></p>
-        <p>Video Views: <strong>430</strong></p>
-        <p>Next Payout: <strong>₦1,000 Min</strong></p>
-      </div>
+  <section class="features">
+    <div class="feature-card">
+      <h3>Earn Per Click</h3>
+      <p>Make ₦4 for every blog click and ₦2 for each video view.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Gospel Impact</h3>
+      <p>Use your voice and message to inspire faith across the globe.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Creator Dashboard</h3>
+      <p>Track your earnings, referrals, and boost your posts easily.</p>
     </div>
   </section>
 
   <footer>
-    Made by Agbasionwe Emmanuel Chiemelie | Anointed Flames TV &copy; 2025
+    Made with purpose by <span>Agbasionwe Emmanuel Chiemelie</span>
   </footer>
 
 </body>
-    </html>
+</html>

@@ -1,8 +1,7 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: './', // ensures relative paths so it works correctly on Render
-  build: {
-    outDir: 'docs', // tells Vite to output static site to 'docs' folder
-  },
-}
+  plugins: [react()],
+  base: './',
+})

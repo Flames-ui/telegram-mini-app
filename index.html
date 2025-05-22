@@ -6,25 +6,38 @@
   <title>Anointed Flames TV</title>
   <style>
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
       background-color: #000;
       color: #00aaff;
-      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: url('https://i.imgur.com/NKMqZbD.jpg') no-repeat center center/cover;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      padding-top: 100px;
+      color: #fff;
+    }
+
+    header h1 {
+      font-size: 3rem;
       margin: 0;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
+    header p {
       font-size: 1.2rem;
-      margin-bottom: 2rem;
+      margin-top: 1rem;
     }
 
-    a button {
+    .buttons {
+      margin-top: 2rem;
+    }
+
+    .buttons a button {
       background-color: #00aaff;
       color: #fff;
       border: none;
@@ -35,16 +48,98 @@
       cursor: pointer;
     }
 
-    a button:hover {
+    .buttons a button:hover {
       background-color: #0088cc;
+    }
+
+    section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #111;
+      border: 1px solid #00aaff;
+      border-radius: 10px;
+      padding: 20px;
+      width: 280px;
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .card p {
+      margin-top: 10px;
+      color: #ccc;
+    }
+
+    footer {
+      background-color: #111;
+      color: #00aaff;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to Anointed Flames TV</h1>
-  <p>Touch lives, earn, and spread the gospel through content.</p>
 
-  <a href="signup.html"><button>Sign Up</button></a>
-  <a href="signin.html"><button>Sign In</button></a>
+  <header>
+    <h1>Welcome to Anointed Flames TV</h1>
+    <p>Touch lives, earn money, and spread the gospel through your content.</p>
+    <div class="buttons">
+      <a href="signup.html"><button>Sign Up</button></a>
+      <a href="signin.html"><button>Sign In</button></a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Popular Gospel Posts</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://i.imgur.com/5W9IRpE.jpg" alt="Gospel Post">
+        <p>Ignite the Flame - Youth revival mission now trending!</p>
+      </div>
+      <div class="card">
+        <img src="https://i.imgur.com/pLwz3wO.jpg" alt="Sermon">
+        <p>10 Ways to Preach Effectively on Campus</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Earnings Dashboard Preview</h2>
+    <div class="cards">
+      <div class="card">
+        <p>Total Clicks: <strong>2,340</strong></p>
+        <p>Total Earnings: <strong>₦4,680</strong></p>
+        <p>Referrals: <strong>102</strong></p>
+      </div>
+      <div class="card">
+        <p>Foreign Traffic Bonus: <strong>₦1,200</strong></p>
+        <p>Video Views: <strong>430</strong></p>
+        <p>Next Payout: <strong>₦1,000 Min</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Made by Agbasionwe Emmanuel Chiemelie | Anointed Flames TV &copy; 2025
+  </footer>
+
 </body>
-</html>
+    </html>

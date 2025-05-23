@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --aft-blue: #4a00e0;
+            --aft-orange: #ff7e00;
+            --aft-white: #ffffff;
+            --aft-gray: #f0f2f5;
+            --aft-dark-gray: #65676b;
+            --aft-black: #050505;
+            --aft-border: #ced0d4;
+            --aft-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --aft-header-height: 56px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Segoe UI Historic, Segoe UI, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--aft-gray);
+            color: var(--aft-black);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--aft-white);
+            height: var(--aft-header-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--aft-border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            color: var(--aft-orange);
+            font-size: 32px;
+        }
+
+        .search-bar {
+            background-color: #f0f2f5;
+            border-radius: 50px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            width: 240px;
+        }
+
+        .search-bar i {
+            color: var(--aft-dark-gray);
+            margin-right: 8px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e4e6eb;
+            color: var(--aft-black);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .header-icon.active {
+            color: var(--aft-blue);
+        }
+
+        .header-icon.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--aft-blue);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: var(--aft-header-height) auto 0;
+            padding: 20px 0;
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 280px;
+            padding-right: 20px;
+            position: sticky;
+            top: calc(var(--aft-header-height) + 20px);
+            height: calc(100vh - var(--aft-header-height) - 20px);
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .sidebar-item i {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #e4e6eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .sidebar-item.active i {
+            background-color: var(--aft-blue);
+            color: white;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background-color: var(--aft-border);
+            margin: 10px 0;
+        }
+
+        .sidebar-title {
+            color: var(--aft-dark-gray);
+            font-size: 17px;
+            font-weight: 600;
+            padding: 8px 0;
+        }
+
+        /* Feed */
+        .feed-container {
+            flex: 1;
+            max-width: 680px;
+            padding: 0 20px;
+        }
+
+        .stories {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding: 8px 0;
+        }
+
+        .story {
+            min-width: 110px;
+            height: 195px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--aft-card-shadow);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .story:active {
+            transform: scale(0.98);
+        }
+
+        .story.create {
+            background-color: var(--aft-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--aft-border);
+        }
+
+        .story.create i {
+            background-color: var(--aft-blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .story.create span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .story-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-user {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+        }
+
+        .story-avatar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid var(--aft-blue);
+            object-fit: cover;
+        }
+
+        /* Create Post */
+        .create-post {
+            background: var(--aft-white);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--aft-card-shadow);
+            border: 1px solid var(--aft-border);
+        }
+
+        .post-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .post-input img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+
+        .post-input input {
+            flex: 1;
+            background: var(--aft-gray);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 15px;
+            color: var(--aft-black);
+        }
+
+        .post-options {
+            display: flex;
+            border-top: 1px solid var(--aft-border);
+            padding-top: 8px;
+        }
+
+        .post-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 4px;
+            color: var(--aft-dark-gray);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .post-option:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .post-option i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .live-video i { color: #f3425f; }
+        .photo-video i { color: #45bd62; }
+        .feeling i { color: #f7b928; }
+
+        /* Post */
+        .post {
+            background: var(--aft-white);
+            border-radius: 8px;
+            box-shadow: var(--aft-card-shadow);
+            margin-bottom: 16px;
+            border: 1px solid var(--aft-border);
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .post:active {
+            transform: scale(0.99);
+        }
+
+        .post-header {
+            display: flex;
+            padding: 12px 16px;
+            align-items: center;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+
+        .post-user-info {
+            flex-grow: 1;
+        }
+
+        .post-user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--aft-black);
+        }
+
+        .post-time {
+            color: var(--aft-dark-gray);
+            font-size: 13px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+        }
+
+        .post-time i {
+            margin-left: 4px;
+            font-size: 12px;
+        }
+
+        .post-menu {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--aft-dark-gray);
+            cursor: pointer;
+        }
+
+        .post-menu:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .post-content {
+            padding: 0 16px 12px;
+            font-size: 15px;
+            line-height: 1.4;
+            color: var(--aft-black);
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            border-top: 1px solid var(--aft-border);
+            border-bottom: 1px solid var(--aft-border);
+        }
+
+        .post-stats {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            color: var(--aft-dark-gray);
+            font-size: 15px;
+            border-bottom: 1px solid var(--aft-border);
+        }
+
+        .post-stats i {
+            color: var(--aft-blue);
+            margin-right: 6px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+        }
+
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 0;
+            border-radius: 4px;
+            color: var(--aft-dark-gray);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .post-action:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .post-action:active {
+            transform: scale(0.95);
+        }
+
+        .post-action i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .fas.fa-thumbs-up.text-primary {
+            color: var(--aft-blue) !important;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 320px;
+            padding-left: 20px;
+            position: sticky;
+            top: calc(var(--aft-header-height) + 20px);
+            height: calc(100vh - var(--aft-header-height) - 20px);
+            overflow-y: auto;
+        }
+
+        .sponsored {
+            color: var(--aft-dark-gray);
+            font-size: 17px;
+            font-weight: 600;
+            margin: 16px 0 8px;
+        }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .contact:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .contact-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .contact-name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        /* Menu Modal */
+        .menu-modal {
+            position: fixed;
+            top: var(--aft-header-height);
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            background: white;
+            z-index: 1001;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .menu-modal.show {
+            transform: translateX(0);
+        }
+
+        .menu-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--aft-border);
+        }
+
+        .menu-user {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .menu-user-name {
+            font-weight: 600;
+        }
+
+        .menu-section {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--aft-border);
+        }
+
+        .menu-section-title {
+            padding: 0 16px 8px;
+            font-weight: 600;
+            color: var(--aft-dark-gray);
+        }
+
+        .menu-item {
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: var(--aft-gray);
+        }
+
+        .menu-item i {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #e4e6eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .menu-item.active i {
+            background-color: var(--aft-blue);
+            color: white;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Ads */
+        .ad-container {
+            margin: 10px 0;
+            border: 1px solid var(--aft-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .ad-label {
+            padding: 8px;
+            font-size: 12px;
+            color: var(--aft-dark-gray);
+            text-align: center;
+            background-color: var(--aft-gray);
+        }
+
+        .ad-placeholder {
+            background: var(--aft-gray);
+            border: 1px dashed var(--aft-border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: var(--aft-dark-gray);
+            margin: 10px 0;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            padding: 20px;
+            background: white;
+            position: fixed;
+            top: var(--aft-header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1002;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .dashboard-header {
+            margin-bottom: 20px;
+        }
+
+        .earnings-display {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .earning-card {
+            flex: 1;
+            background: var(--aft-gray);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .earning-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--aft-blue);
+        }
+
+        .earning-label {
+            color: var(--aft-dark-gray);
+            font-size: 14px;
+        }
+
+        .dashboard-stats {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: var(--aft-gray);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 24px;
+            color: var(--aft-blue);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--aft-dark-gray);
+            font-size: 14px;
+        }
+
+        .content-moderation {
+            background: var(--aft-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .approval-status {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .status-item {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .status-item.approved {
+            background: #e6f7ee;
+            border-left: 4px solid #45bd62;
+        }
+
+        .status-item.pending {
+            background: #fff8e6;
+            border-left: 4px solid #f7b928;
+        }
+
+        .status-item span {
+            display: block;
+        }
+
+        .status-item .count {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        .recent-earnings {
+            background: var(--aft-gray);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .earnings-list {
+            margin-top: 15px;
+        }
+
+        .earning-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--aft-border);
+        }
+
+        .earning-item:last-child {
+            border-bottom: none;
+        }
+
+        .text-success {
+            color: #45bd62;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+            .feed-container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden file input for uploads -->
+    <input type="file" id="file-upload" accept="image/*,video/*" style="display:none;">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-fire logo-icon"></i>
+        </div>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="header-icons">
+            <div class="header-icon active">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="header-icon">
+                <i class="fas fa-tv"></i>
+            </div>
+            <div class="header-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="header-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="user-menu" id="menu-button">
+                <img src="user-avatar.jpg" class="user-avatar">
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu Modal -->
+    <div class="menu-modal" id="menu-modal">
+        <div class="menu-header">
+            <div class="menu-user">
+                <img src="user-avatar.jpg" class="menu-user-avatar">
+                <div class="menu-user-name">Your Profile</div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">SocialBoost Pro</div>
+            <div class="menu-item" id="dashboard-btn">
+                <i class="fas fa-chart-line"></i>
+                <span>Professional Dashboard</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-section-title">Your shortcuts</div>
+            <div class="menu-item">
+                <i class="fas fa-user"></i>
+                <span>Friends</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-item">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-ad"></i>
+                <span>Ad Center</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-item">
+                <i class="fas fa-flag"></i>
+                <span>Pages</span>
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-newspaper"></i>
+                <span>Feeds</span>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-item">
+                <i class="fas fa-video"></i>
+                <span>Video</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboard">
+        <div class="dashboard-header">
+            <h2><i class="fas fa-chart-line"></i> Creator Dashboard</h2>
+            <div class="earnings-display">
+                <div class="earning-card">
+                    <div class="earning-amount">$0.00</div>
+                    <div class="earning-label">Today's Earnings</div>
+                </div>
+                <div class="earning-card">
+                    <div class="earning-amount">$0.00</div>
+                    <div class="earning-label">Total Earnings</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <i class="fas fa-eye"></i>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Views</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Followers</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-heart"></i>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Engagement</div>
+            </div>
+        </div>
+
+        <div class="content-moderation">
+            <h3><i class="fas fa-check-circle"></i> Content Approval</h3>
+            <div class="approval-status">
+                <div class="status-item approved">
+                    <span>Approved Posts</span>
+                    <span class="count">0</span>
+                </div>
+                <div class="status-item pending">
+                    <span>Pending Review</span>
+                    <span class="count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-earnings">
+            <h3><i class="fas fa-coins"></i> Recent Earnings</h3>
+            <div class="earnings-list">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-bible"></i>
+                <span>Bible Study</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-pray"></i>
+                <span>Prayer Wall</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-video"></i>
+                <span>Sermons</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-chevron-down"></i>
+                <span>See More</span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Your Shortcuts</div>
+            <div class="sidebar-item">
+                <i class="fas fa-hashtag"></i>
+                <span>Christian Fellowship</span>
+            </div>
+        </div>
+
+        <!-- Main Feed -->
+        <div class="feed-container">
+            <!-- Stories -->
+            <div class="stories">
+                <div class="story create">
+                    <i class="fas fa-plus"></i>
+                    <span>Create Story</span>
+                </div>
+                <div class="story">
+                    <img src="story1.jpg" class="story-image">
+                    <img src="user1.jpg" class="story-avatar">
+                    <div class="story-user">User 1</div>
+                </div>
+                <div class="story">
+                    <img src="story2.jpg" class="story-image">
+                    <img src="user2.jpg" class="story-avatar">
+                    <div class="story-user">User 2</div>
+                </div>
+                <div class="story">
+                    <img src="story3.jpg" class="story-image">
+                    <img src="user3.jpg" class="story-avatar">
+                    <div class="story-user">User 3</div>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="post-input">
+                    <img src="user-avatar.jpg" class="post-avatar">
+                    <input type="text" placeholder="What's on your mind?">
+                </div>
+                <div class="post-options">
+                    <div class="post-option live-video">
+                        <i class="fas fa-video"></i>
+                        <span>Live video</span>
+                    </div>
+                    <div class="post-option photo-video">
+                        <i class="fas fa-images"></i>
+                        <span>Photo/video</span>
+                    </div>
+                    <div class="post-option feeling">
+                        <i class="fas fa-smile"></i>
+                        <span>Feeling/activity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad Placeholder -->
+            <div class="ad-placeholder">Sponsored Content</div>
+
+            <!-- Posts -->
+            <div class="post">
+                <div class="post-header">
+                    <img src="user4.jpg" class="post-avatar">
+                    <div class="post-user-info">
+                        <div class="post-user-name">Faith User</div>
+                        <div class="post-time">2 hrs ago <i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <div class="post-menu">
+                        <i class="fas fa-ellipsis"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    "For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future." - Jeremiah 29:11
+                </div>
+                <div class="post-stats">
+                    <i class="fas fa-thumbs-up"></i>
+                    <span>120</span>
+                    <span style="margin-left: auto;">24 comments · 5 shares</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>Like</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="sponsored">Sponsored</div>
+            <div class="contact">
+                <img src="user1.jpg" class="contact-avatar">
+                <div class="contact-name">Friend 1</div>
+            </div>
+            <div class="contact">
+                <img src="user2.jpg" class="contact-avatar">
+                <div class="contact-name">Friend 2</div>
+            </div>
+            <div class="contact">
+                <img src="user3.jpg" class="contact-avatar">
+                <div class="contact-name">Friend 3</div>
+            </div>
+            <div class="ad-placeholder">Sponsored Content</div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Earnings data structure
+        let earningsData = {
+            total: 0,
+            today: 0,
+            views: 0,
+            clicks: 0,
+            lastEarningTime: null
+        };
+
+        // DOM Ready
+        $(document).ready(function() {
+            // Menu Toggle
+            $('#menu-button').click(function() {
+                $('#menu-modal').toggleClass('show');
+                $('#overlay').toggleClass('show');
+            });
+
+            $('#overlay').click(function() {
+                $('#menu-modal').removeClass('show');
+                $('#overlay').removeClass('show');
+                $('#dashboard').fadeOut();
+            });
+
+            // Dashboard Toggle
+            $('#dashboard-btn').click(function() {
+                $('#menu-modal').removeClass('show');
+                $('#dashboard').fadeIn();
+                updateDashboard();
+            });
+
+            // Close dashboard when clicking outside
+            $(document).mouseup(function(e) {
+                if (!$('#dashboard').is(e.target) && 
+                    $('#dashboard').has(e.target).length === 0) {
+                    $('#dashboard').fadeOut();
+                }
+            });
+
+            // Story Creation
+            $('.story.create').click(function() {
+                alert('Story creation modal would open here');
+            });
+
+            // Post Creation Options
+            $('.post-option').click(function() {
+                const option = $(this).find('span').text();
+                switch(option) {
+                    case 'Live video':
+                        alert('Live video streaming setup would launch');
+                        break;
+                    case 'Photo/video':
+                        $('#file-upload').click();
+                        break;
+                    case 'Feeling/activity':
+                        alert('Feeling/activity selector would appear');
+                        break;
+                }
+            });
+
+            // File Upload Handler
+            $('#file-upload').change(function() {
+                if(this.files.length > 0) {
+                    alert(`File selected: ${this.files[0].name}`);
+                    // Auto-approve if gospel content
+                    if(confirm("Would you like to post this now?")) {
+                        trackPostCreation();
+                    }
+                }
+            });
+
+            // Post Interactions
+            $('.post-action').click(function() {
+                const action = $(this).find('span').text();
+                const post = $(this).closest('.post');
+                
+                switch(action) {
+                    case 'Like':
+                        $(this).find('i')
+                            .removeClass('far fa-thumbs-up')
+                            .addClass('fas fa-thumbs-up text-primary');
+                        updateLikeCount(post, 1);
+                        break;
+                        
+                    case 'Comment':
+                        const comment = prompt('Add your comment:');
+                        if(comment) {
+                            alert(`Comment posted: "${comment}"`);
+                            updateCommentCount(post, 1);
+                        }
+                        break;
+                        
+                    case 'Share':
+                        alert('Share dialog would open');
+                        updateShareCount(post, 1);
+                        break;
+                }
+            });
+
+            // Track post views and earnings
+            $('.post, .story').click(function() {
+                // Don't count if clicking on interactive elements
+                if($(event.target).closest('.post-action, .post-menu, .post-option').length === 0) {
+                    trackView();
+                }
+            });
+
+            // Search Functionality
+            $('.search-bar input').keypress(function(e) {
+                if(e.which === 13) {
+                    const query = $(this).val();
+                    if(query.length > 0) {
+                        alert(`Searching for: ${query}`);
+                    }
+                }
+            });
+
+            // Initialize dashboard with saved data
+            loadSavedData();
+        });
+
+        // Track a new view
+        function trackView() {
+            earningsData.views++;
+            saveData();
+            
+            // Every 3 views = $0.01 (with 1 minute cooldown)
+            const now = new Date();
+            if(earningsData.views % 3 === 0 && 
+               (!earningsData.lastEarningTime || 
+                (now - new Date(earningsData.lastEarningTime)) > 60000)) {
+                earningsData.lastEarningTime = now;
+                trackEarnings(0.01);
+            }
+            
+            updateDashboard();
+        }
+
+        // Track earnings
+        function trackEarnings(amount) {
+            earningsData.total += amount;
+            earningsData.today += amount;
+            earningsData.clicks++;
+            
+            // Add to transaction history
+            const transaction = {
+                amount: amount,
+                time: new Date().toLocaleTimeString(),
+                source: 'Post Engagement'
+            };
+            
+            let transactions = JSON.parse(localStorage.getItem('earningsTransactions')) || [];
+            transactions.unshift(transaction);
+            localStorage.setItem('earningsTransactions', JSON.stringify(transactions));
+            
+            saveData();
+            updateDashboard();
+            
+            // Show earning notification
+            showEarningNotification(amount);
+        }
+
+        // Track new post creation
+        function trackPostCreation() {
+            const transaction = {
+                amount: 0.05, // Bonus for creating content
+                time: new Date().toLocaleTimeString(),
+                source: 'Post Creation Bonus'
+            };
+            
+            let transactions = JSON.parse(localStorage.getItem('earningsTransactions')) || [];
+            transactions.unshift(transaction);
+            localStorage.setItem('earningsTransactions', JSON.stringify(transactions));
+            
+            earningsData.total += 0.05;
+            earningsData.today += 0.05;
+            saveData();
+            updateDashboard();
+            
+            showEarningNotification(0.05);
+        }
+
+        // Show earning notification
+        function showEarningNotification(amount) {
+            const notification = $(`
+                <div class="earning-notification">
+                    +$${amount.toFixed(2)} Earned!
+                </div>
+            `);
+            
+            $('body').append(notification);
+            setTimeout(() => {
+                notification.fadeOut(() => notification.remove());
+            }, 3000);
+        }
+
+        // Update all dashboard stats
+        function updateDashboard() {
+            // Format money
+            const formatMoney = (amount) => {
+                return '$' + amount.toFixed(2);
+            };
+            
+            // Update display
+            $('.earning-card:nth-child(1) .earning-amount').text(formatMoney(earningsData.today));
+            $('.earning-card:nth-child(2) .earning-amount').text(formatMoney(earningsData.total));
+            
+            // Update stats
+            $('.stat-card:nth-child(1) .stat-value').text(earningsData.views);
+            $('.stat-card:nth-child(2) .stat-value').text(Math.floor(earningsData.views * 0.1)); // 10% follow rate
+            $('.stat-card:nth-child(3) .stat-value').text(Math.floor(earningsData.clicks * 0.5) + '%'); // Engagement
+            
+            // Update recent earnings
+            updateEarningsList();
+            
+            // Update approved posts count
+            const approvedPosts = $('.post').filter(function() {
+                return $(this).css('border-left') === '3px solid rgb(74, 0, 224)';
+            }).length;
+            
+            $('.approved .count').text(approvedPosts);
+        }
+
+        // Update recent earnings list
+        function updateEarningsList() {
+            const transactions = JSON.parse(localStorage.getItem('earningsTransactions')) || [];
+            const earningsList = $('.earnings-list');
+            earningsList.empty();
+            
+            transactions.slice(0, 5).forEach(transaction => {
+                earningsList.append(`
+                    <div class="earning-item">
+                        <span>${transaction.source}</span>
+                        <span class="text-success">+$${transaction.amount.toFixed(2)}</span>
+                        <small>${transaction.time}</small>
+                    </div>
+                `);
+            });
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            // Reset daily earnings at midnight
+            const now = new Date();
+            const lastSaved = localStorage.getItem('lastSavedDate');
+            const today = now.toDateString();
+            
+            if(lastSaved !== today) {
+                earningsData.today = 0;
+            }
+            
+            localStorage.setItem('earningsData', JSON.stringify(earningsData));
+            localStorage.setItem('lastSavedDate', today);
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const savedData = localStorage.getItem('earningsData');
+            if(savedData) {
+                earningsData = JSON.parse(savedData);
+                
+                // Check if we need to reset daily earnings
+                const now = new Date();
+                const lastSaved = localStorage.getItem('lastSavedDate');
+                const today = now.toDateString();
+                
+                if(lastSaved !== today) {
+                    earningsData.today = 0;
+                    saveData();
+                }
+            }
+            
+            updateDashboard();
+        }
+
+        // Helper functions for post interactions
+        function updateLikeCount(post, increment) {
+            const countElement = post.find('.post-stats span:first');
+            let count = parseInt(countElement.text()) || 0;
+            countElement.text(count + increment);
+            trackView();
+        }
+
+        function updateCommentCount(post, increment) {
+            const text = post.find('.post-stats span:last').text();
+            const newText = text.replace(/(\d+) comments/, (_, num) => 
+                `${parseInt(num) + increment} comments`);
+            post.find('.post-stats span:last').text(newText);
+            trackView();
+        }
+
+        function updateShareCount(post, increment) {
+            const text = post.find('.post-stats span:last').text();
+            const newText = text.replace(/(\d+) shares/, (_, num) => 
+                `${parseInt(num) + increment} shares`);
+            post.find('.post-stats span:last').text(newText);
+            trackView();
+        }
+
+        // Auto-approve gospel content
+        function approveGospelContent() {
+            $('.post-content').each(function() {
+                const content = $(this).text().toLowerCase();
+                const keywords = ['jesus', 'christ', 'god', 'bible', 'pray', 'amen', 'holy spirit'];
+                
+                if(keywords.some(keyword => content.includes(keyword))) {
+                    $(this).closest('.post').css('border-left', '3px solid #4a00e0');
+                }
+            });
+        }
+
+        // Initialize content approval
+        $(document).ready(function() {
+            approveGospelContent();
+        });
+    </script>
+
+    <style>
+        /* Earning Notification */
+        .earning-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #45bd62;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1003;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</body>
+  </html>

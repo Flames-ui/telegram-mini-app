@@ -47,3 +47,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage
+import ProfilePage from './ProfilePage';

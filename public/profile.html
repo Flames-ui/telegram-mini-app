@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile - Anointed Flames TV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
+    }
+    .profile-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .cover-photo {
+      width: 100%;
+      height: 250px;
+      background: url('https://via.placeholder.com/900x250') center/cover;
+      position: relative;
+    }
+    .edit-cover-btn {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 5px solid white;
+      background: url('https://via.placeholder.com/120') center/cover;
+      margin-right: 20px;
+      margin-top: -60px;
+    }
+    .edit-profile-pic-btn {
+      position: absolute;
+      left: 130px;
+      top: 90px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      padding: 3px 6px;
+      font-size: 12px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .profile-info h2 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .profile-info p {
+      color: #666;
+      margin-top: 5px;
+    }
+    .nav-tabs {
+      display: flex;
+      justify-content: space-around;
+      background: #f5f5f5;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-tabs button {
+      flex: 1;
+      padding: 15px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .nav-tabs button:hover, .nav-tabs button.active {
+      background: #e4e6eb;
+    }
+    .profile-content {
+      padding: 20px;
+    }
+    .post {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .post h4 {
+      margin-bottom: 10px;
+    }
+    .post .actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="cover-photo">
+      <button class="edit-cover-btn">Edit Cover</button>
+    </div>
+    <div class="profile-header">
+      <div class="profile-pic"></div>
+      <button class="edit-profile-pic-btn">Edit</button>
+      <div class="profile-info">
+        <h2>Emmanuel Chiemelie</h2>
+        <p>@EmmanuelFlame • Gospel Minister</p>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="active">Posts</button>
+      <button>About</button>
+      <button>Media</button>
+      <button>Followers</button>
+      <button>Prayer Wall</button>
+    </div>
+    <div class="profile-content">
+      <div class="post">
+        <h4>🔥 Revival is Here!</h4>
+        <p>The fire of God is moving on campus today. Join us at 6 PM.</p>
+        <div class="actions">
+          <span>Like</span>
+          <span>Comment</span>
+          <span>Share</span>
+        </div>
+      </div>
+      <div class="post">
+        <h4>Testimony Time</h4>
+        <p>I got healed during the prayer session last week. Glory to God!</p>
+        <div class="actions">
+          <span>Like</span>
+          <span>Comment</span>
+          <span>Share</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+                                </html

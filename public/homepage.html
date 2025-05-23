@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Anointed Flames TV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary-blue: #1877f2;
+            --pure-black: #000000;
+            --pure-white: #ffffff;
+            --light-gray: #f0f2f5;
+            --border-gray: #dddfe2;
+            --text-gray: #65676b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--pure-black);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Premium Header */
+        .header {
+            background-color: var(--pure-white);
+            height: 56px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .logo {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Premium Feed Container */
+        .feed-container {
+            max-width: 680px;
+            margin: 72px auto 20px;
+            padding: 0 16px;
+        }
+
+        /* Create Post Card */
+        .create-post {
+            background: var(--pure-white);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-gray);
+            transition: transform 0.2s;
+        }
+
+        .create-post:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Post Styling */
+        .post {
+            background: var(--pure-white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            border: 1px solid var(--border-gray);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Infinite Scroll Loader */
+        .loader {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        /* [Include all other CSS styles from previous implementation] */
+    </style>
+</head>
+<body>
+    <!-- Premium Header -->
+    <header class="header">
+        <div class="logo">Anointed Flames TV</div>
+        <div class="menu-container">
+            <button class="menu-btn" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="/dashboard" class="menu-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/earnings" class="menu-item">
+                    <i class="fas fa-coins"></i>
+                    <span>My Earnings</span>
+                    <span id="earnings-badge" class="earn-badge">₦0</span>
+                </a>
+                <a href="/profile" class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/settings" class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="/logout" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Premium Feed Content -->
+    <div class="feed-container">
+        <!-- Create Post Card -->
+        <div class="create-post">
+            <div class="post-input">
+                <img id="current-user-avatar" src="default-avatar.jpg" alt="You">
+                <input type="text" placeholder="What's on your mind?" id="post-text" class="post-input-field">
+            </div>
+            <div class="post-options">
+                <div class="post-option photo-option" id="photo-upload">
+                    <i class="fas fa-images"></i>
+                    <span>Photo/Video</span>
+                </div>
+                <div class="post-option feeling-option" id="add-feeling">
+                    <i class="fas fa-smile"></i>
+                    <span>Feeling</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Container -->
+        <div class="ad-container">
+            <script async="async" data-cfasync="false" src="//pl26718396.profitableratecpm.com/78707efebe00a79783cdce3d96c37f06/invoke.js"></script>
+            <div id="container-78707efebe00a79783cdce3d96c37f06"></div>
+        </div>
+
+        <!-- Posts Feed with Infinite Scroll -->
+        <div id="post-feed"></div>
+        <div class="loader" id="loader">
+            <i class="fas fa-spinner fa-spin"></i> Loading more posts...
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+            authDomain: "anointed-flames-tv.firebaseapp.com",
+            projectId: "anointed-flames-tv",
+            storageBucket: "anointed-flames-tv.appspot.com",
+            messagingSenderId: "814825501586",
+            appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+            measurementId: "G-CZR5508L92"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Infinite Scroll Variables
+        let lastVisible = null;
+        const batchSize = 5;
+        let loading = false;
+
+        // Load initial posts
+        function loadInitialPosts() {
+            db.collection("posts")
+                .where("status", "==", "approved")
+                .orderBy("timestamp", "desc")
+                .limit(batchSize)
+                .get()
+                .then(querySnapshot => {
+                    lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+                    querySnapshot.forEach(doc => {
+                        renderPost(doc.data(), doc.id);
+                    });
+                });
+        }
+
+        // Infinite Scroll Load More
+        function loadMorePosts() {
+            if (loading) return;
+            loading = true;
+            document.getElementById('loader').style.display = 'block';
+
+            db.collection("posts")
+                .where("status", "==", "approved")
+                .orderBy("timestamp", "desc")
+                .startAfter(lastVisible)
+                .limit(batchSize)
+                .get()
+                .then(querySnapshot => {
+                    if (!querySnapshot.empty) {
+                        lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+                        querySnapshot.forEach(doc => {
+                            renderPost(doc.data(), doc.id);
+                        });
+                    }
+                    loading = false;
+                    document.getElementById('loader').style.display = 'none';
+                });
+        }
+
+        // Detect scroll for infinite loading
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadMorePosts();
+            }
+        });
+
+        // Enhanced Post Renderer
+        function renderPost(post, postId) {
+            const feed = document.getElementById('post-feed');
+            const postEl = document.createElement('div');
+            postEl.className = 'post';
+            
+            // Format post time
+            const postTime = new Date(post.timestamp?.toDate());
+            const options = { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' };
+            const formattedTime = postTime.toLocaleString('en-US', options);
+
+            // Media content
+            let mediaContent = '';
+            if (post.imageUrl) {
+                mediaContent = `
+                    <img src="${post.imageUrl}" class="post-image" 
+                         onload="trackEarning('${auth.currentUser?.uid}', 'CONTENT_VIEW')"
+                         onclick="trackEarning('${post.userId}', 'POST_CLICK', '${postId}')">
+                `;
+            } else if (post.content) {
+                mediaContent = `
+                    <div class="ai-generated-image">${post.content}</div>
+                `;
+            }
+
+            // Reactions bar
+            const reactions = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
+            const reactionIcons = {
+                like: 'thumbs-up',
+                love: 'heart',
+                care: 'hands-holding-heart',
+                haha: 'face-laugh-squint',
+                wow: 'face-surprise',
+                sad: 'face-sad-tear',
+                angry: 'face-angry'
+            };
+
+            postEl.innerHTML = `
+                <div class="post-header">
+                    <img src="${post.userPhoto || 'default-avatar.jpg'}" class="post-avatar">
+                    <div class="post-user-info">
+                        <div class="post-user-name">${post.userName}</div>
+                        <div class="post-time">${formattedTime} <i class="fas fa-globe-americas"></i></div>
+                    </div>
+                    <button class="post-menu-btn"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+                
+                <div class="post-content">${post.content || ''}</div>
+                ${mediaContent}
+                
+                <div class="post-stats">
+                    <span class="likes-count"><i class="fas fa-thumbs-up"></i> ${post.likes || 0}</span>
+                    <span class="comments-count">${post.comments || 0} comments</span>
+                    <span class="shares-count">${post.shares || 0} shares</span>
+                </div>
+                
+                <div class="post-actions">
+                    <button class="action-btn like-btn" data-postid="${postId}">
+                        <i class="far fa-thumbs-up"></i> Like
+                    </button>
+                    <button class="action-btn comment-btn" data-postid="${postId}">
+                        <i class="far fa-comment"></i> Comment
+                    </button>
+                    <button class="action-btn share-btn" data-postid="${postId}" 
+                            onclick="trackEarning('${auth.currentUser?.uid}', 'SHARE_BONUS', '${postId}')">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+                
+                <div class="reactions-bar">
+                    ${reactions.map(reaction => `
+                        <button class="reaction-btn" data-reaction="${reaction}">
+                            <i class="fas fa-${reactionIcons[reaction]}"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            
+            feed.appendChild(postEl);
+            
+            // Load ads after post is rendered
+            setTimeout(() => {
+                loadAd('native-banner', `in-post-ad-${postId}`);
+            }, 1500);
+        }
+
+        // Initialize
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                loadInitialPosts();
+                // Load user data
+                db.collection('users').doc(user.uid).onSnapshot(doc => {
+                    const userData = doc.data();
+                    if (userData?.photoURL) {
+                        document.getElementById('current-user-avatar').src = userData.photoURL;
+                    }
+                    if (userData?.balance) {
+                        document.getElementById('earnings-badge').textContent = `₦${userData.balance.toFixed(2)}`;
+                    }
+                });
+            } else {
+                window.location.href = "signin.html";
+            }
+        });
+
+        // [Include all other JavaScript functions from previous implementation]
+    </script>
+</body>
+</html>

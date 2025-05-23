@@ -1,144 +1,667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anointed Flames TV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anointed Flames - Igniting Faith, Connecting Believers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --primary-light: #8e2de2;
+            --secondary: #ff7e00;
+            --white: #ffffff;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --text: #2d3748;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Import Firebase functions
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-    // Your Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
-      authDomain: "anointed-flames-tv.firebaseapp.com",
-      projectId: "anointed-flames-tv",
-      storageBucket: "anointed-flames-tv.firebasestorage.app",
-      messagingSenderId: "814825501586",
-      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
-      measurementId: "G-CZR5508L92"
-    };
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
-      color: white;
-      overflow-x: hidden;
-    }
-    .hero {
-      background: url('https://images.unsplash.com/photo-1605819208453-06656cfe7b4f') no-repeat center center/cover;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-    .hero h1 {
-      font-size: 3em;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-    }
-    .hero p {
-      font-size: 1.2em;
-      max-width: 600px;
-      margin: 20px 0;
-    }
-    .buttons {
-      margin-top: 20px;
-    }
-    .buttons a {
-      text-decoration: none;
-      margin: 0 10px;
-    }
-    .buttons button {
-      background: #0072ff;
-      border: none;
-      color: white;
-      padding: 15px 30px;
-      font-size: 1em;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .buttons button:hover {
-      background: #0051cc;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      padding: 60px 20px;
-      background: #111;
-    }
-    .feature-card {
-      background: #1b1b2f;
-      border-radius: 10px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 0 10px #0072ff55;
-    }
-    .feature-card h3 {
-      color: #00c6ff;
-      margin-bottom: 10px;
-    }
-    .feature-card p {
-      color: #ccc;
-    }
-    footer {
-      background: #000;
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #888;
-    }
-    footer span {
-      color: #00c6ff;
-    }
-  </style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .btn-solid {
+            background: var(--secondary);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(255, 126, 0, 0.3);
+        }
+
+        .btn-solid:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 126, 0, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(74, 0, 224, 0.8), rgba(142, 45, 226, 0.8)), 
+                        url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn-lg {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 6rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* About Section */
+        .about {
+            background: var(--light);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .mission-vision {
+            margin-top: 3rem;
+        }
+
+        .mission-vision h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .mission-vision h3 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            text-align: center;
+            padding: 5rem;
+            border-radius: 10px;
+            margin: 0 auto;
+            max-width: 1200px;
+            box-shadow: var(--shadow);
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-lg {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .cta {
+                padding: 3rem 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <i class="fas fa-fire"></i>
+                <span>Anointed Flames</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#about">About Us</a>
+                <a href="#community">Community</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <a href="signup.html" class="btn btn-solid">Sign Up</a>
+            </div>
+        </nav>
+    </header>
 
-  <section class="hero">
-    <h1>Welcome to Anointed Flames TV</h1>
-    <p>Touch lives. Create gospel content. Earn every time your message reaches the world.</p>
-    <div class="buttons">
-      <a href="signup.html"><button>Sign Up</button></a>
-      <a href="signin.html"><button>Sign In</button></a>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content animate">
+            <h1 class="animate delay-1">Ignite Your Faith, Connect With Believers</h1>
+            <p class="animate delay-2">Join a vibrant community of Christians growing together in faith, prayer, and fellowship. Experience spiritual growth like never before.</p>
+            <div class="hero-buttons animate delay-3">
+                <a href="signup.html" class="btn btn-solid btn-lg">Join Now</a>
+                <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+            </div>
+        </div>
+    </section>
 
-  <section class="features">
-    <div class="feature-card">
-      <h3>Earn Per Click</h3>
-      <p>Make money for every post click and for each video view you get.</p>
-    </div>
-    <div class="feature-card">
-      <h3>Gospel Impact</h3>
-      <p>Use your voice and message to inspire faith across the globe.</p>
-    </div>
-    <div class="feature-card">
-      <h3>Creator Dashboard</h3>
-      <p>Track your earnings, referrals, and boost your posts easily.</p>
-    </div>
-  </section>
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="section-title animate">
+            <h2>What We Offer</h2>
+            <p>Discover the powerful features that make Anointed Flames the perfect platform for your spiritual journey</p>
+        </div>
+        <div class="features">
+            <div class="feature-card animate delay-1">
+                <div class="feature-icon">
+                    <i class="fas fa-pray"></i>
+                </div>
+                <h3>Prayer Network</h3>
+                <p>Share prayer requests and join others in prayer with our global prayer wall. Receive notifications when people pray for you.</p>
+            </div>
+            <div class="feature-card animate delay-2">
+                <div class="feature-icon">
+                    <i class="fas fa-bible"></i>
+                </div>
+                <h3>Bible Study</h3>
+                <p>Access daily devotionals, study plans, and scripture resources. Highlight and save your favorite verses.</p>
+            </div>
+            <div class="feature-card animate delay-3">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Faith Community</h3>
+                <p>Connect with believers worldwide. Join groups based on interests, denominations, or locations.</p>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    Made with purpose by <span>Agbasionwe Emmanuel Chiemelie</span>
-  </footer>
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="about-content">
+            <div class="about-image animate">
+                <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="People worshiping together">
+            </div>
+            <div class="about-text animate delay-1">
+                <h2>About Anointed Flames</h2>
+                <p>Anointed Flames was born from a vision to create a digital space where Christians from all walks of life can connect, grow, and encourage one another in faith.</p>
+                <p>We believe technology can be harnessed to strengthen spiritual connections and make discipleship accessible to everyone, everywhere.</p>
+                
+                <div class="mission-vision">
+                    <h3><i class="fas fa-bullseye"></i> Our Vision</h3>
+                    <p>To become the leading global platform for Christian fellowship, where every believer finds community, support, and spiritual nourishment.</p>
+                    
+                    <h3><i class="fas fa-flag"></i> Our Mission</h3>
+                    <p>To connect Christians worldwide through innovative technology that facilitates prayer, Bible study, and authentic relationships centered on Christ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="cta animate">
+            <h2>Ready to Join Our Community?</h2>
+            <p>Thousands of believers are already growing together on Anointed Flames. Sign up today and experience Christian fellowship like never before.</p>
+            <div class="hero-buttons">
+                <a href="signup.html" class="btn btn-solid btn-lg">Get Started</a>
+                <a href="login.html" class="btn btn-outline btn-lg">Sign In</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Anointed Flames</h3>
+                <p>Igniting faith, connecting believers worldwide through the power of technology and the Holy Spirit.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 Anointed Flames. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animation on scroll
+        const animateElements = document.querySelectorAll('.animate');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animateElements.forEach(element => {
+            element.style.opacity = 0;
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(element);
+        });
+
+        // Functionality for all buttons
+        document.querySelectorAll('a[href="signup.html"]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!e.target.href.endsWith('signup.html')) {
+                    e.preventDefault();
+                    localStorage.setItem('redirectTo', 'signup');
+                    window.location.href = 'signup.html';
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href="login.html"]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!e.target.href.endsWith('login.html')) {
+                    e.preventDefault();
+                    localStorage.setItem('redirectTo', 'login');
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+
+        // Check if user is already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            // Replace sign up buttons with profile link
+            document.querySelectorAll('a[href="signup.html"]').forEach(button => {
+                button.href = 'profile.html';
+                button.textContent = 'My Profile';
+                button.classList.remove('btn-solid');
+                button.classList.add('btn-outline');
+            });
+
+            // Replace sign in buttons with logout
+            document.querySelectorAll('a[href="login.html"]').forEach(button => {
+                button.href = '#';
+                button.textContent = 'Log Out';
+                button.classList.remove('btn-outline');
+                button.classList.add('btn-solid');
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.reload();
+                });
+            });
+        }
+    </script>
 </body>
-    </html>
+</html>

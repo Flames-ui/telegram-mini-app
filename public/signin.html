@@ -1,112 +1,724 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign In - Anointed Flames TV</title>
-  <style>
-    body {
-      background: #0f0c29;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    h2 {
-      color: #00c6ff;
-    }
-    form {
-      background: #1b1b2f;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #0072ff55;
-      width: 90%;
-      max-width: 400px;
-    }
-    input {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-    }
-    button {
-      width: 100%;
-      padding: 15px;
-      background: #0072ff;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-size: 1em;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #0051cc;
-    }
-    .message {
-      margin-top: 15px;
-      font-size: 0.9em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Anointed Flames</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --primary-hover: #3700b3;
+            --secondary: #ff7e00;
+            --secondary-hover: #e67100;
+            --text: #1c1e21;
+            --text-light: #65676b;
+            --border: #dddfe2;
+            --bg: #f0f2f5;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--white);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            color: var(--secondary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .language-selector select {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 60px 0;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 80px;
+            padding: 0 40px;
+        }
+        
+        .intro {
+            width: 600px;
+            padding-top: 60px;
+        }
+        
+        .intro h1 {
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .intro p {
+            font-size: 28px;
+            line-height: 1.4;
+            color: var(--text);
+            margin-bottom: 40px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .login-container {
+            width: 420px;
+        }
+        
+        .login-form {
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .login-form:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            transition: var(--transition);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.1);
+        }
+        
+        .login-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 14px;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 16px;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        .forgot-password {
+            display: block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            position: relative;
+            height: 1px;
+            background-color: var(--border);
+            margin: 24px 0;
+        }
+        
+        .divider::before {
+            content: "or";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--white);
+            padding: 0 12px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .create-btn {
+            background-color: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+        
+        .create-btn:hover {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 30px;
+        }
+        
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--white);
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .facebook { color: #1877f2; }
+        .google { color: #db4437; }
+        .apple { color: #000000; }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            font-size: 12px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            width: 500px;
+            max-width: 90%;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            
+            .intro {
+                width: 100%;
+                padding-top: 0;
+                text-align: center;
+            }
+            
+            .features {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .content {
+                padding: 0 20px;
+            }
+            
+            .intro h1 {
+                font-size: 36px;
+            }
+            
+            .intro p {
+                font-size: 20px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-container {
+                width: 100%;
+                max-width: 420px;
+            }
+        }
+        
+        /* Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body>
-
-  <h2>Sign In to Your Account</h2>
-  <form id="signin-form">
-    <input type="email" id="email" placeholder="Email Address" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button type="submit">Sign In</button>
-    <div class="message" id="message"></div>
-  </form>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
-      authDomain: "anointed-flames-tv.firebaseapp.com",
-      projectId: "anointed-flames-tv",
-      storageBucket: "anointed-flames-tv.firebasestorage.app",
-      messagingSenderId: "814825501586",
-      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
-      measurementId: "G-CZR5508L92"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Handle Sign In
-    document.getElementById("signin-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const message = document.getElementById("message");
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          message.style.color = "lightgreen";
-          message.textContent = "Sign in successful!";
-          // Redirect to dashboard or homepage
-          setTimeout(() => {
-            window.location.href = "dashboard.html"; // Change as needed
-          }, 1500);
-        })
-        .catch((error) => {
-          message.style.color = "red";
-          message.textContent = error.message;
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-fire logo-icon"></i>
+            <div class="logo-text">Anointed Flames</div>
+        </div>
+        <div class="language-selector">
+            <i class="fas fa-globe"></i>
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="content">
+            <div class="intro">
+                <h1>Connect with your faith community</h1>
+                <p>Anointed Flames brings believers together to share, pray, and grow in faith.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-pray"></i>
+                        </div>
+                        <div class="feature-text">Prayer requests & support</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-bible"></i>
+                        </div>
+                        <div class="feature-text">Daily Bible verses</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="feature-text">Faith-based communities</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="feature-text">Live worship services</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="login-container">
+                <div class="login-form floating">
+                    <form id="loginForm">
+                        <input type="text" id="email" placeholder="Email or phone number" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="submit" class="login-btn">Log In</button>
+                        <a href="#" class="forgot-password" id="forgot-password">Forgotten password?</a>
+                        <div class="divider"></div>
+                        <button type="button" class="create-btn" id="create-account">Create New Account</button>
+                    </form>
+                    
+                    <div class="social-login">
+                        <div class="social-btn facebook" id="facebook-login">
+                            <i class="fab fa-facebook-f"></i>
+                        </div>
+                        <div class="social-btn google" id="google-login">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="social-btn apple" id="apple-login">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-light);">
+                    <a href="#" style="font-weight: 600; color: var(--primary);">Create a Page</a> for a church, ministry or business.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+            <a href="#">Help</a>
+        </div>
+        <div class="copyright">Anointed Flames &copy; 2023</div>
+    </footer>
+    
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-forgot">&times;</span>
+            <h2 class="modal-title">Find Your Account</h2>
+            <p style="margin-bottom: 20px;">Please enter your email or phone number to search for your account.</p>
+            <input type="text" id="recovery-email" placeholder="Email or phone number" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="create-btn" style="margin-top: 0; width: auto; padding: 10px 20px;" id="cancel-forgot">Cancel</button>
+                <button class="login-btn" style="margin-top: 0; width: auto; padding: 10px 20px;" id="search-account">Search</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Account Modal -->
+    <div class="modal" id="create-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-create">&times;</span>
+            <h2 class="modal-title">Create a New Account</h2>
+            <p style="margin-bottom: 20px;">It's quick and easy.</p>
+            
+            <form id="signupForm">
+                <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                    <input type="text" placeholder="First name" style="flex: 1;" required>
+                    <input type="text" placeholder="Last name" style="flex: 1;" required>
+                </div>
+                <input type="text" placeholder="Mobile number or email" style="margin-bottom: 16px;" required>
+                <input type="password" placeholder="New password" style="margin-bottom: 16px;" required>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 14px;">Date of birth</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <option>Month</option>
+                            <!-- Months would be populated here -->
+                        </select>
+                        <select style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <option>Day</option>
+                            <!-- Days would be populated here -->
+                        </select>
+                        <select style="flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <option>Year</option>
+                            <!-- Years would be populated here -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light); font-size: 14px;">Gender</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label style="flex: 1; display: flex; align-items: center; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <input type="radio" name="gender" style="margin-right: 8px;"> Female
+                        </label>
+                        <label style="flex: 1; display: flex; align-items: center; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <input type="radio" name="gender" style="margin-right: 8px;"> Male
+                        </label>
+                        <label style="flex: 1; display: flex; align-items: center; padding: 12px; border: 1px solid var(--border); border-radius: 8px;">
+                            <input type="radio" name="gender" style="margin-right: 8px;"> Custom
+                        </label>
+                    </div>
+                </div>
+                
+                <div style="font-size: 12px; color: var(--text-light); margin-bottom: 16px;">
+                    By clicking Sign Up, you agree to our <a href="#" style="color: var(--primary);">Terms</a>, <a href="#" style="color: var(--primary);">Privacy Policy</a> and <a href="#" style="color: var(--primary);">Cookies Policy</a>. You may receive SMS notifications from us and can opt out at any time.
+                </div>
+                
+                <button type="submit" class="login-btn" style="margin-top: 0;">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if already logged in
+            if(localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'homepage.html';
+            }
+            
+            // Auto-fill email if saved
+            const savedEmail = localStorage.getItem('userEmail');
+            if(savedEmail) {
+                document.getElementById('email').value = savedEmail;
+            }
+            
+            // Login Form Submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Simple validation
+                if(!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Save user data to localStorage
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Show loading state
+                const loginBtn = document.querySelector('.login-btn');
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging In...';
+                loginBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(function() {
+                    // Redirect to homepage
+                    window.location.href = 'homepage.html';
+                }, 1500);
+            });
+            
+            // Forgot Password Modal
+            const forgotModal = document.getElementById('forgot-modal');
+            const forgotBtn = document.getElementById('forgot-password');
+            const closeForgot = document.getElementById('close-forgot');
+            const cancelForgot = document.getElementById('cancel-forgot');
+            
+            forgotBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                forgotModal.style.display = 'flex';
+            });
+            
+            closeForgot.addEventListener('click', function() {
+                forgotModal.style.display = 'none';
+            });
+            
+            cancelForgot.addEventListener('click', function() {
+                forgotModal.style.display = 'none';
+            });
+            
+            // Search Account Button
+            document.getElementById('search-account').addEventListener('click', function() {
+                const recoveryEmail = document.getElementById('recovery-email').value;
+                if(!recoveryEmail) {
+                    alert('Please enter your email or phone number');
+                    return;
+                }
+                
+                // Show loading state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+                this.disabled = true;
+                
+                // Simulate account recovery process
+                setTimeout(function() {
+                    alert('If an account exists for ' + recoveryEmail + ', you will receive a password reset link.');
+                    forgotModal.style.display = 'none';
+                    document.getElementById('search-account').innerHTML = 'Search';
+                    document.getElementById('search-account').disabled = false;
+                }, 1500);
+            });
+            
+            // Create Account Modal
+            const createModal = document.getElementById('create-modal');
+            const createBtn = document.getElementById('create-account');
+            const closeCreate = document.getElementById('close-create');
+            
+            createBtn.addEventListener('click', function() {
+                createModal.style.display = 'flex';
+            });
+            
+            closeCreate.addEventListener('click', function() {
+                createModal.style.display = 'none';
+            });
+            
+            // Signup Form Submission
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                const signupBtn = document.querySelector('#signupForm .login-btn');
+                signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                signupBtn.disabled = true;
+                
+                // Simulate account creation
+                setTimeout(function() {
+                    alert('Account created successfully! Please check your email for verification.');
+                    createModal.style.display = 'none';
+                    signupBtn.innerHTML = 'Sign Up';
+                    signupBtn.disabled = false;
+                }, 2000);
+            });
+            
+            // Social Login Buttons
+            document.getElementById('facebook-login').addEventListener('click', function() {
+                alert('Facebook login would be implemented here');
+            });
+            
+            document.getElementById('google-login').addEventListener('click', function() {
+                alert('Google login would be implemented here');
+            });
+            
+            document.getElementById('apple-login').addEventListener('click', function() {
+                alert('Apple login would be implemented here');
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                if(e.target === forgotModal) {
+                    forgotModal.style.display = 'none';
+                }
+                if(e.target === createModal) {
+                    createModal.style.display = 'none';
+                }
+            });
         });
-    });
-  </script>
-
+    </script>
 </body>
 </html>

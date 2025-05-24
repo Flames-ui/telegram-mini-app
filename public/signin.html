@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In - Anointed Flames TV</title>
+  <style>
+    body {
+      background: #0f0c29;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h2 {
+      color: #00c6ff;
+    }
+    form {
+      background: #1b1b2f;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0072ff55;
+      width: 90%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: #0072ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0051cc;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Sign In to Your Account</h2>
+  <form id="signin-form">
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Sign In</button>
+    <div class="message" id="message"></div>
+  </form>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.firebasestorage.app",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+      measurementId: "G-CZR5508L92"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Handle Sign In
+    document.getElementById("signin-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("message");
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          message.style.color = "lightgreen";
+          message.textContent = "Sign in successful!";
+          // Redirect to homepage
+          setTimeout(() => {
+            window.location.href = "homepage.html"; // Change as needed
+          }, 1500);
+        })
+        .catch((error) => {
+          message.style.color = "red";
+          message.textContent = error.message;
+        });
+    });
+  </script>
+
+</body>
+</html>

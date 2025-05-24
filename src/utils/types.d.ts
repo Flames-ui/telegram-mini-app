@@ -1,7 +1,10 @@
 // Type declarations for utility modules
 declare module '../../utils/truncateText' {
-  export const truncateText: (text: string, maxLength: number) => string;
+  const truncateText: (text: string, maxLength: number) => string;
+  export default truncateText;
 }
 
 declare module '../../utils/dominantColor' {
-  export const getDominantColor: (imageUrl: string) => Promise<string>;
+  const getDominantColor: (imageUrl: string) => Promise<string>;
+  export default getDominantColor;
+}

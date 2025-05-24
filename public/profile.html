@@ -1616,5 +1616,394 @@
             });
         });
     </script>
+    // Add this code right before the closing </script> tag in your existing profile.html
+
+// ======================
+// NEW FUNCTIONALITY START
+// ======================
+
+// User Earnings System
+class EarningsTracker {
+    constructor() {
+        this.earnings = JSON.parse(localStorage.getItem('userEarnings')) || {};
+        this.rates = {
+            textClick: 0.001,
+            imageClick: 0.001,
+            videoView: 0.002
+        };
+    }
+
+    updateEarnings(email, amount, type) {
+        if (!this.earnings[email]) {
+            this.earnings[email] = {
+                total: 0,
+                clicks: { text: 0, image: 0 },
+                videoViews: 0,
+                history: []
+            };
+        }
+
+        const user = this.earnings[email];
+        let earned = 0;
+
+        if (type === 'text') {
+            user.clicks.text++;
+            earned = this.rates.textClick;
+        } else if (type === 'image') {
+            user.clicks.image++;
+            earned = this.rates.imageClick;
+        } else if (type === 'video') {
+            user.videoViews++;
+            earned = this.rates.videoView;
+        }
+
+        user.total += earned;
+        user.history.push({
+            type,
+            amount: earned,
+            date: new Date().toISOString()
+        });
+
+        localStorage.setItem('userEarnings', JSON.stringify(this.earnings));
+        return earned;
+    }
+
+    getEarnings(email) {
+        return this.earnings[email] || {
+            total: 0,
+            clicks: { text: 0, image: 0 },
+            videoViews: 0,
+            history: []
+        };
+    }
+}
+
+const earningsTracker = new EarningsTracker();
+
+// Content Moderation System
+class GospelContentModerator {
+    constructor() {
+        this.bibleKeywords = [
+            'god', 'jesus', 'christ', 'lord', 'bible', 'scripture', 'faith', 
+            'pray', 'prayer', 'amen', 'holy', 'spirit', 'gospel', 'church',
+            'bless', 'heaven', 'salvation', 'worship', 'verse', 'testimony'
+        ];
+        this.bannedWords = [
+            'hate', 'violence', 'porn', 'sex', 'drugs', 'alcohol', 'profanity'
+        ];
+    }
+
+    isGospelContent(text) {
+        if (!text) return false;
+        
+        const lowerText = text.toLowerCase();
+        
+        // Check for banned words
+        if (this.bannedWords.some(word => lowerText.includes(word))) {
+            return false;
+        }
+        
+        // Check for gospel keywords
+        return this.bibleKeywords.some(word => lowerText.includes(word));
+    }
+}
+
+const contentModerator = new GospelContentModerator();
+
+// Enhanced Post Creation with Moderation
+document.getElementById('submit-post').addEventListener('click', function() {
+    const postText = document.getElementById('post-text').value;
+    const mediaFile = document.getElementById('media-upload').files[0];
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    // Content validation
+    if (!contentModerator.isGospelContent(postText)) {
+        alert('Please create content related to gospel messages only.');
+        return;
+    }
+    
+    // Create post object
+    const newPost = {
+        id: Date.now(),
+        userId: currentUser.email,
+        userName: `${currentUser.firstName} ${currentUser.lastName}`,
+        userPic: currentUser.profilePicture || 'default-profile.jpg',
+        text: postText,
+        media: mediaFile ? {
+            type: mediaFile.type.startsWith('image/') ? 'image' : 'video',
+            url: URL.createObjectURL(mediaFile)
+        } : null,
+        timestamp: new Date().toISOString(),
+        visibility: document.getElementById('post-visibility').value,
+        likes: 0,
+        comments: [],
+        shares: 0,
+        clicks: 0,
+        views: 0
+    };
+    
+    // Save to local storage (in real app, this would go to server)
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.unshift(newPost);
+    localStorage.setItem('posts', JSON.stringify(posts));
+    
+    // Close modal and reset
+    document.getElementById('post-modal').style.display = 'none';
+    document.getElementById('media-upload').value = '';
+    document.getElementById('image-preview').style.display = 'none';
+    document.getElementById('video-preview').style.display = 'none';
+    document.getElementById('post-preview').style.display = 'none';
+    document.getElementById('post-text').value = '';
+    
+    // Refresh posts
+    loadPosts();
+});
+
+// Track clicks and views
+document.addEventListener('click', function(e) {
+    // Track post clicks
+    if (e.target.closest('.post, .post *')) {
+        const postElement = e.target.closest('.post');
+        if (postElement) {
+            const postId = parseInt(postElement.dataset.postId);
+            if (postId) {
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                const post = posts.find(p => p.id === postId);
+                if (post) {
+                    post.clicks++;
+                    
+                    // Determine click type
+                    const type = post.media?.type === 'image' ? 'image' : 'text';
+                    earningsTracker.updateEarnings(post.userId, 0, type);
+                    
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                }
+            }
+        }
+    }
+    
+    // Track video views
+    const video = e.target.closest('video');
+    if (video && video.dataset.postId) {
+        const postId = parseInt(video.dataset.postId);
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const post = posts.find(p => p.id === postId);
+        
+        if (post && post.media?.type === 'video') {
+            // Check if video was watched for at least 30 seconds
+            if (video.currentTime >= 30 && !video.dataset.viewCounted) {
+                post.views++;
+                video.dataset.viewCounted = 'true';
+                earningsTracker.updateEarnings(post.userId, 0, 'video');
+                localStorage.setItem('posts', JSON.stringify(posts));
+            }
+        }
+    }
+});
+
+// Enhanced Dashboard with Real Earnings
+document.getElementById('dashboard-btn').addEventListener('click', function() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const earnings = earningsTracker.getEarnings(currentUser.email);
+    
+    document.getElementById('earnings').textContent = '$' + earnings.total.toFixed(3);
+    document.getElementById('views').textContent = 
+        (earnings.clicks.text + earnings.clicks.image + earnings.videoViews).toLocaleString();
+    document.getElementById('engagement').textContent = 
+        (Math.min(100, (earnings.clicks.text + earnings.clicks.image) * 0.5)).toFixed(1) + '%';
+    
+    // Load followers count (simulated)
+    document.getElementById('followers').textContent = 
+        Math.floor(Math.random() * 500).toLocaleString();
+});
+
+// Friend System
+class FriendSystem {
+    constructor() {
+        this.friends = JSON.parse(localStorage.getItem('userFriends')) || {};
+    }
+    
+    addFriend(userEmail, friendEmail) {
+        if (!this.friends[userEmail]) {
+            this.friends[userEmail] = [];
+        }
+        
+        if (!this.friends[userEmail].includes(friendEmail)) {
+            this.friends[userEmail].push(friendEmail);
+            localStorage.setItem('userFriends', JSON.stringify(this.friends));
+        }
+    }
+    
+    getFriends(userEmail) {
+        return this.friends[userEmail] || [];
+    }
+}
+
+const friendSystem = new FriendSystem();
+
+// Profile View System
+function viewProfile(email) {
+    if (email === JSON.parse(localStorage.getItem('currentUser')).email) {
+        return; // Don't track viewing own profile
+    }
+    
+    // In a real system, we'd track profile views here
+    console.log(`Viewed profile of ${email}`);
+}
+
+// Enhanced Post Loading
+function loadPosts() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    const mainContent = document.querySelector('.main-content');
+    
+    // Clear existing posts (except first one which is the create post box)
+    const existingPosts = document.querySelectorAll('.post');
+    for (let i = 1; i < existingPosts.length; i++) {
+        existingPosts[i].remove();
+    }
+    
+    // Add new posts
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
+        postElement.dataset.postId = post.id;
+        
+        let mediaHtml = '';
+        if (post.media) {
+            if (post.media.type === 'image') {
+                mediaHtml = `<img src="${post.media.url}" class="post-image">`;
+            } else if (post.media.type === 'video') {
+                mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
+                    <source src="${post.media.url}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>`;
+            }
+        }
+        
+        postElement.innerHTML = `
+            <div class="post-header">
+                <img src="${post.userPic}" alt="User">
+                <div class="post-user">
+                    <div class="post-user-name">${post.userName}</div>
+                    <div class="post-user-email" style="font-size: 12px; color: var(--text-light);">${post.userId}</div>
+                    <div class="post-time">${new Date(post.timestamp).toLocaleString()} · 
+                        <i class="fas ${post.visibility === 'public' ? 'fa-globe-americas' : 
+                          post.visibility === 'friends' ? 'fa-user-friends' : 'fa-lock'}"></i>
+                    </div>
+                </div>
+                <i class="fas fa-ellipsis-h" style="color: var(--text-light); cursor: pointer;"></i>
+            </div>
+            <div class="post-content">
+                ${post.text}
+            </div>
+            ${mediaHtml}
+            <div class="post-actions">
+                <div class="post-action reactions">
+                    <i class="far fa-thumbs-up"></i>
+                    <span>Like</span>
+                    <div class="reaction-options">
+                        <span class="reaction-option">👍</span>
+                        <span class="reaction-option">❤️</span>
+                        <span class="reaction-option">😂</span>
+                        <span class="reaction-option">😮</span>
+                        <span class="reaction-option">😢</span>
+                        <span class="reaction-option">🙏</span>
+                    </div>
+                </div>
+                <div class="post-action">
+                    <i class="far fa-comment"></i>
+                    <span>Comment</span>
+                </div>
+                <div class="post-action">
+                    <i class="fas fa-share"></i>
+                    <span>Share</span>
+                </div>
+            </div>
+        `;
+        
+        // Insert after the create-post element
+        mainContent.appendChild(postElement);
+    });
+    
+    // Initialize reaction handlers for new posts
+    initReactionHandlers();
+}
+
+// Initialize reaction handlers
+function initReactionHandlers() {
+    const reactionButtons = document.querySelectorAll('.reactions');
+    reactionButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.querySelector('.reaction-options').style.display = 'block';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.querySelector('.reaction-options').style.display = 'none';
+        });
+        
+        const options = button.querySelectorAll('.reaction-option');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                const reaction = this.textContent;
+                const likeIcon = button.querySelector('i');
+                const likeText = button.querySelector('span');
+                
+                likeIcon.className = '';
+                likeIcon.style.fontFamily = 'Arial';
+                likeIcon.textContent = reaction;
+                likeText.textContent = reaction;
+                
+                button.querySelector('.reaction-options').style.display = 'none';
+            });
+        });
+    });
+}
+
+// Initialize video view tracking
+function initVideoTracking() {
+    document.querySelectorAll('video[data-post-id]').forEach(video => {
+        video.addEventListener('timeupdate', function() {
+            if (this.currentTime >= 30 && !this.dataset.viewCounted) {
+                const postId = parseInt(this.dataset.postId);
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                const post = posts.find(p => p.id === postId);
+                
+                if (post && post.media?.type === 'video') {
+                    post.views++;
+                    this.dataset.viewCounted = 'true';
+                    earningsTracker.updateEarnings(post.userId, 0, 'video');
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                }
+            }
+        });
+    });
+}
+
+// Load posts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadPosts();
+    initVideoTracking();
+    
+    // Add email to existing sample posts
+    document.querySelectorAll('.post-user-name').forEach(nameElement => {
+        if (!nameElement.nextElementSibling?.classList.contains('post-user-email')) {
+            const emailElement = document.createElement('div');
+            emailElement.className = 'post-user-email';
+            emailElement.style.fontSize = '12px';
+            emailElement.style.color = 'var(--text-light)';
+            
+            // Generate mock email based on name
+            const name = nameElement.textContent.toLowerCase().replace(' ', '.');
+            emailElement.textContent = `${name}@anointedflames.com`;
+            
+            nameElement.parentNode.insertBefore(emailElement, nameElement.nextSibling);
+        }
+    });
+});
+
+// ====================
+// NEW FUNCTIONALITY END
+// ====================
 </body>
 </html>

@@ -1094,7 +1094,7 @@
     <!-- Header -->
     <header class="header">
         <div class="header-left">
-            <a href="homepage.html" class="logo">
+            <a href="feed.html" class="logo">
                 <i class="fas fa-fire"></i>
                 <span>Anointed Flames</span>
             </a>
@@ -1105,18 +1105,18 @@
         </div>
         
         <div class="header-center">
-            <a href="homepage.html" class="header-icon">
+            <a href="feed.html" class="header-icon">
                 <i class="fas fa-home"></i>
             </a>
-            <div class="header-icon">
+            <a href="video.html" class="header-icon">
                 <i class="fas fa-tv"></i>
-            </div>
+            </a>
             <div class="header-icon">
                 <i class="fas fa-users"></i>
             </div>
-            <div class="header-icon">
+            <a href="bible.html" class="header-icon">
                 <i class="fas fa-bible"></i>
-            </div>
+            </a>
             <div class="header-icon active">
                 <i class="fas fa-bell" id="notification-icon"></i>
                 <div class="notification-dropdown" id="notification-dropdown">
@@ -1604,6 +1604,46 @@
     </div>
 
     <script>
+        // ===== NEW: POST APPROVAL SYSTEM ===== //
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const adminEmail = "admin@anointedflames.com"; // Set your admin email
+
+        function submitPost(postText, mediaFile) {
+            if (!contentModerator.isGospelContent(postText)) {
+                alert("Post must contain gospel-related content.");
+                return false;
+            }
+
+            const newPost = {
+                id: Date.now(),
+                userId: currentUser.email,
+                userName: `${currentUser.firstName} ${currentUser.lastName}`,
+                userPic: currentUser.profilePicture || 'default-profile.jpg',
+                text: postText,
+                media: mediaFile ? {
+                    type: mediaFile.type.startsWith('image/') ? 'image' : 'video',
+                    url: URL.createObjectURL(mediaFile)
+                } : null,
+                timestamp: new Date().toISOString(),
+                visibility: document.getElementById('post-visibility').value,
+                approved: currentUser.email === adminEmail, // Auto-approve admin posts
+                likes: 0,
+                comments: [],
+                shares: 0
+            };
+
+            posts.unshift(newPost);
+            localStorage.setItem('posts', JSON.stringify(posts));
+
+            if (newPost.approved) {
+                alert("Post approved and published!");
+            } else {
+                alert("Post submitted for admin approval.");
+            }
+            return true;
+        }
+
         // Enhanced Earnings System
         class EarningsTracker {
             constructor() {
@@ -1855,76 +1895,79 @@
             
             // Add new posts
             posts.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.className = 'post';
-                postElement.dataset.postId = post.id;
-                
-                // Truncate text for preview
-                const truncatedText = post.text.length > 150 ? 
-                    post.text.substring(0, 150) + '...' : post.text;
-                
-                let mediaHtml = '';
-                if (post.media) {
-                    if (post.media.type === 'image') {
-                        mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">`;
-                    } else if (post.media.type === 'video') {
-                        mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
-                            <source src="${post.media.url}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>`;
+                // Only show approved posts or posts by current user
+                if (post.approved || post.userId === currentUser.email) {
+                    const postElement = document.createElement('div');
+                    postElement.className = 'post';
+                    postElement.dataset.postId = post.id;
+                    
+                    // Truncate text for preview
+                    const truncatedText = post.text.length > 150 ? 
+                        post.text.substring(0, 150) + '...' : post.text;
+                    
+                    let mediaHtml = '';
+                    if (post.media) {
+                        if (post.media.type === 'image') {
+                            mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">`;
+                        } else if (post.media.type === 'video') {
+                            mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
+                                <source src="${post.media.url}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>`;
+                        }
                     }
+                    
+                    postElement.innerHTML = `
+                        <div class="post-header">
+                            <img src="${post.userPic}" alt="User" style="cursor: pointer;" class="profile-link" data-email="${post.userId}">
+                            <div class="post-user">
+                                <div class="post-user-name">${post.userName}</div>
+                                <div class="post-user-email" style="font-size: 12px; color: var(--text-light);">${post.userId}</div>
+                                <div class="post-time">${formatTime(post.timestamp)} · 
+                                    <i class="fas ${post.visibility === 'public' ? 'fa-globe-americas' : 
+                                      post.visibility === 'friends' ? 'fa-user-friends' : 'fa-lock'}"></i>
+                                </div>
+                            </div>
+                            <i class="fas fa-ellipsis-h" style="color: var(--text-light); cursor: pointer;"></i>
+                        </div>
+                        <div class="post-content ${post.text.length > 150 ? 'collapsed' : ''}">
+                            ${truncatedText}
+                            ${post.text.length > 150 ? '<div class="see-more">See more</div>' : ''}
+                        </div>
+                        ${mediaHtml}
+                        <div class="post-actions">
+                            <div class="post-action reactions">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>Like</span>
+                                <div class="reaction-options">
+                                    <span class="reaction-option">👍</span>
+                                    <span class="reaction-option">❤️</span>
+                                    <span class="reaction-option">😂</span>
+                                    <span class="reaction-option">😮</span>
+                                    <span class="reaction-option">😢</span>
+                                    <span class="reaction-option">🙏</span>
+                                </div>
+                            </div>
+                            <div class="post-action comment-btn">
+                                <i class="far fa-comment"></i>
+                                <span>Comment</span>
+                            </div>
+                            <div class="post-action share-btn">
+                                <i class="fas fa-share"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                        <div class="comments-section" style="display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                            <div class="comment-input" style="display: flex; margin-bottom: 10px;">
+                                <img src="${currentUser.profilePicture || 'default-profile.jpg'}" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
+                                <input type="text" placeholder="Write a comment..." class="comment-text" style="flex: 1; padding: 8px; border-radius: 20px; border: 1px solid var(--border);">
+                            </div>
+                            <div class="comments-list"></div>
+                        </div>
+                    `;
+                    
+                    postsContainer.appendChild(postElement);
                 }
-                
-                postElement.innerHTML = `
-                    <div class="post-header">
-                        <img src="${post.userPic}" alt="User" style="cursor: pointer;" class="profile-link" data-email="${post.userId}">
-                        <div class="post-user">
-                            <div class="post-user-name">${post.userName}</div>
-                            <div class="post-user-email" style="font-size: 12px; color: var(--text-light);">${post.userId}</div>
-                            <div class="post-time">${formatTime(post.timestamp)} · 
-                                <i class="fas ${post.visibility === 'public' ? 'fa-globe-americas' : 
-                                  post.visibility === 'friends' ? 'fa-user-friends' : 'fa-lock'}"></i>
-                            </div>
-                        </div>
-                        <i class="fas fa-ellipsis-h" style="color: var(--text-light); cursor: pointer;"></i>
-                    </div>
-                    <div class="post-content ${post.text.length > 150 ? 'collapsed' : ''}">
-                        ${truncatedText}
-                        ${post.text.length > 150 ? '<div class="see-more">See more</div>' : ''}
-                    </div>
-                    ${mediaHtml}
-                    <div class="post-actions">
-                        <div class="post-action reactions">
-                            <i class="far fa-thumbs-up"></i>
-                            <span>Like</span>
-                            <div class="reaction-options">
-                                <span class="reaction-option">👍</span>
-                                <span class="reaction-option">❤️</span>
-                                <span class="reaction-option">😂</span>
-                                <span class="reaction-option">😮</span>
-                                <span class="reaction-option">😢</span>
-                                <span class="reaction-option">🙏</span>
-                            </div>
-                        </div>
-                        <div class="post-action comment-btn">
-                            <i class="far fa-comment"></i>
-                            <span>Comment</span>
-                        </div>
-                        <div class="post-action share-btn">
-                            <i class="fas fa-share"></i>
-                            <span>Share</span>
-                        </div>
-                    </div>
-                    <div class="comments-section" style="display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
-                        <div class="comment-input" style="display: flex; margin-bottom: 10px;">
-                            <img src="${currentUser.profilePicture || 'default-profile.jpg'}" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
-                            <input type="text" placeholder="Write a comment..." class="comment-text" style="flex: 1; padding: 8px; border-radius: 20px; border: 1px solid var(--border);">
-                        </div>
-                        <div class="comments-list"></div>
-                    </div>
-                `;
-                
-                postsContainer.appendChild(postElement);
             });
             
             // Initialize handlers for new posts
@@ -2133,7 +2176,8 @@
                     shares: 0,
                     clicks: 0,
                     views: 0,
-                    originalPostId: post.id
+                    originalPostId: post.id,
+                    approved: true // Shared posts are auto-approved
                 };
                 
                 posts.unshift(newPost);
@@ -2154,50 +2198,48 @@
             }
         }
 
-        // View profile functionality
+        // ===== PROFILE LINKING ===== //
         function viewProfile(email) {
-            if (email === JSON.parse(localStorage.getItem('currentUser')).email) {
-                // Viewing own profile - just refresh
-                window.location.reload();
-                return;
+            if (email === currentUser.email) {
+                window.location.href = "profile.html"; // Goes to profile.html for current user
+            } else {
+                alert(`Viewing profile of ${email}`);
+                // In a real app: window.location.href = `profile.html?user=${email}`;
             }
-            
-            // In a real app, we'd navigate to the user's profile
-            alert(`Viewing profile of ${email}`);
         }
 
         // Load user data from localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            const userData = JSON.parse(localStorage.getItem('currentUser'));
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
             
-            if (!userData) {
+            if (!currentUser) {
                 window.location.href = 'login.html';
                 return;
             }
             
             // Set profile data
-            document.getElementById('header-profile-pic').src = userData.profilePicture || 'default-profile.jpg';
-            document.getElementById('header-profile-name').textContent = `${userData.firstName} ${userData.lastName}`;
-            document.getElementById('menu-profile-pic').src = userData.profilePicture || 'default-profile.jpg';
-            document.getElementById('menu-profile-name').textContent = `${userData.firstName} ${userData.lastName}`;
-            document.getElementById('main-profile-pic').src = userData.profilePicture || 'default-profile.jpg';
-            document.getElementById('post-profile-pic').src = userData.profilePicture || 'default-profile.jpg';
-            document.getElementById('modal-profile-pic').src = userData.profilePicture || 'default-profile.jpg';
-            document.getElementById('profile-name-large').textContent = `${userData.firstName} ${userData.lastName}`;
-            document.getElementById('profile-bio').textContent = userData.bio || 'No bio yet';
-            document.getElementById('profile-dob').textContent = `Born ${userData.dob}`;
-            document.getElementById('profile-church').textContent = userData.church || 'Not specified';
-            document.getElementById('profile-gender').textContent = userData.gender === 'male' ? 'Male' : 
-                                                                   userData.gender === 'female' ? 'Female' : 'Other';
+            document.getElementById('header-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('header-profile-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('menu-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('menu-profile-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('main-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('post-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('modal-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('profile-name-large').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('profile-bio').textContent = currentUser.bio || 'No bio yet';
+            document.getElementById('profile-dob').textContent = `Born ${currentUser.dob}`;
+            document.getElementById('profile-church').textContent = currentUser.church || 'Not specified';
+            document.getElementById('profile-gender').textContent = currentUser.gender === 'male' ? 'Male' : 
+                                                                   currentUser.gender === 'female' ? 'Female' : 'Other';
             
             // Format join date
-            const joinDate = new Date(userData.joinDate);
+            const joinDate = new Date(currentUser.joinDate);
             document.getElementById('profile-joined').textContent = `Joined ${joinDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
             
             // Set cover photo
             const coverPhoto = document.getElementById('cover-photo');
-            if (userData.coverPhoto && userData.coverPhoto !== 'default-cover.jpg') {
-                coverPhoto.style.background = `url(${userData.coverPhoto}) center/cover`;
+            if (currentUser.coverPhoto && currentUser.coverPhoto !== 'default-cover.jpg') {
+                coverPhoto.style.background = `url(${currentUser.coverPhoto}) center/cover`;
             }
             
             // Menu functionality
@@ -2239,7 +2281,7 @@
                 dashboardModal.style.display = 'flex';
                 
                 // Load real earnings data
-                const earnings = earningsTracker.getEarnings(userData.email);
+                const earnings = earningsTracker.getEarnings(currentUser.email);
                 document.getElementById('earnings').textContent = '$' + earnings.total.toFixed(3);
                 document.getElementById('views').textContent = 
                     (earnings.clicks.text + earnings.clicks.image + earnings.videoViews).toLocaleString();
@@ -2277,7 +2319,7 @@
                     return;
                 }
                 
-                const earnings = earningsTracker.getEarnings(userData.email);
+                const earnings = earningsTracker.getEarnings(currentUser.email);
                 if (amount > earnings.total) {
                     alert('Insufficient earnings for this withdrawal');
                     return;
@@ -2343,7 +2385,6 @@
             submitPost.addEventListener('click', function() {
                 const postText = document.getElementById('post-text').value;
                 const mediaFile = mediaUpload.files[0];
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 
                 // Content validation
                 if (!contentModerator.isGospelContent(postText)) {
@@ -2364,6 +2405,7 @@
                     } : null,
                     timestamp: new Date().toISOString(),
                     visibility: document.getElementById('post-visibility').value,
+                    approved: currentUser.email === adminEmail, // Auto-approve admin posts
                     likes: 0,
                     comments: [],
                     shares: 0,
@@ -2386,13 +2428,17 @@
                 
                 // Refresh posts
                 loadPosts();
+                
+                if (newPost.approved) {
+                    alert("Post approved and published!");
+                } else {
+                    alert("Post submitted for admin approval.");
+                }
             });
             
             // Quick post from main input
             document.getElementById('create-post-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && this.value.trim()) {
-                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                    
                     // Content validation
                     if (!contentModerator.isGospelContent(this.value)) {
                         alert('Please create content related to gospel messages only.');
@@ -2409,6 +2455,7 @@
                         media: null,
                         timestamp: new Date().toISOString(),
                         visibility: 'public',
+                        approved: currentUser.email === adminEmail, // Auto-approve admin posts
                         likes: 0,
                         comments: [],
                         shares: 0,
@@ -2423,6 +2470,12 @@
                     
                     this.value = '';
                     loadPosts();
+                    
+                    if (newPost.approved) {
+                        alert("Post approved and published!");
+                    } else {
+                        alert("Post submitted for admin approval.");
+                    }
                 }
             });
             
@@ -2472,21 +2525,21 @@
             
             editProfileBtn.addEventListener('click', function() {
                 // Load current data into form
-                document.getElementById('edit-first-name').value = userData.firstName;
-                document.getElementById('edit-last-name').value = userData.lastName;
-                document.getElementById('edit-bio').value = userData.bio || '';
-                document.getElementById('edit-dob').value = userData.dob;
-                document.getElementById('edit-church').value = userData.church || '';
-                document.getElementById('edit-gender').value = userData.gender || 'male';
+                document.getElementById('edit-first-name').value = currentUser.firstName;
+                document.getElementById('edit-last-name').value = currentUser.lastName;
+                document.getElementById('edit-bio').value = currentUser.bio || '';
+                document.getElementById('edit-dob').value = currentUser.dob;
+                document.getElementById('edit-church').value = currentUser.church || '';
+                document.getElementById('edit-gender').value = currentUser.gender || 'male';
                 
                 // Set current photos
-                if (userData.coverPhoto && userData.coverPhoto !== 'default-cover.jpg') {
-                    coverPhotoEdit.style.background = `url(${userData.coverPhoto}) center/cover`;
+                if (currentUser.coverPhoto && currentUser.coverPhoto !== 'default-cover.jpg') {
+                    coverPhotoEdit.style.background = `url(${currentUser.coverPhoto}) center/cover`;
                 } else {
                     coverPhotoEdit.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
                 }
                 
-                profilePhotoEdit.src = userData.profilePicture || 'default-profile.jpg';
+                profilePhotoEdit.src = currentUser.profilePicture || 'default-profile.jpg';
                 
                 profileEditor.style.display = 'flex';
             });
@@ -2527,32 +2580,32 @@
                 e.preventDefault();
                 
                 // Update user data
-                userData.firstName = document.getElementById('edit-first-name').value;
-                userData.lastName = document.getElementById('edit-last-name').value;
-                userData.bio = document.getElementById('edit-bio').value;
-                userData.dob = document.getElementById('edit-dob').value;
-                userData.church = document.getElementById('edit-church').value;
-                userData.gender = document.getElementById('edit-gender').value;
+                currentUser.firstName = document.getElementById('edit-first-name').value;
+                currentUser.lastName = document.getElementById('edit-last-name').value;
+                currentUser.bio = document.getElementById('edit-bio').value;
+                currentUser.dob = document.getElementById('edit-dob').value;
+                currentUser.church = document.getElementById('edit-church').value;
+                currentUser.gender = document.getElementById('edit-gender').value;
                 
                 // Update photos if changed
                 if (profilePhotoUpload.files[0]) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        userData.profilePicture = e.target.result;
-                        localStorage.setItem('currentUser', JSON.stringify(userData));
+                        currentUser.profilePicture = e.target.result;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         window.location.reload();
                     };
                     reader.readAsDataURL(profilePhotoUpload.files[0]);
                 } else if (coverPhotoUpload.files[0]) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        userData.coverPhoto = e.target.result;
-                        localStorage.setItem('currentUser', JSON.stringify(userData));
+                        currentUser.coverPhoto = e.target.result;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         window.location.reload();
                     };
                     reader.readAsDataURL(coverPhotoUpload.files[0]);
                 } else {
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     window.location.reload();
                 }
             });
@@ -2603,7 +2656,7 @@
                 
                 // Create group
                 groupSystem.createGroup(
-                    userData.email,
+                    currentUser.email,
                     name,
                     description,
                     privacy,
@@ -2618,7 +2671,15 @@
             
             // Profile picture click
             document.getElementById('post-profile-pic').addEventListener('click', function() {
-                viewProfile(userData.email);
+                viewProfile(currentUser.email);
+            });
+            
+            // Make all profile pics clickable
+            document.querySelectorAll(".profile-pic, .profile-photo, .profile-link").forEach(el => {
+                el.addEventListener("click", function() {
+                    const userEmail = this.dataset.email || currentUser.email;
+                    viewProfile(userEmail);
+                });
             });
             
             // Load initial posts

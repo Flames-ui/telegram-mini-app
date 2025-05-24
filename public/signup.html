@@ -1,822 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Anointed Flames</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4a00e0;
-            --primary-hover: #3700b3;
-            --secondary: #ff7e00;
-            --secondary-hover: #e67100;
-            --text: #1c1e21;
-            --text-light: #65676b;
-            --border: #dddfe2;
-            --bg: #f0f2f5;
-            --white: #ffffff;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
-            --radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --success: #4BB543;
-            --error: #ff3333;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-        
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .header {
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--white);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            font-size: 32px;
-            color: var(--secondary);
-            margin-right: 12px;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .container {
-            display: flex;
-            flex: 1;
-            padding: 40px 0;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .signup-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 0 20px;
-        }
-        
-        .signup-form {
-            background: var(--white);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .signup-form:hover {
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .signup-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-align: center;
-        }
-        
-        .signup-subtitle {
-            font-size: 16px;
-            color: var(--text-light);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            transition: var(--transition);
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.1);
-        }
-        
-        .date-selectors {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .date-selectors select {
-            flex: 1;
-        }
-        
-        .gender-options {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .gender-option {
-            flex: 1;
-            position: relative;
-        }
-        
-        .gender-option input {
-            position: absolute;
-            opacity: 0;
-        }
-        
-        .gender-option label {
-            display: block;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .gender-option input:checked + label {
-            border-color: var(--primary);
-            background-color: rgba(74, 0, 224, 0.05);
-        }
-        
-        .signup-btn {
-            background-color: var(--secondary);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 14px;
-            width: 100%;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 20px;
-        }
-        
-        .signup-btn:hover {
-            background-color: var(--secondary-hover);
-            transform: translateY(-2px);
-        }
-        
-        .terms {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .terms a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .terms a:hover {
-            text-decoration: underline;
-        }
-        
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        
-        .login-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-        
-        /* Password Strength Meter */
-        .password-strength {
-            height: 4px;
-            background-color: var(--border);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .strength-meter {
-            height: 100%;
-            width: 0;
-            transition: width 0.3s ease;
-        }
-        
-        .strength-weak {
-            background-color: var(--error);
-            width: 33%;
-        }
-        
-        .strength-medium {
-            background-color: #ffcc00;
-            width: 66%;
-        }
-        
-        .strength-strong {
-            background-color: var(--success);
-            width: 100%;
-        }
-        
-        .password-hints {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 5px;
-        }
-        
-        .hint {
-            display: flex;
-            align-items: center;
-            margin-bottom: 3px;
-        }
-        
-        .hint i {
-            margin-right: 5px;
-            font-size: 10px;
-        }
-        
-        .hint.valid {
-            color: var(--success);
-        }
-        
-        /* Verification Code */
-        .verification-code {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .verification-code input {
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 2px;
-            flex: 1;
-        }
-        
-        /* Success Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: var(--white);
-            border-radius: var(--radius);
-            width: 400px;
-            max-width: 90%;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
-            animation: modalFadeIn 0.3s ease;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .modal-icon {
-            font-size: 48px;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-        
-        .modal-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        
-        .modal-text {
-            margin-bottom: 25px;
-            color: var(--text-light);
-        }
-        
-        .modal-btn {
-            background-color: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 12px 24px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .modal-btn:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        /* Verification Modal */
-        .verification-modal .modal-content {
-            width: 450px;
-        }
-        
-        .verification-steps {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        
-        .verification-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .verification-step i {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-size: 12px;
-        }
-        
-        .verification-step.active i {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .verification-step.completed i {
-            background-color: var(--success);
-            color: white;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                padding: 15px 20px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .gender-options {
-                flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .signup-form {
-                padding: 20px;
-            }
-            
-            .date-selectors {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Anointed Flames TV</title>
+  <style>
+    :root {
+      --primary: #4a00e0;
+      --primary-light: #8e2de2;
+      --secondary: #ff7e00;
+      --dark-bg: #0f0c29;
+      --card-bg: #1b1b2f;
+      --text-light: #ffffff;
+      --error: #ff3333;
+      --success: #4BB543;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--dark-bg);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .logo i {
+      color: var(--secondary);
+      margin-right: 10px;
+      font-size: 2rem;
+    }
+
+    h2 {
+      color: #00c6ff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0072ff55;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background: var(--secondary);
+      border: none;
+      border-radius: 5px;
+      color: var(--text-light);
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #e67100;
+      transform: translateY(-2px);
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+
+    .error {
+      background-color: rgba(255, 51, 51, 0.1);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+
+    .success {
+      background-color: rgba(75, 181, 67, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .footer-links a {
+      color: var(--secondary);
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      .logo i {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-            <i class="fas fa-fire logo-icon"></i>
-            <div class="logo-text">Anointed Flames</div>
-        </div>
-    </header>
-    
-    <div class="container">
-        <div class="signup-container">
-            <div class="signup-form">
-                <h1 class="signup-title">Create Your Account</h1>
-                <p class="signup-subtitle">Join our faith community today</p>
-                
-                <form id="signupForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" minlength="8" required>
-                        <div class="password-strength">
-                            <div class="strength-meter" id="strength-meter"></div>
-                        </div>
-                        <div class="password-hints">
-                            <div class="hint" id="length-hint">
-                                <i class="fas fa-circle"></i> At least 8 characters
-                            </div>
-                            <div class="hint" id="number-hint">
-                                <i class="fas fa-circle"></i> Contains a number
-                            </div>
-                            <div class="hint" id="special-hint">
-                                <i class="fas fa-circle"></i> Contains a special character
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Date of Birth</label>
-                        <div class="date-selectors">
-                            <select id="month" required>
-                                <option value="" disabled selected>Month</option>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                            <select id="day" required>
-                                <option value="" disabled selected>Day</option>
-                                <!-- Days will be populated by JavaScript -->
-                            </select>
-                            <select id="year" required>
-                                <option value="" disabled selected>Year</option>
-                                <!-- Years will be populated by JavaScript -->
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <div class="gender-options">
-                            <div class="gender-option">
-                                <input type="radio" id="female" name="gender" value="Female" required>
-                                <label for="female">Female</label>
-                            </div>
-                            <div class="gender-option">
-                                <input type="radio" id="male" name="gender" value="Male">
-                                <label for="male">Male</label>
-                            </div>
-                            <div class="gender-option">
-                                <input type="radio" id="custom" name="gender" value="Custom">
-                                <label for="custom">Custom</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="custom-gender-group" style="display: none;">
-                        <label for="custom-gender">Gender Identity</label>
-                        <input type="text" id="custom-gender" placeholder="Please specify">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="church">Church/Denomination (Optional)</label>
-                        <input type="text" id="church">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="bio">Brief Bio (Optional)</label>
-                        <textarea id="bio" rows="3" style="width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; resize: vertical;"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="signup-btn" id="submit-btn">Sign Up</button>
-                    
-                    <p class="terms">By clicking Sign Up, you agree to our <a href="#">Terms</a>, <a href="#">Privacy Policy</a> and <a href="#">Cookie Policy</a>.</p>
-                </form>
-                
-                <div class="login-link">
-                    Already have an account? <a href="login.html">Log In</a>
-                </div>
-            </div>
-        </div>
+  <div class="logo-container">
+    <a href="index.html" class="logo">
+      <i class="fas fa-fire"></i>
+      <span>Anointed Flames TV</span>
+    </a>
+  </div>
+
+  <h2>Create Your Account</h2>
+  <form id="signup-form">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
     </div>
-    
-    <footer class="footer">
-        Anointed Flames &copy; 2023
-    </footer>
-    
-    <!-- Verification Modal -->
-    <div class="modal verification-modal" id="verification-modal">
-        <div class="modal-content">
-            <h2 class="modal-title">Verify Your Email</h2>
-            <p class="modal-text">We've sent a 6-digit verification code to your email address.</p>
-            
-            <div class="verification-steps">
-                <div class="verification-step active">
-                    <i class="fas fa-check"></i>
-                    <span>Account created</span>
-                </div>
-                <div class="verification-step active">
-                    <i class="fas fa-check"></i>
-                    <span>Email verification</span>
-                </div>
-                <div class="verification-step">
-                    <i>3</i>
-                    <span>Profile setup</span>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Verification Code</label>
-                <div class="verification-code">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                    <input type="text" maxlength="1" pattern="[0-9]">
-                </div>
-            </div>
-            
-            <button class="modal-btn" id="verify-btn">Verify Email</button>
-            <p style="margin-top: 15px; font-size: 14px; color: var(--text-light);">
-                Didn't receive a code? <a href="#" id="resend-code" style="color: var(--primary);">Resend</a>
-            </p>
-        </div>
+    <div class="form-group">
+      <label for="password">Password (min 6 characters)</label>
+      <input type="password" id="password" placeholder="Create a password" required />
     </div>
-    
-    <!-- Success Modal -->
-    <div class="modal" id="success-modal">
-        <div class="modal-content">
-            <div class="modal-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2 class="modal-title">Account Verified!</h2>
-            <p class="modal-text">Your Anointed Flames account is now active. Your profile has been created with the information you provided.</p>
-            <button class="modal-btn" id="continue-btn">Continue to Profile</button>
-        </div>
+    <div class="form-group">
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" placeholder="Confirm your password" required />
     </div>
-    
-    <script>
-        // DOM Ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Populate days dropdown
-            const daySelect = document.getElementById('day');
-            for (let i = 1; i <= 31; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                daySelect.appendChild(option);
-            }
-            
-            // Populate years dropdown (from current year to 100 years back)
-            const yearSelect = document.getElementById('year');
-            const currentYear = new Date().getFullYear();
-            for (let i = currentYear; i >= currentYear - 100; i--) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-            }
-            
-            // Custom gender selection
-            document.getElementById('custom').addEventListener('change', function() {
-                document.getElementById('custom-gender-group').style.display = this.checked ? 'block' : 'none';
-                if (this.checked) {
-                    document.getElementById('custom-gender').focus();
-                }
+    <div class="form-group">
+      <input type="checkbox" id="terms" required style="width: auto; display: inline-block;">
+      <label for="terms" style="display: inline; font-weight: normal;">
+        I agree to the <a href="#" style="color: var(--secondary);">Terms</a> and <a href="#" style="color: var(--secondary);">Privacy Policy</a>
+      </label>
+    </div>
+    <button type="submit">Sign Up</button>
+    <div class="message" id="message"></div>
+  </form>
+
+  <div class="footer-links">
+    <a href="login.html">Already have an account? Sign In</a>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.firebasestorage.app",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+      measurementId: "G-CZR5508L92"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Handle form submit
+    document.getElementById("signup-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirm-password").value.trim();
+      const message = document.getElementById("message");
+
+      // Clear previous messages
+      message.className = "message";
+      message.textContent = "";
+
+      // Validation
+      if (password !== confirmPassword) {
+        message.className = "message error";
+        message.textContent = "Passwords do not match";
+        return;
+      }
+
+      if (password.length < 6) {
+        message.className = "message error";
+        message.textContent = "Password must be at least 6 characters";
+        return;
+      }
+
+      // Create user
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Set persistent session
+          return auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+              message.className = "message success";
+              message.textContent = "Account created successfully! Redirecting...";
+              
+              // Set login flag in localStorage
+              localStorage.setItem('isLoggedIn', 'true');
+              localStorage.setItem('userEmail', email);
+              
+              // Send email verification
+              userCredential.user.sendEmailVerification();
+              
+              // Redirect to profile
+              setTimeout(() => {
+                window.location.href = "profile.html";
+              }, 1500);
             });
-            
-            // Password strength checker
-            document.getElementById('password').addEventListener('input', function() {
-                const password = this.value;
-                const strengthMeter = document.getElementById('strength-meter');
-                const lengthHint = document.getElementById('length-hint');
-                const numberHint = document.getElementById('number-hint');
-                const specialHint = document.getElementById('special-hint');
-                
-                // Reset classes
-                strengthMeter.className = 'strength-meter';
-                lengthHint.className = 'hint';
-                numberHint.className = 'hint';
-                specialHint.className = 'hint';
-                
-                // Check password requirements
-                const hasLength = password.length >= 8;
-                const hasNumber = /\d/.test(password);
-                const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-                
-                // Update hints
-                if (hasLength) {
-                    lengthHint.classList.add('valid');
-                    lengthHint.querySelector('i').className = 'fas fa-check';
-                }
-                if (hasNumber) {
-                    numberHint.classList.add('valid');
-                    numberHint.querySelector('i').className = 'fas fa-check';
-                }
-                if (hasSpecial) {
-                    specialHint.classList.add('valid');
-                    specialHint.querySelector('i').className = 'fas fa-check';
-                }
-                
-                // Calculate strength
-                let strength = 0;
-                if (hasLength) strength++;
-                if (hasNumber) strength++;
-                if (hasSpecial) strength++;
-                
-                // Update strength meter
-                if (strength === 1) {
-                    strengthMeter.classList.add('strength-weak');
-                } else if (strength === 2) {
-                    strengthMeter.classList.add('strength-medium');
-                } else if (strength === 3) {
-                    strengthMeter.classList.add('strength-strong');
-                }
-            });
-            
-            // Form submission
-            document.getElementById('signupForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form values
-                const firstName = document.getElementById('first-name').value;
-                const lastName = document.getElementById('last-name').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const month = document.getElementById('month').value;
-                const day = document.getElementById('day').value;
-                const year = document.getElementById('year').value;
-                const gender = document.querySelector('input[name="gender"]:checked').value;
-                const customGender = document.getElementById('custom-gender').value;
-                const church = document.getElementById('church').value;
-                const bio = document.getElementById('bio').value;
-                
-                // Validate password strength
-                const passwordStrength = document.getElementById('strength-meter').className;
-                if (!passwordStrength.includes('strong') && !confirm('Your password strength is weak. Continue anyway?')) {
-                    return;
-                }
-                
-                // Show loading state
-                const submitBtn = document.getElementById('submit-btn');
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
-                submitBtn.disabled = true;
-                
-                // Simulate account creation (2 seconds)
-                setTimeout(function() {
-                    // Store user data (in a real app, this would go to your backend)
-                    const userData = {
-                        firstName,
-                        lastName,
-                        email,
-                        password, // Note: In production, never store raw passwords
-                        dob: `${month}/${day}/${year}`,
-                        gender: gender === 'Custom' ? customGender : gender,
-                        church,
-                        bio,
-                        joinDate: new Date().toISOString(),
-                        profilePicture: 'default-profile.jpg',
-                        coverPhoto: 'default-cover.jpg'
-                    };
-                    
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', email);
-                    
-                    // Show verification modal
-                    document.getElementById('verification-modal').style.display = 'flex';
-                    
-                    // Reset form button
-                    submitBtn.innerHTML = 'Sign Up';
-                    submitBtn.disabled = false;
-                }, 2000);
-            });
-            
-            // Verification code input handling
-            const codeInputs = document.querySelectorAll('.verification-code input');
-            codeInputs.forEach((input, index) => {
-                input.addEventListener('input', function() {
-                    if (this.value.length === 1) {
-                        if (index < codeInputs.length - 1) {
-                            codeInputs[index + 1].focus();
-                        }
-                    }
-                });
-                
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && this.value.length === 0) {
-                        if (index > 0) {
-                            codeInputs[index - 1].focus();
-                        }
-                    }
-                });
-            });
-            
-            // Verify button
-            document.getElementById('verify-btn').addEventListener('click', function() {
-                // Show loading state
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-                this.disabled = true;
-                
-                // Simulate verification (1.5 seconds)
-                setTimeout(function() {
-                    // Mark as verified
-                    const userData = JSON.parse(localStorage.getItem('currentUser'));
-                    userData.verified = true;
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
-                    
-                    // Update all users array (for demo purposes)
-                    let allUsers = JSON.parse(localStorage.getItem('allUsers')) || [];
-                    allUsers.push(userData);
-                    localStorage.setItem('allUsers', JSON.stringify(allUsers));
-                    
-                    // Close verification modal
-                    document.getElementById('verification-modal').style.display = 'none';
-                    
-                    // Show success modal
-                    document.getElementById('success-modal').style.display = 'flex';
-                    
-                    // Reset verify button
-                    document.getElementById('verify-btn').innerHTML = 'Verify Email';
-                    document.getElementById('verify-btn').disabled = false;
-                }, 1500);
-            });
-            
-            // Continue button in success modal
-            document.getElementById('continue-btn').addEventListener('click', function() {
-                window.location.href = 'profile.html';
-            });
-            
-            // Resend code
-            document.getElementById('resend-code').addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('New verification code sent to your email!');
-            });
+        })
+        .catch((error) => {
+          message.className = "message error";
+          
+          // Handle specific errors
+          if (error.code === 'auth/email-already-in-use') {
+            message.textContent = "This email is already registered. Please use a different email or sign in.";
+          } else {
+            message.textContent = error.message;
+          }
         });
-    </script>
+    });
+  </script>
 </body>
 </html>

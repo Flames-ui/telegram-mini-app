@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: firebase-admin-panel
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: serve -s build
+    envVars:
+      - key: REACT_APP_FIREBASE_API_KEY
+        value: your-firebase-api-key
+      - key: REACT_APP_FIREBASE_AUTH_DOMAIN
+        value: your-project.firebaseapp.com
+      - key: REACT_APP_FIREBASE_PROJECT_ID
+        value: your-project-id
+      - key: REACT_APP_FIREBASE_STORAGE_BUCKET
+        value: your-bucket.appspot.com
+      - key: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+        value: your-sender-id
+      - key: REACT_APP_FIREBASE_APP_ID
+        value: your-app-id
+      - key: REACT_APP_ADMIN_PASSWORD
+        value: your-secure-admin-password

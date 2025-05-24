@@ -380,8 +380,8 @@ const ConnectOverlay: React.FC<Props> = ({
                             </div>
                             {account && (
                                 <p className="dark:text-customDarkModeTextColor">
-                                    truncateText(someText, 100);
-                                </p>
+    {truncateText(someText, 100)}
+</p>
                             )}
                         </div>
                         <div className="flex justify-between my-2 mx-1 p-2 mr-4 gap-4">

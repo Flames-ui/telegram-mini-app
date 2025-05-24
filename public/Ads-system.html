@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .post-ad-container {
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      border-left: 3px solid #ff7e00;
+      text-align: center;
+      position: relative;
+    }
+    
+    .ad-label {
+      font-size: 0.7rem;
+      color: #aaa;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    
+    /* Different ad types */
+    .ad-banner {
+      width: 100%;
+      min-height: 250px;
+      margin: 0 auto;
+    }
+    
+    .ad-popunder {
+      display: none; /* Popunder will be handled by its script */
+    }
+    
+    .ad-social-bar {
+      width: 100%;
+      height: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .post-ad-container {
+        margin: 10px 0;
+        padding: 8px;
+      }
+      
+      .ad-banner {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    class PostAdManager {
+      constructor() {
+        this.adTemplates = {
+          banner: `
+            <div class="post-ad-container ad-banner">
+              <div class="ad-label">Sponsored</div>
+              <script type="text/javascript">
+                atOptions = {
+                  'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+                  'format' : 'iframe',
+                  'height' : 250,
+                  'width' : 300,
+                  'params' : {}
+                };
+              </script>
+              <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+            </div>
+          `,
+          popunder: `
+            <div class="post-ad-container ad-popunder">
+              <script type='text/javascript' src='//pl26718392.profitableratecpm.com/d7/c5/f1/d7c5f1759ca5fdb07188c06adc173b6b.js'></script>
+            </div>
+          `,
+          socialBar: `
+            <div class="post-ad-container ad-social-bar">
+              <script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>
+            </div>
+          `
+        };
+        
+        this.adRotation = ['banner', 'socialBar', 'popunder'];
+        this.currentAdIndex = 0;
+      }
+      
+      getNextAd() {
+        const adType = this.adRotation[this.currentAdIndex];
+        this.currentAdIndex = (this.currentAdIndex + 1) % this.adRotation.length;
+        return this.adTemplates[adType];
+      }
+      
+      injectAdsToPosts() {
+        const posts = document.querySelectorAll('.post');
+        
+        posts.forEach(post => {
+          // Inject ad at beginning of post
+          const topAd = this.createAdElement();
+          post.insertBefore(topAd, post.firstChild);
+          
+          // Inject ad at end of post
+          const bottomAd = this.createAdElement();
+          post.appendChild(bottomAd);
+        });
+      }
+      
+      createAdElement() {
+        const adHTML = this.getNextAd();
+        const container = document.createElement('div');
+        container.innerHTML = adHTML;
+        return container.firstChild;
+      }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const adManager = new PostAdManager();
+      
+      // Check if we're on a page with posts
+      if (document.querySelector('.post')) {
+        adManager.injectAdsToPosts();
+      }
+      
+      // Also watch for dynamically loaded posts
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach((node) => {
+              if (node.classList && node.classList.contains('post')) {
+                adManager.injectAdsToPosts();
+              }
+            });
+          }
+        });
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    });
+  </script>
+</body>
+</html>

@@ -6,8 +6,763 @@
     <title>Anointed Flames - Social Network</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* [Previous CSS styles remain exactly the same - I'm preserving all existing styles] */
-        /* Only adding new styles for new functionality */
+        :root {
+            --primary: #4a6fa5;
+            --primary-light: #6b8cbe;
+            --secondary: #ff6b6b;
+            --white: #ffffff;
+            --light: #f0f2f5;
+            --lighter: #e4e6eb;
+            --border: #dddfe2;
+            --text: #050505;
+            --text-light: #65676b;
+            --dark: #18191a;
+            --darker: #242526;
+            --border-dark: #3e4042;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark);
+            color: var(--white);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .dark-mode .header {
+            background-color: var(--darker);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-left, .header-center, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 24px;
+            gap: 8px;
+        }
+        
+        .dark-mode .logo {
+            color: var(--primary-light);
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            padding: 8px 12px;
+            border-radius: 50px;
+            width: 240px;
+        }
+        
+        .dark-mode .search-bar {
+            background-color: var(--dark);
+        }
+        
+        .search-bar i {
+            color: var(--text-light);
+            margin-right: 8px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            color: var(--text);
+        }
+        
+        .dark-mode .search-bar input {
+            color: var(--white);
+        }
+        
+        .header-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .header-icon.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            border-radius: 0;
+            height: 60px;
+        }
+        
+        .dark-mode .header-icon.active {
+            color: var(--primary-light);
+            border-bottom-color: var(--primary-light);
+        }
+        
+        .header-icon:hover {
+            background-color: var(--lighter);
+        }
+        
+        .dark-mode .header-icon:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .profile-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50px;
+        }
+        
+        .profile-icon:hover {
+            background-color: var(--lighter);
+        }
+        
+        .dark-mode .profile-icon:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .profile-pic {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .menu-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--lighter);
+            cursor: pointer;
+        }
+        
+        .dark-mode .menu-icon {
+            background-color: var(--border-dark);
+        }
+        
+        .menu-modal {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 360px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            display: none;
+            padding: 15px;
+        }
+        
+        .dark-mode .menu-modal {
+            background-color: var(--darker);
+            border: 1px solid var(--border-dark);
+        }
+        
+        .menu-modal.show {
+            display: block;
+        }
+        
+        .menu-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .menu-profile:hover {
+            background-color: var(--light);
+        }
+        
+        .dark-mode .menu-profile:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .menu-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        .menu-item:hover {
+            background-color: var(--light);
+        }
+        
+        .dark-mode .menu-item:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 10px 0;
+        }
+        
+        .dark-mode .menu-divider {
+            background-color: var(--border-dark);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            overflow: hidden;
+        }
+        
+        .dark-mode .modal-content {
+            background-color: var(--dark);
+            border: 1px solid var(--border-dark);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dark-mode .modal-header {
+            border-bottom-color: var(--border-dark);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .close-modal:hover {
+            color: var(--text);
+        }
+        
+        .dark-mode .close-modal:hover {
+            color: var(--white);
+        }
+        
+        .modal-body {
+            padding: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: var(--white);
+            color: var(--text);
+        }
+        
+        .dark-mode .form-group input,
+        .dark-mode .form-group select,
+        .dark-mode .form-group textarea {
+            background-color: var(--darker);
+            border-color: var(--border-dark);
+            color: var(--white);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-secondary {
+            background-color: var(--lighter);
+            color: var(--text);
+        }
+        
+        .dark-mode .btn-secondary {
+            background-color: var(--border-dark);
+            color: var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border);
+        }
+        
+        .dark-mode .btn-secondary:hover {
+            background-color: var(--text-light);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            gap: 10px;
+        }
+        
+        .dark-mode .modal-footer {
+            border-top-color: var(--border-dark);
+        }
+        
+        .profile-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .left-sidebar, .right-sidebar {
+            flex: 0 0 300px;
+        }
+        
+        .main-content {
+            flex: 1;
+        }
+        
+        .profile-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .dark-mode .profile-card {
+            background-color: var(--darker);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cover-photo {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            position: relative;
+        }
+        
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            object-fit: cover;
+            position: relative;
+            margin-top: -60px;
+            margin-left: 20px;
+            background-color: var(--light);
+        }
+        
+        .dark-mode .profile-photo {
+            border-color: var(--dark);
+            background-color: var(--dark);
+        }
+        
+        .profile-info {
+            padding: 20px;
+        }
+        
+        .profile-name-large {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .profile-bio {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        .edit-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background-color: var(--lighter);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .dark-mode .edit-profile-btn {
+            background-color: var(--border-dark);
+            color: var(--white);
+        }
+        
+        .edit-profile-btn:hover {
+            background-color: var(--border);
+        }
+        
+        .dark-mode .edit-profile-btn:hover {
+            background-color: var(--text-light);
+        }
+        
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+        }
+        
+        .sidebar-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            color: var(--text-light);
+        }
+        
+        .stories-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        
+        .story {
+            min-width: 120px;
+            height: 200px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .story.create {
+            background-color: var(--white);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dark-mode .story.create {
+            background-color: var(--darker);
+            border-color: var(--border-dark);
+        }
+        
+        .create-story-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .create-story-text {
+            font-weight: 600;
+        }
+        
+        .create-post {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .dark-mode .create-post {
+            background-color: var(--darker);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .post-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .post-input img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .post-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--light);
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .dark-mode .post-input input {
+            background-color: var(--dark);
+            color: var(--white);
+        }
+        
+        .post-options {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .dark-mode .post-options {
+            border-top-color: var(--border-dark);
+        }
+        
+        .post-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .post-option:hover {
+            background-color: var(--lighter);
+        }
+        
+        .dark-mode .post-option:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .post {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .dark-mode .post {
+            background-color: var(--darker);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .post-user {
+            flex: 1;
+        }
+        
+        .post-user-name {
+            font-weight: 600;
+        }
+        
+        .post-time {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .post-video {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: black;
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .dark-mode .post-actions {
+            border-top-color: var(--border-dark);
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .post-action:hover {
+            background-color: var(--lighter);
+        }
+        
+        .dark-mode .post-action:hover {
+            background-color: var(--border-dark);
+        }
+        
+        .reaction-options {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: var(--white);
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1;
+        }
+        
+        .dark-mode .reaction-options {
+            background-color: var(--darker);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .reaction-option {
+            font-size: 20px;
+            margin: 0 3px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .reaction-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .sponsored {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .dark-mode-toggle:hover {
+            background-color: var(--primary-light);
+        }
         
         /* New styles for expanded post content */
         .post-content.collapsed {
@@ -273,10 +1028,70 @@
             font-size: 12px;
             color: var(--text-light);
         }
+
+        /* Ad container styles */
+        .ad-container {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .ad-container iframe {
+            border: none;
+            width: 100%;
+            height: 250px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .profile-container {
+                flex-direction: column;
+            }
+            
+            .left-sidebar, .right-sidebar {
+                flex: 1;
+                width: 100%;
+            }
+            
+            .main-content {
+                order: 2;
+            }
+            
+            .left-sidebar {
+                order: 1;
+            }
+            
+            .right-sidebar {
+                order: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 10px;
+            }
+            
+            .search-bar {
+                display: none;
+            }
+            
+            .header-icon span {
+                display: none;
+            }
+            
+            .profile-name {
+                display: none;
+            }
+            
+            .share-platforms {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header (same as before) -->
+    <!-- Header -->
     <header class="header">
         <div class="header-left">
             <a href="homepage.html" class="logo">
@@ -341,22 +1156,176 @@
         </div>
     </header>
 
-    <!-- Menu Modal (same as before) -->
+    <!-- Menu Modal -->
     <div class="menu-modal" id="menu-modal">
-        <!-- [Previous menu modal content remains the same] -->
+        <div class="menu-profile" id="menu-profile">
+            <img src="" alt="Profile" class="menu-profile-pic" id="menu-profile-pic">
+            <div>
+                <div class="menu-profile-name" id="menu-profile-name"></div>
+                <div style="font-size: 14px; color: var(--text-light);">See your profile</div>
+            </div>
+        </div>
+        
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item">
+            <i class="fas fa-user-friends"></i>
+            <span>Friends</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-bookmark"></i>
+            <span>Saved</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-history"></i>
+            <span>Memories</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-flag"></i>
+            <span>Pages</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-users"></i>
+            <span>Groups</span>
+        </div>
+        
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item" id="dashboard-btn">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-ad"></i>
+            <span>Ad Center</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help & Support</span>
+        </div>
+        
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log Out</span>
+        </div>
     </div>
 
-    <!-- Dashboard Modal (same as before) -->
+    <!-- Dashboard Modal -->
     <div class="modal" id="dashboard-modal">
-        <!-- [Previous dashboard modal content remains the same] -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Your Dashboard</h2>
+                <span class="close-modal" id="close-dashboard">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Total Earnings</label>
+                    <div style="font-size: 24px; font-weight: bold; color: var(--primary);" id="earnings">$0.00</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold;" id="views">0</div>
+                        <div style="font-size: 14px; color: var(--text-light);">Views</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold;" id="engagement">0%</div>
+                        <div style="font-size: 14px; color: var(--text-light);">Engagement</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold;" id="followers">0</div>
+                        <div style="font-size: 14px; color: var(--text-light);">Followers</div>
+                    </div>
+                </div>
+                
+                <form id="withdrawal-form">
+                    <div class="form-group">
+                        <label for="amount">Withdrawal Amount ($2-$100)</label>
+                        <input type="number" id="amount" min="2" max="100" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="method">Payment Method</label>
+                        <select id="method" required>
+                            <option value="">Select method</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="crypto">Cryptocurrency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="details">Payment Details</label>
+                        <input type="text" id="details" required placeholder="Email, wallet address, etc.">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-withdrawal">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="withdrawal-form">Request Withdrawal</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Post Creation Modal (same as before) -->
+    <!-- Post Creation Modal -->
     <div class="modal" id="post-modal">
-        <!-- [Previous post modal content remains the same] -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Post</h2>
+                <span class="close-modal" id="close-post">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="" alt="Profile" id="modal-profile-pic" style="width: 40px; height: 40px; border-radius: 50%;">
+                    <div>
+                        <div style="font-weight: 600;" id="modal-profile-name"></div>
+                        <select id="post-visibility" style="padding: 3px 5px; border-radius: 4px; border: 1px solid var(--border); font-size: 12px;">
+                            <option value="public">Public</option>
+                            <option value="friends">Friends</option>
+                            <option value="private">Only me</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <textarea id="post-text" placeholder="What's on your mind?" style="width: 100%; min-height: 100px; padding: 10px; border: none; resize: none; font-size: 16px; outline: none;"></textarea>
+                
+                <div id="post-preview" style="display: none;">
+                    <div style="margin: 15px 0; border: 1px dashed var(--border); padding: 10px; border-radius: 8px;">
+                        <img id="image-preview" style="max-width: 100%; border-radius: 8px; display: none;">
+                        <video id="video-preview" controls style="max-width: 100%; border-radius: 8px; display: none;"></video>
+                    </div>
+                </div>
+                
+                <div style="border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-top: 15px;">
+                    <div style="font-weight: 600; margin-bottom: 8px;">Add to your post</div>
+                    <div style="display: flex; gap: 10px;">
+                        <label for="media-upload" style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-images" style="color: #45bd62;"></i>
+                            <span>Photo/Video</span>
+                            <input type="file" id="media-upload" accept="image/*,video/*" style="display: none;">
+                        </label>
+                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-user-tag" style="color: #1877f2;"></i>
+                            <span>Tag People</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-smile" style="color: #f7b928;"></i>
+                            <span>Feeling/Activity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="submit-post" style="width: 100%;">Post</button>
+            </div>
+        </div>
     </div>
     
-    <!-- New Share Modal -->
+    <!-- Share Modal -->
     <div class="share-modal" id="share-modal">
         <div class="share-modal-content">
             <div class="modal-header">
@@ -392,7 +1361,7 @@
         </div>
     </div>
     
-    <!-- New Profile Editor Modal -->
+    <!-- Profile Editor Modal -->
     <div class="profile-editor" id="profile-editor">
         <div class="profile-editor-content">
             <div class="modal-header">
@@ -446,7 +1415,7 @@
         </div>
     </div>
     
-    <!-- New Group Creation Modal -->
+    <!-- Group Creation Modal -->
     <div class="group-creation" id="group-creation">
         <div class="group-creation-content">
             <div class="modal-header">
@@ -594,7 +1563,22 @@
         <!-- Right Sidebar -->
         <div class="right-sidebar">
             <div class="sponsored">Sponsored</div>
-            <div id="ad-container-1">
+            <div class="ad-container">
+                <!-- First ad slot -->
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+            </div>
+            
+            <div class="ad-container">
+                <!-- Second ad slot -->
                 <script type="text/javascript">
                     atOptions = {
                         'key' : '85efa5f0e80d427fecd61c27c0ee4887',
@@ -882,14 +1866,12 @@
                 let mediaHtml = '';
                 if (post.media) {
                     if (post.media.type === 'image') {
-                        mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">
-                            <script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>`;
+                        mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">`;
                     } else if (post.media.type === 'video') {
                         mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
                             <source src="${post.media.url}" type="video/mp4">
                             Your browser does not support the video tag.
-                        </video>
-                        <script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>`;
+                        </video>`;
                     }
                 }
                 

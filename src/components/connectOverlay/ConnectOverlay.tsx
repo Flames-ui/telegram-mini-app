@@ -380,7 +380,7 @@ const ConnectOverlay: React.FC<Props> = ({
                             </div>
                             {account && (
                                 <p className="dark:text-customDarkModeTextColor">
-                                    {truncateText(account, 8, 8)}
+                                    truncateText(someText, 100);
                                 </p>
                             )}
                         </div>

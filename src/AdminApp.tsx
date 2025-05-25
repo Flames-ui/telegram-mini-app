@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import AdminDashboard from './components/admin/Dashboard'
 import AdminLogin from './components/admin/Login'
+import AdminDashboard from './components/admin/Dashboard'
 
-export default function App() {
+export default function AdminApp() {
   return (
     <BrowserRouter basename="/admin">
       <Routes>

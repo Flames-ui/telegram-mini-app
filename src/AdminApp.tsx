@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import AdminLogin from './components/admin/Login'
-import AdminDashboard from './components/admin/Dashboard'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AdminLogin, AdminDashboard } from './components/Admin'; // Fixed path
 
 export default function AdminApp() {
   return (
@@ -10,5 +9,5 @@ export default function AdminApp() {
         <Route path="/dashboard" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }

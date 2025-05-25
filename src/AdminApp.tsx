@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AdminLogin, AdminDashboard } from '../components/Admin'; // Fixed path
+import { AdminLogin, AdminDashboard } from './components/Admin/index'; // Fixed import path
 
-export default function AdminApp() {
+const AdminApp = () => {
   return (
     <BrowserRouter basename="/admin">
       <Routes>
@@ -10,4 +10,6 @@ export default function AdminApp() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
+
+export default AdminApp;

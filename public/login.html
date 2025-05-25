@@ -1,44 +1,121 @@
-// Firebase config (use your env vars in real app)
-const firebaseConfig = {
-  apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
-  authDomain: "anointed-flames-tv.firebaseapp.com",
-  projectId: "anointed-flames-tv",
-  storageBucket: "anointed-flames-tv.firebasestorage.app",
-  messagingSenderId: "814825501586",
-  appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
-  measurementId: "G-CZR5508L92"
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In - Anointed Flames TV</title>
+  <style>
+    body {
+      background: #0f0c29;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    form {
+      background: #1b1b2f;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+      box-sizing: border-box;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ff7e00;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #e67100;
+    }
+    #message {
+      margin-top: 10px;
+      text-align: center;
+    }
+    #message.error {
+      color: #ff3333;
+    }
+    #message.success {
+      color: #4BB543;
+    }
+  </style>
+</head>
+<body>
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+<form id="signin-form">
+  <h2>Sign In</h2>
+  <input type="email" id="email" placeholder="Email address" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button type="submit">Sign In</button>
+  <div id="message"></div>
+</form>
 
-// Redirect logged in user immediately to homepage.html
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    window.location.href = "homepage.html";
-  }
-});
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-// Handle Sign In form submission
-document.getElementById("signin-form").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const message = document.getElementById("message");
+<script>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+    authDomain: "anointed-flames-tv.firebaseapp.com",
+    projectId: "anointed-flames-tv",
+    storageBucket: "anointed-flames-tv.firebasestorage.app",
+    messagingSenderId: "814825501586",
+    appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+    measurementId: "G-CZR5508L92"
+  };
 
-  message.className = "message";
-  message.textContent = "";
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      message.className = "message success";
-      message.textContent = "Sign in successful! Redirecting...";
-      setTimeout(() => {
-        window.location.href = "homepage.html";  // Redirect here consistently
-      }, 1500);
-    })
-    .catch((error) => {
-      message.className = "message error";
-      message.textContent = error.message;
-    });
-});
+  // Redirect if already logged in
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      window.location.href = "homepage.html";
+    }
+  });
+
+  // Handle sign-in form submit
+  document.getElementById('signin-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const message = document.getElementById('message');
+
+    message.textContent = '';
+    message.className = '';
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        message.textContent = 'Sign in successful! Redirecting...';
+        message.className = 'success';
+        setTimeout(() => {
+          window.location.href = "homepage.html";
+        }, 1500);
+      })
+      .catch(error => {
+        message.textContent = error.message;
+        message.className = 'error';
+      });
+  });
+</script>
+
+</body>
+  </html>

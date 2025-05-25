@@ -1,121 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign In - Anointed Flames TV</title>
-  <style>
-    body {
-      background: #0f0c29;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    form {
-      background: #1b1b2f;
-      padding: 30px;
-      border-radius: 10px;
-      width: 300px;
-      box-sizing: border-box;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #ff7e00;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background: #e67100;
-    }
-    #message {
-      margin-top: 10px;
-      text-align: center;
-    }
-    #message.error {
-      color: #ff3333;
-    }
-    #message.success {
-      color: #4BB543;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anointed Flames - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF8C00;
+            --primary-light: #FFA500;
+            --white: #ffffff;
+            --light: #f0f2f5;
+            --text: #050505;
+            --dark: #18191a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark);
+            color: var(--white);
+        }
+        
+        .login-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .dark-mode .login-container {
+            background-color: var(--dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .dark-mode .form-group input {
+            background-color: var(--dark);
+            border-color: #444;
+            color: var(--white);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .divider {
+            margin: 20px 0;
+            position: relative;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider::after {
+            content: "or";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--white);
+            padding: 0 10px;
+            color: var(--text-light);
+        }
+        
+        .dark-mode .divider::after {
+            background-color: var(--dark);
+        }
+        
+        .forgot-password {
+            display: block;
+            margin-top: 15px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <div class="logo">
+            <i class="fas fa-fire"></i>
+            <span>Anointed Flames</span>
+        </div>
+        
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+        
+        <div class="divider"></div>
+        
+        <a href="signup.html" class="btn btn-secondary">Create New Account</a>
+        
+        <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+    </div>
+    
+    <div class="dark-mode-toggle" id="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
 
-<form id="signin-form">
-  <h2>Sign In</h2>
-  <input type="email" id="email" placeholder="Email address" required />
-  <input type="password" id="password" placeholder="Password" required />
-  <button type="submit">Sign In</button>
-  <div id="message"></div>
-</form>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+            authDomain: "anointed-flames-tv.firebaseapp.com",
+            projectId: "anointed-flames-tv",
+            storageBucket: "anointed-flames-tv.appspot.com",
+            messagingSenderId: "814825501586",
+            appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+        };
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-<script>
-  // Your Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
-    authDomain: "anointed-flames-tv.firebaseapp.com",
-    projectId: "anointed-flames-tv",
-    storageBucket: "anointed-flames-tv.firebasestorage.app",
-    messagingSenderId: "814825501586",
-    appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
-    measurementId: "G-CZR5508L92"
-  };
+        // Check auth state to prevent redirect loops
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to home page
+                window.location.href = "homepage.html";
+            }
+        });
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+        // Login form handler
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            errorMessage.style.display = 'none';
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in - handled by auth state listener
+                })
+                .catch((error) => {
+                    errorMessage.textContent = error.message;
+                    errorMessage.style.display = 'block';
+                });
+        });
 
-  // Redirect if already logged in
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      window.location.href = "homepage.html";
-    }
-  });
-
-  // Handle sign-in form submit
-  document.getElementById('signin-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const message = document.getElementById('message');
-
-    message.textContent = '';
-    message.className = '';
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        message.textContent = 'Sign in successful! Redirecting...';
-        message.className = 'success';
-        setTimeout(() => {
-          window.location.href = "homepage.html";
-        }, 1500);
-      })
-      .catch(error => {
-        message.textContent = error.message;
-        message.className = 'error';
-      });
-  });
-</script>
-
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        
+        darkModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = darkModeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+        
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.querySelector('i').classList.remove('fa-moon');
+            darkModeToggle.querySelector('i').classList.add('fa-sun');
+        }
+    </script>
 </body>
-  </html>
+</html>

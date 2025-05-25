@@ -1,7 +1,7 @@
-export default function AdminLogin() {
-  return (
-    <div className="admin-login">
-      <h1>Admin Login</h1>
-    </div>
-  );
-}
+import React from 'react';
+
+const AdminLogin = () => {
+  return <h2>Admin Login Page</h2>;
+};
+
+export default AdminLogin;

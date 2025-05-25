@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AdminLogin, AdminDashboard } from './components/Admin'; // index.ts auto-resolved
+import { AdminLogin, AdminDashboard } from './components/Admin'; // Do NOT include `/index`
 
 const AdminApp = () => {
   return (
@@ -12,4 +12,4 @@ const AdminApp = () => {
   );
 };
 
-export default AdminApp
+export default AdminApp;

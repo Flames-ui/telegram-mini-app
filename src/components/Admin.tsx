@@ -1,13 +1,14 @@
-// src/components/Admin.tsx
 import React from 'react';
+import ReactDOM from 'react-dom/client';
+import AdminApp from './AdminApp';
+import './admin.css';
 
-const Admin: React.FC = () => {
-  return (
-    <div>
-      <h1>Admin Panel</h1>
-      <p>Welcome to the admin dashboard.</p>
-    </div>
-  );
-};
+const root = ReactDOM.createRoot(
+  document.getElementById('admin-root') as HTMLElement
+);
 
-export default Admin
+root.render(
+  <React.StrictMode>
+    <AdminApp />
+  </React.StrictMode>
+);

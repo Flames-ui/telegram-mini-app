@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4a6fa5;
-            --primary-light: #6b8cbe;
+            --primary: #FF8C00; /* Changed to orange */
+            --primary-light: #FFA500;
             --secondary: #ff6b6b;
             --white: #ffffff;
             --light: #f0f2f5;
@@ -656,6 +656,17 @@
             font-weight: 600;
         }
         
+        .verified-badge {
+            color: #1877f2;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        
+        .user-title {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
         .post-time {
             font-size: 13px;
             color: var(--text-light);
@@ -1043,6 +1054,58 @@
             height: 250px;
         }
 
+        /* Settings modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1005;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-content {
+            background-color: var(--white);
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .dark-mode .settings-content {
+            background-color: var(--dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        .settings-section {
+            margin-bottom: 20px;
+        }
+
+        .settings-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dark-mode .settings-title {
+            border-bottom-color: var(--border-dark);
+        }
+
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 1200px) {
             .profile-container {
@@ -1091,6 +1154,27 @@
     </style>
 </head>
 <body>
+    <!-- Firebase Config -->
+    <!-- Firebase App (core) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+        authDomain: "anointed-flames-tv.firebaseapp.com",
+        projectId: "anointed-flames-tv",
+        storageBucket: "anointed-flames-tv.appspot.com",
+        messagingSenderId: "814825501586",
+        appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+    </script>
+
     <!-- Header -->
     <header class="header">
         <div class="header-left">
@@ -1199,7 +1283,7 @@
             <i class="fas fa-ad"></i>
             <span>Ad Center</span>
         </div>
-        <div class="menu-item">
+        <div class="menu-item" id="settings-btn">
             <i class="fas fa-cog"></i>
             <span>Settings</span>
         </div>
@@ -1244,6 +1328,21 @@
                     </div>
                 </div>
                 
+                <div style="margin: 20px 0;">
+                    <h3 style="margin-bottom: 10px;">Approved Posts</h3>
+                    <div id="approved-posts" style="background-color: var(--light); padding: 10px; border-radius: 8px; min-height: 50px;"></div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <h3 style="margin-bottom: 10px;">Rejected Posts</h3>
+                    <div id="rejected-posts" style="background-color: var(--light); padding: 10px; border-radius: 8px; min-height: 50px;"></div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <h3 style="margin-bottom: 10px;">Withdrawal Status</h3>
+                    <div id="withdrawal-status" style="background-color: var(--light); padding: 10px; border-radius: 8px; min-height: 50px;"></div>
+                </div>
+                
                 <form id="withdrawal-form">
                     <div class="form-group">
                         <label for="amount">Withdrawal Amount ($2-$100)</label>
@@ -1257,6 +1356,19 @@
                             <option value="bank">Bank Transfer</option>
                             <option value="crypto">Cryptocurrency</option>
                         </select>
+                    </div>
+                    <div class="form-group" id="bank-details-container" style="display: none;">
+                        <label>Bank Transfer Details</label>
+                        <div style="background-color: #fff8e1; padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+                            <p style="font-weight: bold; color: #d32f2f;">Important:</p>
+                            <p>For bank transfers, please provide:</p>
+                            <ul style="margin-left: 20px;">
+                                <li>Bank Name</li>
+                                <li>Account Number</li>
+                                <li>Account Name</li>
+                            </ul>
+                        </div>
+                        <textarea id="bank-details" placeholder="Enter your bank details here..." style="width: 100%; min-height: 100px; padding: 10px; border: 1px solid var(--border); border-radius: 6px;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="details">Payment Details</label>
@@ -1308,15 +1420,25 @@
                             <span>Photo/Video</span>
                             <input type="file" id="media-upload" accept="image/*,video/*" style="display: none;">
                         </label>
-                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;" id="tag-people-btn">
                             <i class="fas fa-user-tag" style="color: #1877f2;"></i>
                             <span>Tag People</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 5px; padding: 8px; border-radius: 6px; cursor: pointer;" id="feeling-btn">
                             <i class="fas fa-smile" style="color: #f7b928;"></i>
                             <span>Feeling/Activity</span>
                         </div>
                     </div>
+                </div>
+                
+                <div id="tagged-people" style="margin-top: 10px; display: none;">
+                    <div style="font-size: 14px; color: var(--text-light);">Tagged:</div>
+                    <div id="tagged-list" style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;"></div>
+                </div>
+                
+                <div id="feeling-selection" style="margin-top: 10px; display: none;">
+                    <div style="font-size: 14px; color: var(--text-light);">Feeling/Activity:</div>
+                    <div id="selected-feeling" style="font-weight: 600;"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1454,6 +1576,139 @@
                     <button type="submit" class="btn btn-primary">Create Group</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Settings</h2>
+                <span class="close-modal" id="close-settings">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <div class="settings-title">Account Settings</div>
+                    <div class="settings-option">
+                        <span>Change Password</span>
+                        <button class="btn btn-secondary">Change</button>
+                    </div>
+                    <div class="settings-option">
+                        <span>Email Notifications</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="settings-option">
+                        <span>Push Notifications</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">Privacy Settings</div>
+                    <div class="settings-option">
+                        <span>Who can see your posts?</span>
+                        <select>
+                            <option>Public</option>
+                            <option>Friends</option>
+                            <option>Only me</option>
+                        </select>
+                    </div>
+                    <div class="settings-option">
+                        <span>Who can send you friend requests?</span>
+                        <select>
+                            <option>Everyone</option>
+                            <option>Friends of friends</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-title">Appearance</div>
+                    <div class="settings-option">
+                        <span>Dark Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle-setting">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="save-settings">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tag People Modal -->
+    <div class="modal" id="tag-people-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tag People</h2>
+                <span class="close-modal" id="close-tag-people">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" id="search-people" placeholder="Search people to tag...">
+                </div>
+                <div id="people-list" style="max-height: 300px; overflow-y: auto;">
+                    <!-- People will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="confirm-tags">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feeling/Activity Modal -->
+    <div class="modal" id="feeling-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">How are you feeling?</h2>
+                <span class="close-modal" id="close-feeling">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div class="feeling-option" data-feeling="happy">
+                        <i class="fas fa-smile" style="font-size: 24px; color: #f7b928;"></i>
+                        <span>Happy</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="blessed">
+                        <i class="fas fa-pray" style="font-size: 24px; color: #4CAF50;"></i>
+                        <span>Blessed</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="thankful">
+                        <i class="fas fa-hands-praying" style="font-size: 24px; color: #2196F3;"></i>
+                        <span>Thankful</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="loved">
+                        <i class="fas fa-heart" style="font-size: 24px; color: #E91E63;"></i>
+                        <span>Loved</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="excited">
+                        <i class="fas fa-star" style="font-size: 24px; color: #FF9800;"></i>
+                        <span>Excited</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="praying">
+                        <i class="fas fa-hands" style="font-size: 24px; color: #9C27B0;"></i>
+                        <span>Praying</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="studying">
+                        <i class="fas fa-book-bible" style="font-size: 24px; color: #3F51B5;"></i>
+                        <span>Studying</span>
+                    </div>
+                    <div class="feeling-option" data-feeling="worshipping">
+                        <i class="fas fa-music" style="font-size: 24px; color: #00BCD4;"></i>
+                        <span>Worshipping</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1604,379 +1859,139 @@
     </div>
 
     <script>
-        // ===== NEW: POST APPROVAL SYSTEM ===== //
-        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        const adminEmail = "admin@anointedflames.com"; // Set your admin email
-
-        function submitPost(postText, mediaFile) {
-            if (!contentModerator.isGospelContent(postText)) {
-                alert("Post must contain gospel-related content.");
-                return false;
+        // Firebase initialization
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const adminEmail = "anointedflames27@gmail.com"; // Admin email
+        
+        // Initialize Firebase services
+        const postsCollection = db.collection("posts");
+        const storiesCollection = db.collection("stories");
+        const withdrawalsCollection = db.collection("withdrawals");
+        const usersCollection = db.collection("users");
+        
+        // Function to load user data
+        async function loadUserData(email) {
+            try {
+                const doc = await usersCollection.doc(email).get();
+                if (doc.exists) {
+                    return doc.data();
+                }
+                return null;
+            } catch (error) {
+                console.error("Error loading user data:", error);
+                return null;
             }
-
-            const newPost = {
-                id: Date.now(),
-                userId: currentUser.email,
-                userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                userPic: currentUser.profilePicture || 'default-profile.jpg',
-                text: postText,
-                media: mediaFile ? {
-                    type: mediaFile.type.startsWith('image/') ? 'image' : 'video',
-                    url: URL.createObjectURL(mediaFile)
-                } : null,
-                timestamp: new Date().toISOString(),
-                visibility: document.getElementById('post-visibility').value,
-                approved: currentUser.email === adminEmail, // Auto-approve admin posts
-                likes: 0,
-                comments: [],
-                shares: 0
-            };
-
-            posts.unshift(newPost);
-            localStorage.setItem('posts', JSON.stringify(posts));
-
-            if (newPost.approved) {
-                alert("Post approved and published!");
-            } else {
-                alert("Post submitted for admin approval.");
-            }
-            return true;
         }
-
-        // Enhanced Earnings System
-        class EarningsTracker {
-            constructor() {
-                this.earnings = JSON.parse(localStorage.getItem('userEarnings')) || {};
-                this.rates = {
-                    textClick: 0.001,
-                    imageClick: 0.001,
-                    videoView: 0.002,
-                    share: 0.0001
-                };
-                this.minWithdrawal = 2;
-                this.maxWithdrawal = 100;
-                this.withdrawalDay = 24;
-            }
-
-            updateEarnings(email, amount, type) {
-                if (!this.earnings[email]) {
-                    this.earnings[email] = {
-                        total: 0,
-                        clicks: { text: 0, image: 0 },
-                        videoViews: 0,
-                        shares: 0,
-                        history: []
-                    };
-                }
-
-                const user = this.earnings[email];
-                let earned = 0;
-
-                if (type === 'text') {
-                    user.clicks.text++;
-                    earned = this.rates.textClick;
-                } else if (type === 'image') {
-                    user.clicks.image++;
-                    earned = this.rates.imageClick;
-                } else if (type === 'video') {
-                    user.videoViews++;
-                    earned = this.rates.videoView;
-                } else if (type === 'share') {
-                    user.shares++;
-                    earned = this.rates.share;
-                }
-
-                user.total += earned;
-                user.history.push({
-                    type,
-                    amount: earned,
-                    date: new Date().toISOString()
+        
+        // Function to load posts
+        async function loadPosts() {
+            try {
+                const snapshot = await postsCollection
+                    .where("status", "in", ["approved", "pending", "rejected"])
+                    .orderBy("createdAt", "desc")
+                    .get();
+                
+                const postsContainer = document.getElementById('posts-container');
+                postsContainer.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const post = doc.data();
+                    if (post.status === "approved" || post.userId === currentUser.email) {
+                        createPostElement(post, postsContainer);
+                    }
                 });
-
-                localStorage.setItem('userEarnings', JSON.stringify(this.earnings));
-                return earned;
-            }
-
-            getEarnings(email) {
-                return this.earnings[email] || {
-                    total: 0,
-                    clicks: { text: 0, image: 0 },
-                    videoViews: 0,
-                    shares: 0,
-                    history: []
-                };
+            } catch (error) {
+                console.error("Error loading posts:", error);
             }
         }
-
-        const earningsTracker = new EarningsTracker();
-
-        // Enhanced Content Moderation System
-        class GospelContentModerator {
-            constructor() {
-                this.bibleKeywords = [
-                    'god', 'jesus', 'christ', 'lord', 'bible', 'scripture', 'faith', 
-                    'pray', 'prayer', 'amen', 'holy', 'spirit', 'gospel', 'church',
-                    'bless', 'heaven', 'salvation', 'worship', 'verse', 'testimony',
-                    'christian', 'jesus christ', 'holy spirit', 'word of god'
-                ];
-                this.bannedWords = [
-                    'hate', 'violence', 'porn', 'sex', 'drugs', 'alcohol', 'profanity',
-                    'kill', 'murder', 'steal', 'cheat', 'lie', 'cuss', 'swear'
-                ];
-            }
-
-            isGospelContent(text) {
-                if (!text) return false;
-                
-                const lowerText = text.toLowerCase();
-                
-                // Check for banned words
-                if (this.bannedWords.some(word => lowerText.includes(word))) {
-                    return false;
-                }
-                
-                // Check for gospel keywords
-                const keywordCount = this.bibleKeywords.filter(word => lowerText.includes(word)).length;
-                return keywordCount >= 2; // Require at least 2 gospel keywords
-            }
-        }
-
-        const contentModerator = new GospelContentModerator();
-
-        // Enhanced Friend System
-        class FriendSystem {
-            constructor() {
-                this.friends = JSON.parse(localStorage.getItem('userFriends')) || {};
-                this.requests = JSON.parse(localStorage.getItem('friendRequests')) || {};
-            }
+        
+        // Function to create post element
+        function createPostElement(post, container) {
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+            postElement.dataset.postId = post.id;
             
-            addFriend(userEmail, friendEmail) {
-                if (!this.friends[userEmail]) {
-                    this.friends[userEmail] = [];
-                }
-                
-                if (!this.friends[userEmail].includes(friendEmail)) {
-                    this.friends[userEmail].push(friendEmail);
-                    localStorage.setItem('userFriends', JSON.stringify(this.friends));
+            // Truncate text for preview
+            const truncatedText = post.text.length > 150 ? 
+                post.text.substring(0, 150) + '...' : post.text;
+            
+            let mediaHtml = '';
+            if (post.media) {
+                if (post.media.type === 'image') {
+                    mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">`;
+                } else if (post.media.type === 'video') {
+                    mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
+                        <source src="${post.media.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>`;
                 }
             }
             
-            sendRequest(fromEmail, toEmail) {
-                if (!this.requests[toEmail]) {
-                    this.requests[toEmail] = [];
-                }
-                
-                if (!this.requests[toEmail].includes(fromEmail)) {
-                    this.requests[toEmail].push(fromEmail);
-                    localStorage.setItem('friendRequests', JSON.stringify(this.requests));
-                }
+            // Add verified badge and title for admin
+            let verifiedBadge = '';
+            let userTitle = '';
+            if (post.userId === adminEmail) {
+                verifiedBadge = '<i class="fas fa-check-circle verified-badge"></i>';
+                userTitle = '<div class="user-title">Founder</div>';
             }
             
-            getFriends(userEmail) {
-                return this.friends[userEmail] || [];
-            }
-            
-            getRequests(userEmail) {
-                return this.requests[userEmail] || [];
-            }
-        }
-
-        const friendSystem = new FriendSystem();
-
-        // Group System
-        class GroupSystem {
-            constructor() {
-                this.groups = JSON.parse(localStorage.getItem('groups')) || [];
-                this.members = JSON.parse(localStorage.getItem('groupMembers')) || {};
-            }
-            
-            createGroup(creatorEmail, name, description, privacy, photo) {
-                const newGroup = {
-                    id: Date.now(),
-                    name,
-                    description,
-                    privacy,
-                    photo: photo || null,
-                    creator: creatorEmail,
-                    created: new Date().toISOString(),
-                    posts: []
-                };
-                
-                this.groups.push(newGroup);
-                localStorage.setItem('groups', JSON.stringify(this.groups));
-                
-                // Add creator as member
-                this.addMember(newGroup.id, creatorEmail);
-                
-                return newGroup;
-            }
-            
-            addMember(groupId, userEmail) {
-                if (!this.members[groupId]) {
-                    this.members[groupId] = [];
-                }
-                
-                if (!this.members[groupId].includes(userEmail)) {
-                    this.members[groupId].push(userEmail);
-                    localStorage.setItem('groupMembers', JSON.stringify(this.members));
-                }
-            }
-            
-            getGroupsForUser(userEmail) {
-                return this.groups.filter(group => 
-                    this.members[group.id] && this.members[group.id].includes(userEmail)
-                );
-            }
-            
-            isGospelGroup(groupId) {
-                const group = this.groups.find(g => g.id === groupId);
-                if (!group) return false;
-                
-                const contentCheck = contentModerator.isGospelContent(group.name) && 
-                                   contentModerator.isGospelContent(group.description);
-                return contentCheck;
-            }
-        }
-
-        const groupSystem = new GroupSystem();
-
-        // Notification System
-        class NotificationSystem {
-            constructor() {
-                this.notifications = JSON.parse(localStorage.getItem('notifications')) || {};
-            }
-            
-            addNotification(userEmail, type, content, relatedId) {
-                if (!this.notifications[userEmail]) {
-                    this.notifications[userEmail] = [];
-                }
-                
-                const newNotification = {
-                    id: Date.now(),
-                    type,
-                    content,
-                    relatedId,
-                    timestamp: new Date().toISOString(),
-                    read: false
-                };
-                
-                this.notifications[userEmail].unshift(newNotification);
-                localStorage.setItem('notifications', JSON.stringify(this.notifications));
-                
-                return newNotification;
-            }
-            
-            getNotifications(userEmail) {
-                return this.notifications[userEmail] || [];
-            }
-            
-            markAsRead(userEmail, notificationId) {
-                if (this.notifications[userEmail]) {
-                    const notification = this.notifications[userEmail].find(n => n.id === notificationId);
-                    if (notification) {
-                        notification.read = true;
-                        localStorage.setItem('notifications', JSON.stringify(this.notifications));
-                    }
-                }
-            }
-        }
-
-        const notificationSystem = new NotificationSystem();
-
-        // Enhanced Post Loading
-        function loadPosts() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            const postsContainer = document.getElementById('posts-container');
-            
-            // Clear existing posts
-            postsContainer.innerHTML = '';
-            
-            // Add new posts
-            posts.forEach(post => {
-                // Only show approved posts or posts by current user
-                if (post.approved || post.userId === currentUser.email) {
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post';
-                    postElement.dataset.postId = post.id;
-                    
-                    // Truncate text for preview
-                    const truncatedText = post.text.length > 150 ? 
-                        post.text.substring(0, 150) + '...' : post.text;
-                    
-                    let mediaHtml = '';
-                    if (post.media) {
-                        if (post.media.type === 'image') {
-                            mediaHtml = `<img src="${post.media.url}" class="post-image" data-post-id="${post.id}">`;
-                        } else if (post.media.type === 'video') {
-                            mediaHtml = `<video class="post-video" controls data-post-id="${post.id}">
-                                <source src="${post.media.url}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>`;
-                        }
-                    }
-                    
-                    postElement.innerHTML = `
-                        <div class="post-header">
-                            <img src="${post.userPic}" alt="User" style="cursor: pointer;" class="profile-link" data-email="${post.userId}">
-                            <div class="post-user">
-                                <div class="post-user-name">${post.userName}</div>
-                                <div class="post-user-email" style="font-size: 12px; color: var(--text-light);">${post.userId}</div>
-                                <div class="post-time">${formatTime(post.timestamp)} · 
-                                    <i class="fas ${post.visibility === 'public' ? 'fa-globe-americas' : 
-                                      post.visibility === 'friends' ? 'fa-user-friends' : 'fa-lock'}"></i>
-                                </div>
-                            </div>
-                            <i class="fas fa-ellipsis-h" style="color: var(--text-light); cursor: pointer;"></i>
+            postElement.innerHTML = `
+                <div class="post-header">
+                    <img src="${post.userPic}" alt="User" style="cursor: pointer;" class="profile-link" data-email="${post.userId}">
+                    <div class="post-user">
+                        <div class="post-user-name">${post.userName} ${verifiedBadge}</div>
+                        ${userTitle}
+                        <div class="post-user-email" style="font-size: 12px; color: var(--text-light);">${post.userId}</div>
+                        <div class="post-time">${formatTime(post.createdAt)} · 
+                            <i class="fas ${post.visibility === 'public' ? 'fa-globe-americas' : 
+                              post.visibility === 'friends' ? 'fa-user-friends' : 'fa-lock'}"></i>
                         </div>
-                        <div class="post-content ${post.text.length > 150 ? 'collapsed' : ''}">
-                            ${truncatedText}
-                            ${post.text.length > 150 ? '<div class="see-more">See more</div>' : ''}
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color: var(--text-light); cursor: pointer;"></i>
+                </div>
+                <div class="post-content ${post.text.length > 150 ? 'collapsed' : ''}">
+                    ${truncatedText}
+                    ${post.text.length > 150 ? '<div class="see-more">See more</div>' : ''}
+                </div>
+                ${mediaHtml}
+                <div class="post-actions">
+                    <div class="post-action reactions">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>Like</span>
+                        <div class="reaction-options">
+                            <span class="reaction-option">👍</span>
+                            <span class="reaction-option">❤️</span>
+                            <span class="reaction-option">😂</span>
+                            <span class="reaction-option">😮</span>
+                            <span class="reaction-option">😢</span>
+                            <span class="reaction-option">🙏</span>
                         </div>
-                        ${mediaHtml}
-                        <div class="post-actions">
-                            <div class="post-action reactions">
-                                <i class="far fa-thumbs-up"></i>
-                                <span>Like</span>
-                                <div class="reaction-options">
-                                    <span class="reaction-option">👍</span>
-                                    <span class="reaction-option">❤️</span>
-                                    <span class="reaction-option">😂</span>
-                                    <span class="reaction-option">😮</span>
-                                    <span class="reaction-option">😢</span>
-                                    <span class="reaction-option">🙏</span>
-                                </div>
-                            </div>
-                            <div class="post-action comment-btn">
-                                <i class="far fa-comment"></i>
-                                <span>Comment</span>
-                            </div>
-                            <div class="post-action share-btn">
-                                <i class="fas fa-share"></i>
-                                <span>Share</span>
-                            </div>
-                        </div>
-                        <div class="comments-section" style="display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
-                            <div class="comment-input" style="display: flex; margin-bottom: 10px;">
-                                <img src="${currentUser.profilePicture || 'default-profile.jpg'}" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
-                                <input type="text" placeholder="Write a comment..." class="comment-text" style="flex: 1; padding: 8px; border-radius: 20px; border: 1px solid var(--border);">
-                            </div>
-                            <div class="comments-list"></div>
-                        </div>
-                    `;
-                    
-                    postsContainer.appendChild(postElement);
-                }
-            });
+                    </div>
+                    <div class="post-action comment-btn">
+                        <i class="far fa-comment"></i>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-action share-btn">
+                        <i class="fas fa-share"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+                <div class="comments-section" style="display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+                    <div class="comment-input" style="display: flex; margin-bottom: 10px;">
+                        <img src="${currentUser.profilePicture || 'default-profile.jpg'}" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
+                        <input type="text" placeholder="Write a comment..." class="comment-text" style="flex: 1; padding: 8px; border-radius: 20px; border: 1px solid var(--border);">
+                    </div>
+                    <div class="comments-list"></div>
+                </div>
+            `;
             
-            // Initialize handlers for new posts
-            initPostHandlers();
+            container.appendChild(postElement);
         }
-
+        
+        // Function to format time
         function formatTime(timestamp) {
             const now = new Date();
-            const postTime = new Date(timestamp);
+            const postTime = timestamp.toDate();
             const diff = now - postTime;
             
             const seconds = Math.floor(diff / 1000);
@@ -1993,244 +2008,227 @@
             
             return postTime.toLocaleDateString();
         }
-
-        // Initialize post handlers
-        function initPostHandlers() {
-            // See more/less functionality
-            document.querySelectorAll('.see-more').forEach(button => {
-                button.addEventListener('click', function() {
-                    const postContent = this.closest('.post-content');
-                    postContent.classList.toggle('collapsed');
-                    this.textContent = postContent.classList.contains('collapsed') ? 'See more' : 'See less';
-                });
-            });
-            
-            // Initialize reaction handlers
-            initReactionHandlers();
-            
-            // Initialize video tracking
-            initVideoTracking();
-            
-            // Initialize share buttons
-            document.querySelectorAll('.share-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const postId = this.closest('.post').dataset.postId;
-                    openShareModal(postId);
-                });
-            });
-            
-            // Initialize comment buttons
-            document.querySelectorAll('.comment-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const commentsSection = this.closest('.post').querySelector('.comments-section');
-                    commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
-                });
-            });
-            
-            // Initialize comment submission
-            document.querySelectorAll('.comment-text').forEach(input => {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && this.value.trim()) {
-                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                        const postId = this.closest('.post').dataset.postId;
-                        const comment = {
-                            id: Date.now(),
-                            userId: currentUser.email,
-                            userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                            userPic: currentUser.profilePicture || 'default-profile.jpg',
-                            text: this.value.trim(),
-                            timestamp: new Date().toISOString()
-                        };
-                        
-                        // Save comment (in real app, this would go to server)
-                        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                        const post = posts.find(p => p.id === parseInt(postId));
-                        if (post) {
-                            post.comments = post.comments || [];
-                            post.comments.push(comment);
-                            localStorage.setItem('posts', JSON.stringify(posts));
-                            
-                            // Add to comments list
-                            const commentsList = this.closest('.comments-section').querySelector('.comments-list');
-                            const commentElement = document.createElement('div');
-                            commentElement.className = 'comment';
-                            commentElement.innerHTML = `
-                                <div style="display: flex; margin-bottom: 10px;">
-                                    <img src="${comment.userPic}" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600;">${comment.userName}</div>
-                                        <div>${comment.text}</div>
-                                        <div style="font-size: 12px; color: var(--text-light);">${formatTime(comment.timestamp)}</div>
-                                    </div>
-                                </div>
-                            `;
-                            commentsList.appendChild(commentElement);
-                            
-                            this.value = '';
-                        }
-                    }
-                });
-            });
-            
-            // Profile links
-            document.querySelectorAll('.profile-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    const userEmail = this.dataset.email;
-                    viewProfile(userEmail);
-                });
-            });
-        }
-
-        // Initialize reaction handlers
-        function initReactionHandlers() {
-            const reactionButtons = document.querySelectorAll('.reactions');
-            reactionButtons.forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.querySelector('.reaction-options').style.display = 'block';
-                });
+        
+        // Function to load dashboard data
+        async function loadDashboardData() {
+            try {
+                // Load approved posts
+                const approvedPostsSnapshot = await postsCollection
+                    .where("userId", "==", currentUser.email)
+                    .where("status", "==", "approved")
+                    .orderBy("createdAt", "desc")
+                    .get();
                 
-                button.addEventListener('mouseleave', function() {
-                    this.querySelector('.reaction-options').style.display = 'none';
-                });
+                const approvedPostsContainer = document.getElementById('approved-posts');
+                approvedPostsContainer.innerHTML = '';
                 
-                const options = button.querySelectorAll('.reaction-option');
-                options.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const reaction = this.textContent;
-                        const likeIcon = button.querySelector('i');
-                        const likeText = button.querySelector('span');
-                        
-                        likeIcon.className = '';
-                        likeIcon.style.fontFamily = 'Arial';
-                        likeIcon.textContent = reaction;
-                        likeText.textContent = reaction;
-                        
-                        button.querySelector('.reaction-options').style.display = 'none';
+                if (approvedPostsSnapshot.empty) {
+                    approvedPostsContainer.innerHTML = '<p>No approved posts yet</p>';
+                } else {
+                    approvedPostsSnapshot.forEach(doc => {
+                        const post = doc.data();
+                        const postElement = document.createElement('div');
+                        postElement.innerHTML = `
+                            <div style="margin-bottom: 10px; padding: 10px; background-color: var(--white); border-radius: 6px;">
+                                <div>${post.text.substring(0, 50)}${post.text.length > 50 ? '...' : ''}</div>
+                                <div style="font-size: 12px; color: var(--text-light);">${formatTime(post.createdAt)}</div>
+                            </div>
+                        `;
+                        approvedPostsContainer.appendChild(postElement);
                     });
-                });
-            });
-        }
-
-        // Initialize video view tracking
-        function initVideoTracking() {
-            document.querySelectorAll('video[data-post-id]').forEach(video => {
-                video.addEventListener('timeupdate', function() {
-                    if (this.currentTime >= 30 && !this.dataset.viewCounted) {
-                        const postId = parseInt(this.dataset.postId);
-                        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                        const post = posts.find(p => p.id === postId);
-                        
-                        if (post && post.media?.type === 'video') {
-                            post.views++;
-                            this.dataset.viewCounted = 'true';
-                            earningsTracker.updateEarnings(post.userId, 0, 'video');
-                            localStorage.setItem('posts', JSON.stringify(posts));
-                        }
-                    }
-                });
-            });
-        }
-
-        // Share modal functionality
-        function openShareModal(postId) {
-            const shareModal = document.getElementById('share-modal');
-            const closeShareModal = document.getElementById('close-share');
-            
-            shareModal.style.display = 'flex';
-            
-            closeShareModal.addEventListener('click', function() {
-                shareModal.style.display = 'none';
-            });
-            
-            // Share platform handlers
-            document.querySelectorAll('.share-platform').forEach(platform => {
-                platform.addEventListener('click', function() {
-                    const platformName = this.dataset.platform;
-                    sharePost(postId, platformName);
-                    shareModal.style.display = 'none';
-                });
-            });
+                }
+                
+                // Load rejected posts
+                const rejectedPostsSnapshot = await postsCollection
+                    .where("userId", "==", currentUser.email)
+                    .where("status", "==", "rejected")
+                    .orderBy("createdAt", "desc")
+                    .get();
+                
+                const rejectedPostsContainer = document.getElementById('rejected-posts');
+                rejectedPostsContainer.innerHTML = '';
+                
+                if (rejectedPostsSnapshot.empty) {
+                    rejectedPostsContainer.innerHTML = '<p>No rejected posts</p>';
+                } else {
+                    rejectedPostsSnapshot.forEach(doc => {
+                        const post = doc.data();
+                        const postElement = document.createElement('div');
+                        postElement.innerHTML = `
+                            <div style="margin-bottom: 10px; padding: 10px; background-color: var(--white); border-radius: 6px;">
+                                <div>${post.text.substring(0, 50)}${post.text.length > 50 ? '...' : ''}</div>
+                                <div style="font-size: 12px; color: var(--text-light);">${formatTime(post.createdAt)}</div>
+                            </div>
+                        `;
+                        rejectedPostsContainer.appendChild(postElement);
+                    });
+                }
+                
+                // Load withdrawal status
+                const withdrawalsSnapshot = await withdrawalsCollection
+                    .where("userId", "==", currentUser.email)
+                    .orderBy("requestedAt", "desc")
+                    .get();
+                
+                const withdrawalStatusContainer = document.getElementById('withdrawal-status');
+                withdrawalStatusContainer.innerHTML = '';
+                
+                if (withdrawalsSnapshot.empty) {
+                    withdrawalStatusContainer.innerHTML = '<p>No withdrawal requests</p>';
+                } else {
+                    withdrawalsSnapshot.forEach(doc => {
+                        const withdrawal = doc.data();
+                        const withdrawalElement = document.createElement('div');
+                        withdrawalElement.innerHTML = `
+                            <div style="margin-bottom: 10px; padding: 10px; background-color: var(--white); border-radius: 6px;">
+                                <div>Amount: $${withdrawal.amount} (${withdrawal.method})</div>
+                                <div>Status: <span style="color: ${withdrawal.status === 'approved' ? 'green' : withdrawal.status === 'rejected' ? 'red' : 'orange'}">${withdrawal.status}</span></div>
+                                <div style="font-size: 12px; color: var(--text-light);">${formatTime(withdrawal.requestedAt)}</div>
+                            </div>
+                        `;
+                        withdrawalStatusContainer.appendChild(withdrawalElement);
+                    });
+                }
+                
+                // Load earnings data
+                const earningsDoc = await db.collection("earnings").doc(currentUser.email).get();
+                if (earningsDoc.exists) {
+                    const earnings = earningsDoc.data();
+                    document.getElementById('earnings').textContent = '$' + earnings.total.toFixed(2);
+                    document.getElementById('views').textContent = earnings.views || 0;
+                    document.getElementById('engagement').textContent = earnings.engagement ? (earnings.engagement * 100).toFixed(1) + '%' : '0%';
+                }
+                
+                // Load followers count
+                const followersDoc = await db.collection("followers").doc(currentUser.email).get();
+                if (followersDoc.exists) {
+                    document.getElementById('followers').textContent = followersDoc.data().count || 0;
+                } else {
+                    document.getElementById('followers').textContent = '0';
+                }
+                
+            } catch (error) {
+                console.error("Error loading dashboard data:", error);
+            }
         }
         
-        function sharePost(postId, platform) {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            const post = posts.find(p => p.id === parseInt(postId));
-            
-            if (post) {
-                // Update earnings for the original poster
-                earningsTracker.updateEarnings(post.userId, 0, 'share');
+        // Function to submit post
+        async function submitPost(postData) {
+            try {
+                await postsCollection.add(postData);
                 
-                // Create a new shared post
-                const newPost = {
-                    id: Date.now(),
-                    userId: currentUser.email,
-                    userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                    userPic: currentUser.profilePicture || 'default-profile.jpg',
-                    text: `Shared: ${post.text.substring(0, 100)}...`,
-                    media: post.media,
-                    timestamp: new Date().toISOString(),
-                    visibility: 'public',
-                    likes: 0,
-                    comments: [],
-                    shares: 0,
-                    clicks: 0,
-                    views: 0,
-                    originalPostId: post.id,
-                    approved: true // Shared posts are auto-approved
-                };
+                // Send notification to admin
+                if (postData.userId !== adminEmail) {
+                    await db.collection("notifications").add({
+                        type: "post_submission",
+                        userId: adminEmail,
+                        content: `${postData.userName} submitted a new post for approval`,
+                        postId: postData.id,
+                        createdAt: new Date(),
+                        read: false
+                    });
+                }
                 
-                posts.unshift(newPost);
-                localStorage.setItem('posts', JSON.stringify(posts));
-                
-                // Add notification to original poster
-                notificationSystem.addNotification(
-                    post.userId,
-                    'share',
-                    `${currentUser.firstName} shared your post`,
-                    newPost.id
-                );
-                
-                // Refresh posts
-                loadPosts();
-                
-                alert(`Post shared to ${platform} successfully!`);
+                return true;
+            } catch (error) {
+                console.error("Error submitting post:", error);
+                return false;
             }
         }
-
-        // ===== PROFILE LINKING ===== //
+        
+        // Function to request withdrawal
+        async function requestWithdrawal(withdrawalData) {
+            try {
+                await withdrawalsCollection.add(withdrawalData);
+                
+                // Send notification to admin
+                await db.collection("notifications").add({
+                    type: "withdrawal_request",
+                    userId: adminEmail,
+                    content: `${withdrawalData.userName} requested a withdrawal of $${withdrawalData.amount}`,
+                    withdrawalId: withdrawalData.id,
+                    createdAt: new Date(),
+                    read: false
+                });
+                
+                return true;
+            } catch (error) {
+                console.error("Error requesting withdrawal:", error);
+                return false;
+            }
+        }
+        
+        // Function to create story
+        async function createStory(storyData) {
+            try {
+                await storiesCollection.add(storyData);
+                
+                // Send notification to admin
+                if (storyData.userId !== adminEmail) {
+                    await db.collection("notifications").add({
+                        type: "story_submission",
+                        userId: adminEmail,
+                        content: `${storyData.userName} submitted a new story for approval`,
+                        storyId: storyData.id,
+                        createdAt: new Date(),
+                        read: false
+                    });
+                }
+                
+                return true;
+            } catch (error) {
+                console.error("Error creating story:", error);
+                return false;
+            }
+        }
+        
+        // Function to view profile
         function viewProfile(email) {
             if (email === currentUser.email) {
-                window.location.href = "profile.html"; // Goes to profile.html for current user
+                window.location.href = "profile.html";
             } else {
-                alert(`Viewing profile of ${email}`);
-                // In a real app: window.location.href = `profile.html?user=${email}`;
+                window.location.href = `profile.html?user=${email}`;
             }
         }
-
-        // Load user data from localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            
-            if (!currentUser) {
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user is logged in
+            if (!currentUser || !currentUser.email) {
                 window.location.href = 'login.html';
                 return;
             }
             
+            // Load user data
+            const userData = await loadUserData(currentUser.email);
+            if (userData) {
+                currentUser.profilePicture = userData.profilePicture || 'default-profile.jpg';
+                currentUser.coverPhoto = userData.coverPhoto || 'default-cover.jpg';
+                currentUser.firstName = userData.firstName;
+                currentUser.lastName = userData.lastName;
+                currentUser.bio = userData.bio;
+                currentUser.dob = userData.dob;
+                currentUser.church = userData.church;
+                currentUser.gender = userData.gender;
+                currentUser.joinDate = userData.joinDate || new Date();
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
             // Set profile data
-            document.getElementById('header-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('header-profile-pic').src = currentUser.profilePicture;
             document.getElementById('header-profile-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-            document.getElementById('menu-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('menu-profile-pic').src = currentUser.profilePicture;
             document.getElementById('menu-profile-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-            document.getElementById('main-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
-            document.getElementById('post-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
-            document.getElementById('modal-profile-pic').src = currentUser.profilePicture || 'default-profile.jpg';
+            document.getElementById('main-profile-pic').src = currentUser.profilePicture;
+            document.getElementById('post-profile-pic').src = currentUser.profilePicture;
+            document.getElementById('modal-profile-pic').src = currentUser.profilePicture;
             document.getElementById('profile-name-large').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
             document.getElementById('profile-bio').textContent = currentUser.bio || 'No bio yet';
             document.getElementById('profile-dob').textContent = `Born ${currentUser.dob}`;
             document.getElementById('profile-church').textContent = currentUser.church || 'Not specified';
             document.getElementById('profile-gender').textContent = currentUser.gender === 'male' ? 'Male' : 
-                                                                   currentUser.gender === 'female' ? 'Female' : 'Other';
+                                                               currentUser.gender === 'female' ? 'Female' : 'Other';
             
             // Format join date
             const joinDate = new Date(currentUser.joinDate);
@@ -2238,9 +2236,15 @@
             
             // Set cover photo
             const coverPhoto = document.getElementById('cover-photo');
-            if (currentUser.coverPhoto && currentUser.coverPhoto !== 'default-cover.jpg') {
-                coverPhoto.style.background = `url(${currentUser.coverPhoto}) center/cover`;
-            }
+            coverPhoto.style.background = currentUser.coverPhoto !== 'default-cover.jpg' ? 
+                `url(${currentUser.coverPhoto}) center/cover` : 
+                'linear-gradient(135deg, var(--primary), var(--primary-light))';
+            
+            // Load posts
+            loadPosts();
+            
+            // Load contacts
+            loadContacts();
             
             // Menu functionality
             const menuButton = document.getElementById('menu-button');
@@ -2279,18 +2283,7 @@
             dashboardBtn.addEventListener('click', function() {
                 menuModal.classList.remove('show');
                 dashboardModal.style.display = 'flex';
-                
-                // Load real earnings data
-                const earnings = earningsTracker.getEarnings(currentUser.email);
-                document.getElementById('earnings').textContent = '$' + earnings.total.toFixed(3);
-                document.getElementById('views').textContent = 
-                    (earnings.clicks.text + earnings.clicks.image + earnings.videoViews).toLocaleString();
-                document.getElementById('engagement').textContent = 
-                    (Math.min(100, (earnings.clicks.text + earnings.clicks.image) * 0.5)).toFixed(1) + '%';
-                
-                // Load followers count (simulated)
-                document.getElementById('followers').textContent = 
-                    Math.floor(Math.random() * 500).toLocaleString();
+                loadDashboardData();
             });
             
             closeDashboard.addEventListener('click', function() {
@@ -2298,14 +2291,15 @@
             });
             
             // Withdrawal form
-            document.getElementById('withdrawal-form').addEventListener('submit', function(e) {
+            document.getElementById('withdrawal-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const amount = parseFloat(document.getElementById('amount').value);
                 const method = document.getElementById('method').value;
                 const details = document.getElementById('details').value;
+                const bankDetails = document.getElementById('bank-details').value;
                 
-                if (amount < earningsTracker.minWithdrawal || amount > earningsTracker.maxWithdrawal) {
-                    alert(`Withdrawal amount must be between $${earningsTracker.minWithdrawal} and $${earningsTracker.maxWithdrawal}`);
+                if (amount < 2 || amount > 100) {
+                    alert('Withdrawal amount must be between $2 and $100');
                     return;
                 }
                 
@@ -2314,27 +2308,54 @@
                     return;
                 }
                 
+                if (method === 'bank' && !bankDetails) {
+                    alert('Please provide your bank details');
+                    return;
+                }
+                
                 if (!details) {
                     alert('Please enter payment details');
                     return;
                 }
                 
-                const earnings = earningsTracker.getEarnings(currentUser.email);
-                if (amount > earnings.total) {
-                    alert('Insufficient earnings for this withdrawal');
-                    return;
-                }
+                const withdrawalData = {
+                    id: Date.now().toString(),
+                    userId: currentUser.email,
+                    userName: `${currentUser.firstName} ${currentUser.lastName}`,
+                    amount: amount,
+                    method: method,
+                    details: method === 'bank' ? bankDetails : details,
+                    status: 'pending',
+                    requestedAt: new Date()
+                };
                 
-                // In a real app, this would send to server
-                alert(`Withdrawal request submitted!\nAmount: $${amount}\nMethod: ${method}\nDetails: ${details}\n\nYour request will be processed on the ${earningsTracker.withdrawalDay}th of this month.`);
-                this.reset();
-                dashboardModal.style.display = 'none';
+                const success = await requestWithdrawal(withdrawalData);
+                if (success) {
+                    alert('Withdrawal request submitted successfully!');
+                    this.reset();
+                    document.getElementById('bank-details-container').style.display = 'none';
+                    dashboardModal.style.display = 'none';
+                    loadDashboardData();
+                } else {
+                    alert('Error submitting withdrawal request. Please try again.');
+                }
+            });
+            
+            // Show bank details when bank transfer is selected
+            document.getElementById('method').addEventListener('change', function() {
+                if (this.value === 'bank') {
+                    document.getElementById('bank-details-container').style.display = 'block';
+                } else {
+                    document.getElementById('bank-details-container').style.display = 'none';
+                }
             });
             
             // Logout
             document.getElementById('logout-btn').addEventListener('click', function() {
-                localStorage.removeItem('isLoggedIn');
-                window.location.href = 'login.html';
+                auth.signOut().then(() => {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'login.html';
+                });
             });
             
             // Post creation
@@ -2345,7 +2366,15 @@
             const imagePreview = document.getElementById('image-preview');
             const videoPreview = document.getElementById('video-preview');
             const postPreview = document.getElementById('post-preview');
-            const submitPost = document.getElementById('submit-post');
+            const submitPostBtn = document.getElementById('submit-post');
+            const postText = document.getElementById('post-text');
+            const taggedPeople = document.getElementById('tagged-people');
+            const taggedList = document.getElementById('tagged-list');
+            const feelingSelection = document.getElementById('feeling-selection');
+            const selectedFeeling = document.getElementById('selected-feeling');
+            
+            let taggedUsers = [];
+            let currentFeeling = '';
             
             openPostModal.addEventListener('click', function() {
                 postModal.style.display = 'flex';
@@ -2353,11 +2382,7 @@
             
             closePostModal.addEventListener('click', function() {
                 postModal.style.display = 'none';
-                mediaUpload.value = '';
-                imagePreview.style.display = 'none';
-                videoPreview.style.display = 'none';
-                postPreview.style.display = 'none';
-                document.getElementById('post-text').value = '';
+                resetPostForm();
             });
             
             mediaUpload.addEventListener('change', function() {
@@ -2382,135 +2407,279 @@
                 }
             });
             
-            submitPost.addEventListener('click', function() {
-                const postText = document.getElementById('post-text').value;
-                const mediaFile = mediaUpload.files[0];
+            // Tag people functionality
+            document.getElementById('tag-people-btn').addEventListener('click', function() {
+                const tagPeopleModal = document.getElementById('tag-people-modal');
+                const closeTagPeople = document.getElementById('close-tag-people');
+                const searchPeople = document.getElementById('search-people');
+                const peopleList = document.getElementById('people-list');
+                const confirmTags = document.getElementById('confirm-tags');
                 
-                // Content validation
-                if (!contentModerator.isGospelContent(postText)) {
-                    alert('Please create content related to gospel messages only.');
+                tagPeopleModal.style.display = 'flex';
+                
+                closeTagPeople.addEventListener('click', function() {
+                    tagPeopleModal.style.display = 'none';
+                });
+                
+                // Load contacts for tagging
+                async function loadPeopleToTag() {
+                    try {
+                        const snapshot = await usersCollection
+                            .where("email", "!=", currentUser.email)
+                            .limit(20)
+                            .get();
+                        
+                        peopleList.innerHTML = '';
+                        
+                        snapshot.forEach(doc => {
+                            const user = doc.data();
+                            const userElement = document.createElement('div');
+                            userElement.className = 'notification-item';
+                            userElement.innerHTML = `
+                                <img src="${user.profilePicture || 'default-profile.jpg'}" style="width: 40px; height: 40px; border-radius: 50%;">
+                                <div class="notification-content">
+                                    <div>${user.firstName} ${user.lastName}</div>
+                                </div>
+                                <input type="checkbox" class="tag-checkbox" data-email="${user.email}" data-name="${user.firstName} ${user.lastName}">
+                            `;
+                            peopleList.appendChild(userElement);
+                        });
+                    } catch (error) {
+                        console.error("Error loading people to tag:", error);
+                    }
+                }
+                
+                loadPeopleToTag();
+                
+                // Search functionality
+                searchPeople.addEventListener('input', async function() {
+                    const query = this.value.toLowerCase();
+                    if (query.length < 2) {
+                        loadPeopleToTag();
+                        return;
+                    }
+                    
+                    try {
+                        const snapshot = await usersCollection
+                            .where("firstName", ">=", query)
+                            .where("firstName", "<=", query + '\uf8ff')
+                            .limit(10)
+                            .get();
+                        
+                        peopleList.innerHTML = '';
+                        
+                        snapshot.forEach(doc => {
+                            const user = doc.data();
+                            const userElement = document.createElement('div');
+                            userElement.className = 'notification-item';
+                            userElement.innerHTML = `
+                                <img src="${user.profilePicture || 'default-profile.jpg'}" style="width: 40px; height: 40px; border-radius: 50%;">
+                                <div class="notification-content">
+                                    <div>${user.firstName} ${user.lastName}</div>
+                                </div>
+                                <input type="checkbox" class="tag-checkbox" data-email="${user.email}" data-name="${user.firstName} ${user.lastName}">
+                            `;
+                            peopleList.appendChild(userElement);
+                        });
+                    } catch (error) {
+                        console.error("Error searching people:", error);
+                    }
+                });
+                
+                // Confirm tags
+                confirmTags.addEventListener('click', function() {
+                    const checkboxes = document.querySelectorAll('.tag-checkbox:checked');
+                    taggedUsers = [];
+                    taggedList.innerHTML = '';
+                    
+                    checkboxes.forEach(checkbox => {
+                        taggedUsers.push({
+                            email: checkbox.dataset.email,
+                            name: checkbox.dataset.name
+                        });
+                        
+                        const tagElement = document.createElement('span');
+                        tagElement.className = 'tag';
+                        tagElement.innerHTML = `
+                            ${checkbox.dataset.name} <i class="fas fa-times remove-tag" data-email="${checkbox.dataset.email}"></i>
+                        `;
+                        taggedList.appendChild(tagElement);
+                    });
+                    
+                    if (taggedUsers.length > 0) {
+                        taggedPeople.style.display = 'block';
+                    } else {
+                        taggedPeople.style.display = 'none';
+                    }
+                    
+                    tagPeopleModal.style.display = 'none';
+                });
+            });
+            
+            // Remove tag
+            taggedList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-tag')) {
+                    const email = e.target.dataset.email;
+                    taggedUsers = taggedUsers.filter(user => user.email !== email);
+                    
+                    if (taggedUsers.length === 0) {
+                        taggedPeople.style.display = 'none';
+                    }
+                    
+                    e.target.parentElement.remove();
+                }
+            });
+            
+            // Feeling/activity functionality
+            document.getElementById('feeling-btn').addEventListener('click', function() {
+                const feelingModal = document.getElementById('feeling-modal');
+                const closeFeeling = document.getElementById('close-feeling');
+                
+                feelingModal.style.display = 'flex';
+                
+                closeFeeling.addEventListener('click', function() {
+                    feelingModal.style.display = 'none';
+                });
+                
+                // Feeling selection
+                document.querySelectorAll('.feeling-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        currentFeeling = this.dataset.feeling;
+                        selectedFeeling.textContent = this.querySelector('span').textContent;
+                        feelingSelection.style.display = 'block';
+                        feelingModal.style.display = 'none';
+                    });
+                });
+            });
+            
+            // Submit post
+            submitPostBtn.addEventListener('click', async function() {
+                const text = postText.value.trim();
+                const mediaFile = mediaUpload.files[0];
+                const visibility = document.getElementById('post-visibility').value;
+                
+                if (!text && !mediaFile) {
+                    alert('Please enter text or upload media');
                     return;
                 }
                 
-                // Create post object
-                const newPost = {
-                    id: Date.now(),
+                let mediaUrl = null;
+                let mediaType = null;
+                
+                if (mediaFile) {
+                    // In a real app, you would upload the file to Firebase Storage
+                    // For this example, we'll use a placeholder
+                    mediaUrl = URL.createObjectURL(mediaFile);
+                    mediaType = mediaFile.type.startsWith('image/') ? 'image' : 'video';
+                }
+                
+                const postData = {
+                    id: Date.now().toString(),
                     userId: currentUser.email,
                     userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                    userPic: currentUser.profilePicture || 'default-profile.jpg',
-                    text: postText,
+                    userPic: currentUser.profilePicture,
+                    text: text,
                     media: mediaFile ? {
-                        type: mediaFile.type.startsWith('image/') ? 'image' : 'video',
-                        url: URL.createObjectURL(mediaFile)
+                        type: mediaType,
+                        url: mediaUrl
                     } : null,
-                    timestamp: new Date().toISOString(),
-                    visibility: document.getElementById('post-visibility').value,
-                    approved: currentUser.email === adminEmail, // Auto-approve admin posts
+                    visibility: visibility,
+                    status: currentUser.email === adminEmail ? 'approved' : 'pending',
+                    createdAt: new Date(),
                     likes: 0,
                     comments: [],
                     shares: 0,
-                    clicks: 0,
-                    views: 0
+                    taggedUsers: taggedUsers,
+                    feeling: currentFeeling || null
                 };
                 
-                // Save to local storage (in real app, this would go to server)
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.unshift(newPost);
-                localStorage.setItem('posts', JSON.stringify(posts));
-                
-                // Close modal and reset
-                postModal.style.display = 'none';
-                mediaUpload.value = '';
-                imagePreview.style.display = 'none';
-                videoPreview.style.display = 'none';
-                postPreview.style.display = 'none';
-                document.getElementById('post-text').value = '';
-                
-                // Refresh posts
-                loadPosts();
-                
-                if (newPost.approved) {
-                    alert("Post approved and published!");
+                const success = await submitPost(postData);
+                if (success) {
+                    alert(currentUser.email === adminEmail ? 
+                        'Post published successfully!' : 
+                        'Post submitted for approval');
+                    postModal.style.display = 'none';
+                    resetPostForm();
+                    loadPosts();
                 } else {
-                    alert("Post submitted for admin approval.");
+                    alert('Error submitting post. Please try again.');
                 }
             });
             
             // Quick post from main input
-            document.getElementById('create-post-input').addEventListener('keypress', function(e) {
+            document.getElementById('create-post-input').addEventListener('keypress', async function(e) {
                 if (e.key === 'Enter' && this.value.trim()) {
-                    // Content validation
-                    if (!contentModerator.isGospelContent(this.value)) {
-                        alert('Please create content related to gospel messages only.');
-                        return;
-                    }
-                    
-                    // Create post object
-                    const newPost = {
-                        id: Date.now(),
+                    const postData = {
+                        id: Date.now().toString(),
                         userId: currentUser.email,
                         userName: `${currentUser.firstName} ${currentUser.lastName}`,
-                        userPic: currentUser.profilePicture || 'default-profile.jpg',
-                        text: this.value,
+                        userPic: currentUser.profilePicture,
+                        text: this.value.trim(),
                         media: null,
-                        timestamp: new Date().toISOString(),
                         visibility: 'public',
-                        approved: currentUser.email === adminEmail, // Auto-approve admin posts
+                        status: currentUser.email === adminEmail ? 'approved' : 'pending',
+                        createdAt: new Date(),
                         likes: 0,
                         comments: [],
                         shares: 0,
-                        clicks: 0,
+                        taggedUsers: [],
+                        feeling: null
+                    };
+                    
+                    const success = await submitPost(postData);
+                    if (success) {
+                        alert(currentUser.email === adminEmail ? 
+                            'Post published successfully!' : 
+                            'Post submitted for approval');
+                        this.value = '';
+                        loadPosts();
+                    } else {
+                        alert('Error submitting post. Please try again.');
+                    }
+                }
+            });
+            
+            // Create story
+            document.getElementById('create-story').addEventListener('click', async function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*,video/*';
+                
+                input.onchange = async function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    // In a real app, you would upload the file to Firebase Storage
+                    // For this example, we'll use a placeholder
+                    const mediaUrl = URL.createObjectURL(file);
+                    const mediaType = file.type.startsWith('image/') ? 'image' : 'video';
+                    
+                    const storyData = {
+                        id: Date.now().toString(),
+                        userId: currentUser.email,
+                        userName: `${currentUser.firstName} ${currentUser.lastName}`,
+                        userPic: currentUser.profilePicture,
+                        media: {
+                            type: mediaType,
+                            url: mediaUrl
+                        },
+                        status: currentUser.email === adminEmail ? 'approved' : 'pending',
+                        createdAt: new Date(),
                         views: 0
                     };
                     
-                    // Save to local storage
-                    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                    posts.unshift(newPost);
-                    localStorage.setItem('posts', JSON.stringify(posts));
-                    
-                    this.value = '';
-                    loadPosts();
-                    
-                    if (newPost.approved) {
-                        alert("Post approved and published!");
+                    const success = await createStory(storyData);
+                    if (success) {
+                        alert(currentUser.email === adminEmail ? 
+                            'Story published successfully!' : 
+                            'Story submitted for approval');
+                        loadPosts();
                     } else {
-                        alert("Post submitted for admin approval.");
+                        alert('Error creating story. Please try again.');
                     }
-                }
-            });
-            
-            // Feeling/activity button
-            document.getElementById('feeling-activity').addEventListener('click', function() {
-                alert('Feeling/activity selector would appear here');
-            });
-            
-            // Story creation
-            document.getElementById('create-story').addEventListener('click', function() {
-                alert('Story creation interface would appear here');
-            });
-            
-            // Track clicks and views
-            document.addEventListener('click', function(e) {
-                // Track post clicks
-                if (e.target.closest('.post, .post *')) {
-                    const postElement = e.target.closest('.post');
-                    if (postElement) {
-                        const postId = parseInt(postElement.dataset.postId);
-                        if (postId) {
-                            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                            const post = posts.find(p => p.id === postId);
-                            if (post) {
-                                post.clicks++;
-                                
-                                // Determine click type
-                                const type = post.media?.type === 'image' ? 'image' : 'text';
-                                earningsTracker.updateEarnings(post.userId, 0, type);
-                                
-                                localStorage.setItem('posts', JSON.stringify(posts));
-                            }
-                        }
-                    }
-                }
+                };
+                
+                input.click();
             });
             
             // Profile editor
@@ -2576,37 +2745,35 @@
                 }
             });
             
-            profileForm.addEventListener('submit', function(e) {
+            profileForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 // Update user data
-                currentUser.firstName = document.getElementById('edit-first-name').value;
-                currentUser.lastName = document.getElementById('edit-last-name').value;
-                currentUser.bio = document.getElementById('edit-bio').value;
-                currentUser.dob = document.getElementById('edit-dob').value;
-                currentUser.church = document.getElementById('edit-church').value;
-                currentUser.gender = document.getElementById('edit-gender').value;
+                const updatedUser = {
+                    firstName: document.getElementById('edit-first-name').value,
+                    lastName: document.getElementById('edit-last-name').value,
+                    bio: document.getElementById('edit-bio').value,
+                    dob: document.getElementById('edit-dob').value,
+                    church: document.getElementById('edit-church').value,
+                    gender: document.getElementById('edit-gender').value,
+                    profilePicture: currentUser.profilePicture,
+                    coverPhoto: currentUser.coverPhoto,
+                    email: currentUser.email,
+                    joinDate: currentUser.joinDate
+                };
                 
-                // Update photos if changed
-                if (profilePhotoUpload.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        currentUser.profilePicture = e.target.result;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        window.location.reload();
-                    };
-                    reader.readAsDataURL(profilePhotoUpload.files[0]);
-                } else if (coverPhotoUpload.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        currentUser.coverPhoto = e.target.result;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        window.location.reload();
-                    };
-                    reader.readAsDataURL(coverPhotoUpload.files[0]);
-                } else {
+                try {
+                    await usersCollection.doc(currentUser.email).set(updatedUser, { merge: true });
+                    
+                    // Update local storage
+                    currentUser = { ...currentUser, ...updatedUser };
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Update UI
                     window.location.reload();
+                } catch (error) {
+                    console.error("Error updating profile:", error);
+                    alert('Error updating profile. Please try again.');
                 }
             });
             
@@ -2636,7 +2803,7 @@
                 }
             });
             
-            groupForm.addEventListener('submit', function(e) {
+            groupForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const name = document.getElementById('group-name').value;
@@ -2645,51 +2812,72 @@
                 let photo = null;
                 
                 if (groupPhotoUpload.files[0]) {
+                    // In a real app, you would upload the file to Firebase Storage
+                    // For this example, we'll use a placeholder
                     photo = URL.createObjectURL(groupPhotoUpload.files[0]);
                 }
                 
-                // Content validation
-                if (!contentModerator.isGospelContent(name) || !contentModerator.isGospelContent(description)) {
-                    alert('Group name and description must contain gospel-related content');
-                    return;
+                const groupData = {
+                    id: Date.now().toString(),
+                    name: name,
+                    description: description,
+                    privacy: privacy,
+                    photo: photo,
+                    creator: currentUser.email,
+                    creatorName: `${currentUser.firstName} ${currentUser.lastName}`,
+                    createdAt: new Date(),
+                    members: [currentUser.email]
+                };
+                
+                try {
+                    await db.collection("groups").doc(groupData.id).set(groupData);
+                    
+                    alert('Group created successfully!');
+                    groupCreation.style.display = 'none';
+                    this.reset();
+                    groupPhotoPreview.innerHTML = '<i class="fas fa-users" style="font-size: 30px; color: var(--text-light);"></i>';
+                } catch (error) {
+                    console.error("Error creating group:", error);
+                    alert('Error creating group. Please try again.');
+                }
+            });
+            
+            // Settings functionality
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettings = document.getElementById('close-settings');
+            const saveSettings = document.getElementById('save-settings');
+            const darkModeToggleSetting = document.getElementById('dark-mode-toggle-setting');
+            
+            settingsBtn.addEventListener('click', function() {
+                menuModal.classList.remove('show');
+                settingsModal.style.display = 'flex';
+                
+                // Set current settings
+                darkModeToggleSetting.checked = localStorage.getItem('darkMode') === 'enabled';
+            });
+            
+            closeSettings.addEventListener('click', function() {
+                settingsModal.style.display = 'none';
+            });
+            
+            saveSettings.addEventListener('click', function() {
+                // Save settings
+                if (darkModeToggleSetting.checked) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
                 }
                 
-                // Create group
-                groupSystem.createGroup(
-                    currentUser.email,
-                    name,
-                    description,
-                    privacy,
-                    photo
-                );
-                
-                alert('Group created successfully!');
-                groupCreation.style.display = 'none';
-                this.reset();
-                groupPhotoPreview.innerHTML = '<i class="fas fa-users" style="font-size: 30px; color: var(--text-light);"></i>';
+                settingsModal.style.display = 'none';
+                alert('Settings saved successfully!');
             });
-            
-            // Profile picture click
-            document.getElementById('post-profile-pic').addEventListener('click', function() {
-                viewProfile(currentUser.email);
-            });
-            
-            // Make all profile pics clickable
-            document.querySelectorAll(".profile-pic, .profile-photo, .profile-link").forEach(el => {
-                el.addEventListener("click", function() {
-                    const userEmail = this.dataset.email || currentUser.email;
-                    viewProfile(userEmail);
-                });
-            });
-            
-            // Load initial posts
-            loadPosts();
-            
-            // Load contacts
-            loadContacts();
             
             // Dark mode toggle
             const darkModeToggle = document.getElementById('dark-mode-toggle');
+            
             darkModeToggle.addEventListener('click', function() {
                 document.body.classList.toggle('dark-mode');
                 const icon = darkModeToggle.querySelector('i');
@@ -2718,11 +2906,7 @@
                 }
                 if (e.target === postModal) {
                     postModal.style.display = 'none';
-                    mediaUpload.value = '';
-                    imagePreview.style.display = 'none';
-                    videoPreview.style.display = 'none';
-                    postPreview.style.display = 'none';
-                    document.getElementById('post-text').value = '';
+                    resetPostForm();
                 }
                 if (e.target === profileEditor) {
                     profileEditor.style.display = 'none';
@@ -2730,43 +2914,210 @@
                 if (e.target === groupCreation) {
                     groupCreation.style.display = 'none';
                 }
-            });
-        });
-
-        function loadContacts() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const contactsList = document.getElementById('contacts-list');
-            
-            // Simulated contacts data
-            const contacts = [
-                { name: 'Mary Williams', email: 'mary.williams@anointedflames.com', pic: 'https://randomuser.me/api/portraits/women/44.jpg' },
-                { name: 'David Peterson', email: 'david.peterson@anointedflames.com', pic: 'https://randomuser.me/api/portraits/men/32.jpg' },
-                { name: 'Grace Mbeki', email: 'grace.mbeki@anointedflames.com', pic: 'https://randomuser.me/api/portraits/women/68.jpg' },
-                { name: 'John Smith', email: 'john.smith@anointedflames.com', pic: 'https://randomuser.me/api/portraits/men/45.jpg' },
-                { name: 'Sarah Johnson', email: 'sarah.johnson@anointedflames.com', pic: 'https://randomuser.me/api/portraits/women/33.jpg' }
-            ];
-            
-            // Clear existing contacts
-            contactsList.innerHTML = '';
-            
-            // Add contacts
-            contacts.forEach(contact => {
-                if (contact.email !== currentUser.email) {
-                    const contactElement = document.createElement('div');
-                    contactElement.className = 'detail-item';
-                    contactElement.style.marginBottom = '15px';
-                    contactElement.style.cursor = 'pointer';
-                    contactElement.innerHTML = `
-                        <img src="${contact.pic}" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
-                        <span>${contact.name}</span>
-                    `;
-                    contactElement.addEventListener('click', function() {
-                        viewProfile(contact.email);
-                    });
-                    contactsList.appendChild(contactElement);
+                if (e.target === settingsModal) {
+                    settingsModal.style.display = 'none';
                 }
             });
-        }
+            
+            // Helper function to reset post form
+            function resetPostForm() {
+                mediaUpload.value = '';
+                imagePreview.style.display = 'none';
+                videoPreview.style.display = 'none';
+                postPreview.style.display = 'none';
+                postText.value = '';
+                taggedUsers = [];
+                taggedList.innerHTML = '';
+                taggedPeople.style.display = 'none';
+                currentFeeling = '';
+                selectedFeeling.textContent = '';
+                feelingSelection.style.display = 'none';
+            }
+            
+            // Load contacts
+            async function loadContacts() {
+                try {
+                    const snapshot = await usersCollection
+                        .where("email", "!=", currentUser.email)
+                        .limit(10)
+                        .get();
+                    
+                    const contactsList = document.getElementById('contacts-list');
+                    contactsList.innerHTML = '';
+                    
+                    snapshot.forEach(doc => {
+                        const user = doc.data();
+                        const contactElement = document.createElement('div');
+                        contactElement.className = 'detail-item';
+                        contactElement.style.marginBottom = '15px';
+                        contactElement.style.cursor = 'pointer';
+                        contactElement.innerHTML = `
+                            <img src="${user.profilePicture || 'default-profile.jpg'}" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+                            <span>${user.firstName} ${user.lastName}</span>
+                        `;
+                        contactElement.addEventListener('click', function() {
+                            viewProfile(user.email);
+                        });
+                        contactsList.appendChild(contactElement);
+                    });
+                } catch (error) {
+                    console.error("Error loading contacts:", error);
+                }
+            }
+            
+            // Initialize post handlers
+            function initPostHandlers() {
+                // See more/less functionality
+                document.querySelectorAll('.see-more').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const postContent = this.closest('.post-content');
+                        postContent.classList.toggle('collapsed');
+                        this.textContent = postContent.classList.contains('collapsed') ? 'See more' : 'See less';
+                    });
+                });
+                
+                // Initialize reaction handlers
+                initReactionHandlers();
+                
+                // Initialize share buttons
+                document.querySelectorAll('.share-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const postId = this.closest('.post').dataset.postId;
+                        openShareModal(postId);
+                    });
+                });
+                
+                // Initialize comment buttons
+                document.querySelectorAll('.comment-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const commentsSection = this.closest('.post').querySelector('.comments-section');
+                        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+                    });
+                });
+                
+                // Profile links
+                document.querySelectorAll('.profile-link').forEach(link => {
+                    link.addEventListener('click', function() {
+                        const userEmail = this.dataset.email;
+                        viewProfile(userEmail);
+                    });
+                });
+            }
+            
+            // Initialize reaction handlers
+            function initReactionHandlers() {
+                const reactionButtons = document.querySelectorAll('.reactions');
+                reactionButtons.forEach(button => {
+                    button.addEventListener('mouseenter', function() {
+                        this.querySelector('.reaction-options').style.display = 'block';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.querySelector('.reaction-options').style.display = 'none';
+                    });
+                    
+                    const options = button.querySelectorAll('.reaction-option');
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            const reaction = this.textContent;
+                            const likeIcon = button.querySelector('i');
+                            const likeText = button.querySelector('span');
+                            
+                            likeIcon.className = '';
+                            likeIcon.style.fontFamily = 'Arial';
+                            likeIcon.textContent = reaction;
+                            likeText.textContent = reaction;
+                            
+                            button.querySelector('.reaction-options').style.display = 'none';
+                        });
+                    });
+                });
+            }
+            
+            // Share modal functionality
+            function openShareModal(postId) {
+                const shareModal = document.getElementById('share-modal');
+                const closeShareModal = document.getElementById('close-share');
+                
+                shareModal.style.display = 'flex';
+                
+                closeShareModal.addEventListener('click', function() {
+                    shareModal.style.display = 'none';
+                });
+                
+                // Share platform handlers
+                document.querySelectorAll('.share-platform').forEach(platform => {
+                    platform.addEventListener('click', function() {
+                        const platformName = this.dataset.platform;
+                        sharePost(postId, platformName);
+                        shareModal.style.display = 'none';
+                    });
+                });
+            }
+            
+            // Share post function
+            async function sharePost(postId, platform) {
+                try {
+                    const postDoc = await postsCollection.doc(postId).get();
+                    if (!postDoc.exists) {
+                        alert('Post not found');
+                        return;
+                    }
+                    
+                    const post = postDoc.data();
+                    
+                    // Create a new shared post
+                    const newPost = {
+                        id: Date.now().toString(),
+                        userId: currentUser.email,
+                        userName: `${currentUser.firstName} ${currentUser.lastName}`,
+                        userPic: currentUser.profilePicture,
+                        text: `Shared: ${post.text.substring(0, 100)}...`,
+                        media: post.media,
+                        visibility: 'public',
+                        status: 'approved',
+                        createdAt: new Date(),
+                        likes: 0,
+                        comments: [],
+                        shares: 0,
+                        originalPostId: post.id
+                    };
+                    
+                    await postsCollection.doc(newPost.id).set(newPost);
+                    
+                    // Update original post's share count
+                    await postsCollection.doc(postId).update({
+                        shares: (post.shares || 0) + 1
+                    });
+                    
+                    // Add notification to original poster
+                    await db.collection("notifications").add({
+                        type: "share",
+                        userId: post.userId,
+                        content: `${currentUser.firstName} shared your post`,
+                        postId: newPost.id,
+                        createdAt: new Date(),
+                        read: false
+                    });
+                    
+                    // Refresh posts
+                    loadPosts();
+                    
+                    alert(`Post shared to ${platform} successfully!`);
+                } catch (error) {
+                    console.error("Error sharing post:", error);
+                    alert('Error sharing post. Please try again.');
+                }
+            }
+            
+            // Search functionality
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    const query = this.value.trim();
+                    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+                }
+            });
+        });
     </script>
 </body>
 </html>

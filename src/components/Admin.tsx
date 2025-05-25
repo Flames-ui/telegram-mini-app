@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import AdminApp from './AdminApp';
+import AdminApp from './AdminApp';  // Make sure this import is correct
 import './admin.css';
 
-const root = ReactDOM.createRoot(
+ReactDOM.createRoot(
   document.getElementById('admin-root') as HTMLElement
-);
-
-root.render(
+).render(
   <React.StrictMode>
     <AdminApp />
   </React.StrictMode>

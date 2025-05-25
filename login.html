@@ -238,22 +238,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             auth.onAuthStateChanged((user) => {
                 if (user) {
-                    // Check if user needs to complete profile
-                    checkProfileCompletion(user);
+                    // Redirect to homepage if already logged in
+                    window.location.href = "homepage.html";
                 }
             });
         });
-
-        async function checkProfileCompletion(user) {
-            try {
-                // In a real app, you would check Firestore for profile completion status
-                // For now, we'll just redirect to homepage
-                window.location.href = "homepage.html";
-            } catch (error) {
-                console.error("Profile check error:", error);
-                // Stay on login page if there's an error
-            }
-        }
 
         // Login form handler
         document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -272,7 +261,7 @@
             loginButton.disabled = true;
             
             try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                await auth.signInWithEmailAndPassword(email, password);
                 // Explicit redirect after successful login
                 window.location.href = "homepage.html";
             } catch (error) {

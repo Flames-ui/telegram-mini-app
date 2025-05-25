@@ -1,7 +1,7 @@
-export default function AdminDashboard() {
-  return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-    </div>
-  );
-}
+import React from 'react';
+
+const AdminDashboard = () => {
+  return <h2>Admin Dashboard</h2>;
+};
+
+export default AdminDashboard;

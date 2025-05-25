@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anointed Flames - Complete Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF8C00;
+            --primary-light: #FFA500;
+            --white: #ffffff;
+            --light: #f0f2f5;
+            --text: #050505;
+            --dark: #18191a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark);
+            color: var(--white);
+        }
+        
+        .profile-setup-container {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            max-width: 90%;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .dark-mode .profile-setup-container {
+            background-color: var(--dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        .dark-mode .form-group input,
+        .dark-mode .form-group select,
+        .dark-mode .form-group textarea {
+            background-color: var(--dark);
+            border-color: #444;
+            color: var(--white);
+        }
+        
+        .photo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .profile-preview i {
+            font-size: 40px;
+            color: #ccc;
+        }
+        
+        .upload-btn {
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .upload-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-setup-container">
+        <div class="logo">
+            <i class="fas fa-fire"></i>
+            <span>Anointed Flames</span>
+        </div>
+        
+        <h2>Complete Your Profile</h2>
+        <p>Please provide some additional information to get started</p>
+        
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        
+        <form id="profile-form">
+            <div class="photo-upload">
+                <div class="profile-preview" id="profile-preview">
+                    <i class="fas fa-user"></i>
+                </div>
+                <button type="button" class="upload-btn" id="upload-btn">Upload Photo</button>
+                <input type="file" id="profile-photo" accept="image/*" style="display: none;">
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">Bio (Optional)</label>
+                <textarea id="bio" rows="3" placeholder="Tell us about yourself"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="church">Church (Optional)</label>
+                <input type="text" id="church" placeholder="Your church or ministry">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Complete Profile</button>
+        </form>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+            authDomain: "anointed-flames-tv.firebaseapp.com",
+            projectId: "anointed-flames-tv",
+            storageBucket: "anointed-flames-tv.appspot.com",
+            messagingSenderId: "814825501586",
+            appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            }
+        });
+
+        // Profile photo upload
+        const uploadBtn = document.getElementById('upload-btn');
+        const profilePhoto = document.getElementById('profile-photo');
+        const profilePreview = document.getElementById('profile-preview');
+        let profilePhotoFile = null;
+        
+        uploadBtn.addEventListener('click', () => {
+            profilePhoto.click();
+        });
+        
+        profilePhoto.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                profilePhotoFile = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    profilePreview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    profilePreview.appendChild(img);
+                };
+                
+                reader.readAsDataURL(profilePhotoFile);
+            }
+        });
+
+        // Profile form submission
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const bio = document.getElementById('bio').value.trim();
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const church = document.getElementById('church').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            
+            errorMessage.style.display = 'none';
+            
+            // Basic validation
+            if (!dob || !gender) {
+                errorMessage.textContent = "Please fill in all required fields";
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const user = auth.currentUser;
+                if (!user) throw new Error("User not authenticated");
+                
+                let photoURL = null;
+                
+                // Upload profile photo if selected
+                if (profilePhotoFile) {
+                    const storageRef = storage.ref(`profile_photos/${user.uid}`);
+                    const uploadTask = storageRef.put(profilePhotoFile);
+                    
+                    await uploadTask;
+                    photoURL = await storageRef.getDownloadURL();
+                }
+                
+                // Update user profile in Firestore
+                await db.collection("users").doc(user.email).update({
+                    bio: bio || null,
+                    dob: dob,
+                    gender: gender,
+                    church: church || null,
+                    profilePicture: photoURL || 'default-profile.jpg',
+                    profileComplete: true,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Update user profile in Auth
+                if (photoURL) {
+                    await user.updateProfile({
+                        photoURL: photoURL
+                    });
+                }
+                
+                // Redirect to homepage
+                window.location.href = "homepage.html";
+                
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+                console.error("Profile setup error:", error);
+            }
+        });
+    </script>
+</body>
+</html>

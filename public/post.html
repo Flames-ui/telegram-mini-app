@@ -150,57 +150,8 @@ button:hover {
 
 const adCodeMedia = `<script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>`;
 
-document.getElementById("postForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const content = document.getElementById("postContent").value;
-  const feeling = document.getElementById("feeling").value;
-  const privacy = document.getElementById("privacy").value;
-  const image = document.getElementById("imageUpload").files[0];
-  const video = document.getElementById("videoUpload").files[0];
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      alert("You must be logged in to post.");
-      return;
-    }
-
-    let mediaUrl = "";
-    let type = "text";
-    if (video) {
-      const videoRef = ref(storage, `videos/${Date.now()}_${video.name}`);
-      await uploadBytes(videoRef, video);
-      mediaUrl = await getDownloadURL(videoRef);
-      type = "video";
-    } else if (image) {
-      const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
-      await uploadBytes(imageRef, image);
-      mediaUrl = await getDownloadURL(imageRef);
-      type = "image";
-    }
-
-    let processedContent = content;
-    if (type === "text" && content.length > 100) {
-      const midpoint = Math.floor(content.length / 2);
-      processedContent = content.slice(0, midpoint) + adCodeText + content.slice(midpoint);
-    }
-
-    await addDoc(collection(db, type === "video" ? "videos" : "posts"), {
-      uid: user.uid,
-      content: processedContent,
-      mediaUrl,
-      feeling,
-      privacy,
-      createdAt: serverTimestamp(),
-      type,
-      earnings: 0,
-      adInjected: type === "text" ? "banner" : "social"
-    });
-
-    alert("Post submitted!");
-    window.location.href = type === "video" ? "video.html" : "index.html";
-  });
-});
-
+  
   </script>  <!-- Bottom page ad -->  <div>
     <script type="text/javascript">
       atOptions = {

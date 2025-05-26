@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Post - Anointed Flames TV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="//pl26488468.profitableratecpm.com/89/9b/59/899b59e0f14d7fa6a580e8f8a8073c7a.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f3f3f3;
+    }.container {
+  max-width: 500px;
+  background: white;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+}
+
+.post-options {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.post-options label {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.post-options input {
+  display: none;
+}
+
+.form-group {
+  margin: 10px 0;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: orange;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkorange;
+}
+
+  </style>
+</head>
+<body>  <div class="container">
+    <h2>Create Post</h2><form id="postForm">
+  <textarea placeholder="What's on your mind?" id="postContent"></textarea>
+
+  <div class="post-options">
+    <label>
+      Add Image
+      <input type="file" accept="image/*" id="imageUpload">
+    </label>
+
+    <label>
+      Add Video
+      <input type="file" accept="video/*" id="videoUpload">
+    </label>
+
+    <label>
+      Add Feeling
+      <input type="text" id="feeling" placeholder="Feeling..." />
+    </label>
+  </div>
+
+  <div class="form-group">
+    <select id="privacy">
+      <option value="public">Public</option>
+      <option value="friends">Friends</option>
+      <option value="private">Only Me</option>
+    </select>
+  </div>
+
+  <button type="submit">Post</button>
+</form>
+
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.appspot.com",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
+      measurementId: "G-CZR5508L92"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const gospelKeywords = ["Jesus", "Holy Spirit", "gospel", "Bible", "scripture", "God", "prayer", "worship", "faith", "salvation"];
+
+    document.getElementById("postForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const content = document.getElementById("postContent").value;
+      const feeling = document.getElementById("feeling").value;
+      const privacy = document.getElementById("privacy").value;
+      const imageFile = document.getElementById("imageUpload").files[0];
+      const videoFile = document.getElementById("videoUpload").files[0];
+
+      if (!gospelKeywords.some(keyword => content.toLowerCase().includes(keyword.toLowerCase()))) {
+        alert("Only gospel-related content is allowed.");
+        return;
+      }
+
+      let fileURL = null;
+      let type = "text";
+
+      if (imageFile) {
+        const imageRef = ref(storage, `images/${Date.now()}_${imageFile.name}`);
+        await uploadBytes(imageRef, imageFile);
+        fileURL = await getDownloadURL(imageRef);
+        type = "image";
+      }
+
+      if (videoFile) {
+        const videoRef = ref(storage, `videos/${Date.now()}_${videoFile.name}`);
+        await uploadBytes(videoRef, videoFile);
+        fileURL = await getDownloadURL(videoRef);
+        type = "video";
+      }
+
+      await addDoc(collection(db, "posts"), {
+        content,
+        feeling,
+        privacy,
+        createdAt: serverTimestamp(),
+        fileURL,
+        type,
+        earnings: 0
+      });
+
+      alert("Post submitted successfully!");
+
+      if (type === "video") {
+        window.location.href = "video.html";
+      } else {
+        window.location.href = "homepage.html";
+      }
+    });
+  </script></body>
+</html>

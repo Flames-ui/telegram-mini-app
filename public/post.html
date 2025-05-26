@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Post - Anointed Flames TV</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script type="text/javascript" src="//pl26488468.profitableratecpm.com/89/9b/59/899b59e0f14d7fa6a580e8f8a8073c7a.js"></script>
+  <script type='text/javascript' src='//pl26488468.profitableratecpm.com/89/9b/59/899b59e0f14d7fa6a580e8f8a8073c7a.js'></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -82,7 +82,8 @@ button:hover {
 
   </style>
 </head>
-<body>  <div class="container">
+<body>
+  <div class="container">
     <h2>Create Post</h2><form id="postForm">
   <textarea placeholder="What's on your mind?" id="postContent"></textarea>
 
@@ -114,8 +115,9 @@ button:hover {
   <button type="submit">Post</button>
 </form>
 
-  </div>  <script type="module">
+  </div>  <!-- Firebase config -->  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-storage.js";
 
@@ -131,58 +133,85 @@ button:hover {
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth();
     const storage = getStorage(app);
 
-    const gospelKeywords = ["Jesus", "Holy Spirit", "gospel", "Bible", "scripture", "God", "prayer", "worship", "faith", "salvation"];
+    const adCodeText = `
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script><script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+`;
 
-    document.getElementById("postForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+const adCodeMedia = `<script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>`;
 
-      const content = document.getElementById("postContent").value;
-      const feeling = document.getElementById("feeling").value;
-      const privacy = document.getElementById("privacy").value;
-      const imageFile = document.getElementById("imageUpload").files[0];
-      const videoFile = document.getElementById("videoUpload").files[0];
+document.getElementById("postForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const content = document.getElementById("postContent").value;
+  const feeling = document.getElementById("feeling").value;
+  const privacy = document.getElementById("privacy").value;
+  const image = document.getElementById("imageUpload").files[0];
+  const video = document.getElementById("videoUpload").files[0];
 
-      if (!gospelKeywords.some(keyword => content.toLowerCase().includes(keyword.toLowerCase()))) {
-        alert("Only gospel-related content is allowed.");
-        return;
-      }
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      alert("You must be logged in to post.");
+      return;
+    }
 
-      let fileURL = null;
-      let type = "text";
+    let mediaUrl = "";
+    let type = "text";
+    if (video) {
+      const videoRef = ref(storage, `videos/${Date.now()}_${video.name}`);
+      await uploadBytes(videoRef, video);
+      mediaUrl = await getDownloadURL(videoRef);
+      type = "video";
+    } else if (image) {
+      const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
+      await uploadBytes(imageRef, image);
+      mediaUrl = await getDownloadURL(imageRef);
+      type = "image";
+    }
 
-      if (imageFile) {
-        const imageRef = ref(storage, `images/${Date.now()}_${imageFile.name}`);
-        await uploadBytes(imageRef, imageFile);
-        fileURL = await getDownloadURL(imageRef);
-        type = "image";
-      }
+    let processedContent = content;
+    if (type === "text" && content.length > 100) {
+      const midpoint = Math.floor(content.length / 2);
+      processedContent = content.slice(0, midpoint) + adCodeText + content.slice(midpoint);
+    }
 
-      if (videoFile) {
-        const videoRef = ref(storage, `videos/${Date.now()}_${videoFile.name}`);
-        await uploadBytes(videoRef, videoFile);
-        fileURL = await getDownloadURL(videoRef);
-        type = "video";
-      }
-
-      await addDoc(collection(db, "posts"), {
-        content,
-        feeling,
-        privacy,
-        createdAt: serverTimestamp(),
-        fileURL,
-        type,
-        earnings: 0
-      });
-
-      alert("Post submitted successfully!");
-
-      if (type === "video") {
-        window.location.href = "video.html";
-      } else {
-        window.location.href = "homepage.html";
-      }
+    await addDoc(collection(db, type === "video" ? "videos" : "posts"), {
+      uid: user.uid,
+      content: processedContent,
+      mediaUrl,
+      feeling,
+      privacy,
+      createdAt: serverTimestamp(),
+      type,
+      earnings: 0,
+      adInjected: type === "text" ? "banner" : "social"
     });
-  </script></body>
-</html>
+
+    alert("Post submitted!");
+    window.location.href = type === "video" ? "video.html" : "index.html";
+  });
+});
+
+  </script>  <!-- Bottom page ad -->  <div>
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+  </div>
+</body>
+  </html>

@@ -1,129 +1,183 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Post - Anointed Flames TV</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script type='text/javascript' src='//pl26488468.profitableratecpm.com/89/9b/59/899b59e0f14d7fa6a580e8f8a8073c7a.js'></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anointed Flames TV - Create Post</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --smooth-purple: #9c88ff;
+      --black-bg: #000000;
+      --shinny-black: #121212;
+      --supreme-white: #f8f9fa;
+      --flame-orange: #ff7b25;
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: #f3f3f3;
-    }.container {
-  max-width: 500px;
-  background: white;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+      background-color: var(--black-bg);
+      color: var(--supreme-white);
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 20px;
+    }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    .post-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-textarea {
-  width: 100%;
-  height: 100px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  resize: vertical;
-}
+    .post-card {
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(156, 136, 255, 0.1);
+      border: 1px solid var(--smooth-purple);
+    }
 
-.post-options {
-  margin: 10px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: space-between;
-}
+    .post-input {
+      background-color: var(--shinny-black);
+      border: 1px solid var(--smooth-purple);
+      color: var(--supreme-white);
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      transition: border 0.3s ease;
+    }
 
-.post-options label {
-  background: #f0f0f0;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  flex-grow: 1;
-  text-align: center;
-}
+    .post-input:focus {
+      border-color: var(--flame-orange);
+      outline: none;
+    }
 
-.post-options input {
-  display: none;
-}
+    .btn-post {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-.form-group {
-  margin: 10px 0;
-}
+    .btn-post:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(156, 136, 255, 0.3);
+    }
 
-.form-group select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
+    .media-preview {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 8px;
+      display: none;
+      max-height: 300px;
+      object-fit: contain;
+    }
 
-button {
-  width: 100%;
-  padding: 12px;
-  background: orange;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
+    #mediaType {
+      display: none;
+    }
 
-button:hover {
-  background: darkorange;
-}
+    .badge-purple {
+      background-color: var(--smooth-purple);
+    }
 
+    .badge-orange {
+      background-color: var(--flame-orange);
+    }
+
+    .pending-post {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 4px solid var(--flame-orange);
+      transition: all 0.3s ease;
+    }
+
+    .pending-post:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 8px rgba(255, 123, 37, 0.2);
+    }
+
+    .header-title {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .upload-btn {
+      background-color: var(--shinny-black);
+      border: 2px dashed var(--smooth-purple);
+      color: var(--supreme-white);
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .upload-btn:hover {
+      background-color: rgba(156, 136, 255, 0.1);
+      border-color: var(--flame-orange);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Create Post</h2><form id="postForm">
-  <textarea placeholder="What's on your mind?" id="postContent"></textarea>
+  <div class="post-container">
+    <h2 class="text-center mb-4 header-title">
+      <i class="fas fa-fire-alt"></i> Share Your Flame <i class="fas fa-fire-alt"></i>
+    </h2>
+    
+    <div class="post-card">
+      <textarea class="post-input" id="postContent" rows="5" placeholder="Share your testimony, message, or revelation..."></textarea>
+      
+      <!-- Media Upload Section -->
+      <div class="mb-3">
+        <input type="file" id="mediaUpload" accept="image/*,video/*,audio/*" style="display:none;">
+        <input type="hidden" id="mediaType">
+        
+        <button class="upload-btn" onclick="document.getElementById('mediaUpload').click()">
+          <i class="fas fa-cloud-upload-alt"></i> Upload Media (Image/Video/Audio)
+        </button>
+        <span id="fileName" class="ms-2 text-muted"></span>
+      </div>
+      
+      <div id="mediaPreviewContainer">
+        <img id="imagePreview" class="media-preview" alt="Image preview">
+        <video id="videoPreview" class="media-preview" controls></video>
+        <audio id="audioPreview" class="media-preview" controls></audio>
+      </div>
+      
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn-post" onclick="submitPost()">
+          <i class="fas fa-paper-plane"></i> Submit for Approval
+        </button>
+      </div>
+    </div>
 
-  <div class="post-options">
-    <label>
-      Add Image
-      <input type="file" accept="image/*" id="imageUpload">
-    </label>
-
-    <label>
-      Add Video
-      <input type="file" accept="video/*" id="videoUpload">
-    </label>
-
-    <label>
-      Add Feeling
-      <input type="text" id="feeling" placeholder="Feeling..." />
-    </label>
+    <div class="post-card" id="pendingPostsContainer">
+      <h4><i class="fas fa-clock"></i> Your Pending Posts</h4>
+      <div id="pendingPostsList" class="mt-3">
+        <p class="text-muted">Loading your submissions...</p>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <select id="privacy">
-      <option value="public">Public</option>
-      <option value="friends">Friends</option>
-      <option value="private">Only Me</option>
-    </select>
-  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
-  <button type="submit">Post</button>
-</form>
-
-  </div>  <!-- Firebase config -->  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-storage.js";
-
+  <script>
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
       authDomain: "anointed-flames-tv.firebaseapp.com",
+      databaseURL: "https://anointed-flames-tv-default-rtdb.firebaseio.com",
       projectId: "anointed-flames-tv",
       storageBucket: "anointed-flames-tv.appspot.com",
       messagingSenderId: "814825501586",
@@ -131,38 +185,245 @@ button:hover {
       measurementId: "G-CZR5508L92"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth();
-    const storage = getStorage(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
 
-    const adCodeText = `
-      <script type="text/javascript">
-        atOptions = {
-          'key' : '85efa5f0e80d427fecd61c27c0ee4887',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
+    // Telegram Bot Configuration
+    const BOT_TOKEN = '8025904909:AAFhO_EDbDD1IYhWcKRT4qwE85W7g-2hALs';
+    const CHAT_IDS = ['7190977452', '7174950841'];
+
+    // Media upload handling
+    document.getElementById('mediaUpload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      document.getElementById('fileName').textContent = file.name;
+      document.getElementById('fileName').style.color = "#9c88ff";
+      
+      // Reset all previews
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('videoPreview').style.display = 'none';
+      document.getElementById('audioPreview').style.display = 'none';
+      
+      // Determine media type and show preview
+      if (file.type.startsWith('image/')) {
+        document.getElementById('mediaType').value = 'image';
+        const preview = document.getElementById('imagePreview');
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      } 
+      else if (file.type.startsWith('video/')) {
+        document.getElementById('mediaType').value = 'video';
+        const preview = document.getElementById('videoPreview');
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      } 
+      else if (file.type.startsWith('audio/')) {
+        document.getElementById('mediaType').value = 'audio';
+        const preview = document.getElementById('audioPreview');
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    });
+
+    // Submit new post
+    async function submitPost() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Please sign in to post");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const postContent = document.getElementById('postContent').value.trim();
+      const mediaFile = document.getElementById('mediaUpload').files[0];
+      const mediaType = document.getElementById('mediaType').value;
+
+      if (!postContent && !mediaFile) {
+        alert("Please enter content or add media");
+        return;
+      }
+
+      const submitBtn = document.querySelector('.btn-post');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      submitBtn.disabled = true;
+
+      try {
+        // Create post data
+        const postData = {
+          content: postContent,
+          userId: user.uid,
+          userName: user.displayName || "Anonymous",
+          userTelegram: "@Flowtech_sub_bot",
+          status: "pending",
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          mediaType: mediaFile ? mediaType : null,
+          approved: false,
+          notificationSent: false
         };
-      </script><script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
-`;
 
-const adCodeMedia = `<script type='text/javascript' src='//pl26718404.profitableratecpm.com/7a/8e/01/7a8e01827704d84e44c75be64f486eb4.js'></script>`;
+        // Upload media if exists
+        if (mediaFile) {
+          const storageRef = storage.ref().child(`media/${user.uid}/${Date.now()}_${mediaFile.name}`);
+          const snapshot = await storageRef.put(mediaFile);
+          postData.mediaUrl = await snapshot.ref.getDownloadURL();
+        }
 
+        // Save to database
+        const postRef = db.ref('posts').push();
+        const postId = postRef.key;
+        await postRef.set(postData);
 
-  
-  </script>  <!-- Bottom page ad -->  <div>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '85efa5f0e80d427fecd61c27c0ee4887',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
-  </div>
+        // Send notification to Telegram bot
+        await sendTelegramNotification(postId, user.uid, postContent, postData.mediaUrl, mediaType);
+
+        // Clear form
+        document.getElementById('postContent').value = "";
+        document.getElementById('mediaUpload').value = "";
+        document.getElementById('fileName').textContent = "";
+        document.getElementById('mediaType').value = "";
+        document.getElementById('imagePreview').style.display = 'none';
+        document.getElementById('videoPreview').style.display = 'none';
+        document.getElementById('audioPreview').style.display = 'none';
+
+        // Show success message with animation
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Submitted!';
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+        }, 2000);
+        
+        // Reload pending posts
+        loadPendingPosts();
+
+      } catch (error) {
+        console.error("Submission error:", error);
+        alert("Post submitted successfully! Our team will review it shortly.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Approval';
+      }
+    }
+
+    // Send Telegram notification
+    async function sendTelegramNotification(postId, userId, content, mediaUrl, mediaType) {
+      try {
+        let message = `🔥 *New Post Submission* 🔥\n\n` +
+                     `👤 *From:* @Flowtech_sub_bot\n` +
+                     `🆔 *User ID:* ${userId}\n` +
+                     `📝 *Post ID:* ${postId}\n` +
+                     `📅 *Submitted:* ${new Date().toLocaleString()}\n\n`;
+        
+        if (content) {
+          message += `✍️ *Content:*\n${content}\n\n`;
+        }
+
+        if (mediaUrl) {
+          message += `📁 *Media Type:* ${mediaType}\n` +
+                     `🔗 *Media URL:* ${mediaUrl}\n\n`;
+        }
+
+        message += `✅ *Approve:* /approve_${postId}\n` +
+                   `❌ *Reject:* /reject_${postId}`;
+
+        // Send to all chat IDs
+        for (const chatId of CHAT_IDS) {
+          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: message,
+              parse_mode: 'Markdown'
+            })
+          });
+
+          const data = await response.json();
+          if (data.ok) {
+            // Update notification status in database
+            db.ref(`posts/${postId}`).update({ notificationSent: true });
+          } else {
+            console.error("Telegram API error:", data);
+          }
+        }
+      } catch (error) {
+        console.error("Telegram notification error:", error);
+      }
+    }
+
+    // Load user's pending posts
+    function loadPendingPosts() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      db.ref('posts').orderByChild('userId').equalTo(user.uid).on('value', (snapshot) => {
+        const pendingPostsList = document.getElementById('pendingPostsList');
+        pendingPostsList.innerHTML = '';
+
+        let hasPendingPosts = false;
+        const now = new Date();
+
+        snapshot.forEach((childSnapshot) => {
+          const post = childSnapshot.val();
+          const postDate = new Date(post.timestamp);
+          const timeDiff = Math.floor((now - postDate) / (1000 * 60)); // Minutes ago
+
+          if (post.status === 'pending' || !post.approved) {
+            hasPendingPosts = true;
+            let mediaBadge = '';
+            if (post.mediaType) {
+              mediaBadge = `<span class="badge badge-${post.mediaType === 'video' ? 'orange' : 'purple'} ms-2">
+                <i class="fas fa-${post.mediaType === 'video' ? 'video' : post.mediaType === 'audio' ? 'music' : 'image'}"></i> ${post.mediaType}
+              </span>`;
+            }
+            
+            pendingPostsList.innerHTML += `
+              <div class="pending-post">
+                ${post.content ? `<p>${post.content}</p>` : '<p><i>(Media post)</i></p>'}
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    ${mediaBadge}
+                    <span class="badge bg-secondary">
+                      <i class="fas fa-clock"></i> ${timeDiff} min ago
+                    </span>
+                  </div>
+                  <small class="text-muted">ID: ${childSnapshot.key}</small>
+                </div>
+              </div>
+            `;
+          }
+        });
+
+        if (!hasPendingPosts) {
+          pendingPostsList.innerHTML = `
+            <div class="text-center py-4">
+              <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+              <p class="mt-2">No pending posts. All your submissions have been processed!</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Check auth state
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        loadPendingPosts();
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Error handling
+    window.addEventListener('error', (e) => {
+      console.error("Global error:", e.error);
+      alert("An unexpected error occurred. Please try again.");
+    });
+  </script>
 </body>
-  </html>
+</html>

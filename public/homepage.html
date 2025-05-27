@@ -18,14 +18,17 @@
       --shinny-black: #121212;
       --supreme-white: #f8f9fa;
       --nav-height: 60px;
+      --post-radius: 15px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
 
     body {
       background-color: var(--black-bg);
       color: var(--supreme-white);
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding-top: var(--nav-height);
+      line-height: 1.6;
     }
 
     .navbar {
@@ -38,14 +41,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 15px;
+      padding: 0 20px;
       z-index: 1000;
+      box-shadow: var(--shadow);
     }
 
     .navbar .brand {
       color: var(--smooth-purple);
       font-weight: bold;
       font-size: 1.5rem;
+      font-family: 'Arial Black', sans-serif;
+      text-shadow: 0 0 10px rgba(156, 136, 255, 0.5);
     }
 
     .content {
@@ -56,95 +62,203 @@
 
     /* Bible Verse Banner Styles */
     .verse-banner {
-      background-color: var(--smooth-purple);
+      background: linear-gradient(135deg, var(--smooth-purple), #6c5ce7);
       color: white;
-      padding: 12px;
+      padding: 15px;
       text-align: center;
-      margin: 15px 0;
-      border-radius: 8px;
+      margin: 15px 0 25px;
+      border-radius: var(--post-radius);
       font-style: italic;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
     
     .verse-banner:hover {
-      transform: scale(1.01);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .verse-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    
+    .verse-banner:hover::before {
+      transform: translateX(100%);
     }
     
     .verse-banner i {
       margin-right: 10px;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
 
     .post-entry {
       background-color: var(--shinny-black);
-      border-radius: 10px;
+      border-radius: var(--post-radius);
       padding: 20px;
       margin-bottom: 30px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(156, 136, 255, 0.1);
     }
 
-    .post-entry .post-actions {
+    .post-entry:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+      border-color: rgba(156, 136, 255, 0.3);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--smooth-purple);
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .post-author {
+      font-weight: bold;
+      color: var(--smooth-purple);
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: #777;
+      margin-left: 5px;
+    }
+
+    .post-content {
+      margin-bottom: 15px;
+      padding: 0 10px;
+    }
+
+    .post-media {
+      width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+      max-height: 500px;
+      object-fit: cover;
+    }
+
+    .post-actions {
       display: flex;
       justify-content: space-around;
       margin-top: 15px;
       padding-top: 15px;
-      border-top: 1px solid #333;
+      border-top: 1px solid rgba(255,255,255,0.1);
     }
 
-    .post-entry .post-actions a {
-      color: var(--smooth-purple);
+    .post-actions a {
+      color: #aaa;
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: color 0.2s;
+      transition: all 0.3s;
+      padding: 5px 10px;
+      border-radius: 20px;
     }
 
-    .post-entry .post-actions a:hover {
-      color: white;
+    .post-actions a:hover {
+      color: var(--smooth-purple);
+      background-color: rgba(156, 136, 255, 0.1);
     }
 
-    .post-entry .post-actions a.active-like {
+    .post-actions a.active-like {
       color: #ff6b6b;
+    }
+
+    .post-actions a i {
+      font-size: 1.1rem;
     }
 
     .comment-section {
       margin-top: 15px;
       display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .comment {
-      background-color: #1e1e1e;
+      background-color: rgba(30, 30, 30, 0.7);
       padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 8px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--smooth-purple);
+    }
+
+    .comment-author {
+      font-weight: bold;
+      color: var(--smooth-purple);
+      font-size: 0.9rem;
+    }
+
+    .comment-text {
+      margin-top: 5px;
+      font-size: 0.9rem;
     }
 
     .comment-input {
       display: flex;
-      margin-top: 10px;
+      margin-top: 15px;
     }
 
     .comment-input input {
       flex: 1;
-      background-color: #1e1e1e;
-      border: none;
+      background-color: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(156, 136, 255, 0.3);
       color: white;
-      padding: 8px;
-      border-radius: 5px 0 0 5px;
+      padding: 10px 15px;
+      border-radius: 20px 0 0 20px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .comment-input input:focus {
+      border-color: var(--smooth-purple);
     }
 
     .comment-input button {
-      background-color: var(--smooth-purple);
+      background: linear-gradient(135deg, var(--smooth-purple), #6c5ce7);
       color: white;
       border: none;
-      padding: 0 15px;
-      border-radius: 0 5px 5px 0;
+      padding: 0 20px;
+      border-radius: 0 20px 20px 0;
       cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .comment-input button:hover {
+      opacity: 0.9;
     }
 
     .bottom-nav {
@@ -158,15 +272,30 @@
       justify-content: space-around;
       align-items: center;
       z-index: 999;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
     }
 
     .bottom-nav a {
-      color: var(--smooth-purple);
+      color: #555;
       font-size: 1.5rem;
+      transition: all 0.3s;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .bottom-nav a:hover, .bottom-nav a.active {
+      color: var(--smooth-purple);
+      transform: translateY(-5px);
+      text-shadow: 0 0 10px rgba(156, 136, 255, 0.5);
+    }
+
+    .bottom-nav a.active {
+      color: var(--smooth-purple);
+      background-color: rgba(156, 136, 255, 0.1);
     }
 
     footer {
-      padding: 10px;
+      padding: 20px;
       text-align: center;
       font-size: 0.9rem;
       color: #777;
@@ -177,9 +306,11 @@
       margin: 20px 0;
       padding: 10px;
       background-color: var(--shinny-black);
-      border-radius: 8px;
+      border-radius: var(--post-radius);
       text-align: center;
       overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(156, 136, 255, 0.1);
     }
 
     .likes-count {
@@ -196,46 +327,72 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.8);
+      background-color: rgba(0,0,0,0.9);
       z-index: 2000;
       justify-content: center;
       align-items: center;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease;
     }
     
     .share-content {
       background-color: var(--shinny-black);
-      padding: 20px;
-      border-radius: 10px;
+      padding: 25px;
+      border-radius: 15px;
       width: 90%;
       max-width: 400px;
       text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      border: 1px solid rgba(156, 136, 255, 0.2);
+    }
+    
+    .share-content h4 {
+      color: var(--smooth-purple);
+      margin-bottom: 20px;
+      font-size: 1.3rem;
     }
     
     .share-icons {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       margin: 20px 0;
       flex-wrap: wrap;
+      gap: 15px;
     }
     
     .share-icon {
       font-size: 2.5rem;
-      margin: 10px;
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: all 0.3s;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(30, 30, 30, 0.7);
     }
     
     .share-icon:hover {
-      transform: scale(1.2);
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
     
     .close-share {
       color: var(--smooth-purple);
       background: none;
-      border: none;
-      font-size: 1rem;
+      border: 1px solid var(--smooth-purple);
+      padding: 8px 20px;
+      border-radius: 20px;
       cursor: pointer;
       margin-top: 15px;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .close-share:hover {
+      background-color: var(--smooth-purple);
+      color: white;
     }
     
     .facebook { color: #3b5998; }
@@ -245,13 +402,121 @@
     .linkedin { color: #0077b5; }
     .reddit { color: #ff5700; }
     .email { color: #d44638; }
+
+    /* Floating Action Button */
+    .fab-button {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--smooth-purple), #6c5ce7);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba(156, 136, 255, 0.4);
+      z-index: 998;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .fab-button:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 6px 20px rgba(156, 136, 255, 0.6);
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      margin: 20px auto;
+      border: 4px solid rgba(156, 136, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--smooth-purple);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Post Loading Skeleton */
+    .skeleton-post {
+      background-color: var(--shinny-black);
+      border-radius: var(--post-radius);
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .skeleton-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .skeleton-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(156, 136, 255, 0.1);
+      margin-right: 10px;
+    }
+
+    .skeleton-line {
+      height: 12px;
+      background-color: rgba(156, 136, 255, 0.1);
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .skeleton-line.short {
+      width: 60%;
+    }
+
+    .skeleton-line.medium {
+      width: 80%;
+    }
+
+    .skeleton-content {
+      margin-bottom: 15px;
+    }
+
+    .skeleton-media {
+      width: 100%;
+      height: 200px;
+      background-color: rgba(156, 136, 255, 0.1);
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .skeleton-actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .skeleton-action {
+      width: 60px;
+      height: 20px;
+      background-color: rgba(156, 136, 255, 0.1);
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
   <!-- Top Navbar -->
   <div class="navbar">
     <div class="brand">Anointed Flames</div>
-    <div class="nav-icons"></div>
+    <div class="nav-icons">
+      <i class="fas fa-search" style="color: var(--smooth-purple); font-size: 1.2rem; cursor: pointer;"></i>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -262,6 +527,54 @@
       <span id="daily-verse">Loading verse...</span>
     </div>
 
+    <!-- Loading Spinner -->
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <!-- Skeleton Loader -->
+    <div id="skeletonLoader">
+      <div class="skeleton-post">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div style="flex: 1;">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium" style="width: 40%; margin-top: 5px;"></div>
+          </div>
+        </div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%;"></div>
+          <div class="skeleton-line" style="width: 70%;"></div>
+        </div>
+        <div class="skeleton-media"></div>
+        <div class="skeleton-actions">
+          <div class="skeleton-action"></div>
+          <div class="skeleton-action"></div>
+          <div class="skeleton-action"></div>
+        </div>
+      </div>
+      <div class="skeleton-post">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div style="flex: 1;">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium" style="width: 40%; margin-top: 5px;"></div>
+          </div>
+        </div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%;"></div>
+        </div>
+        <div class="skeleton-actions">
+          <div class="skeleton-action"></div>
+          <div class="skeleton-action"></div>
+          <div class="skeleton-action"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posts Container -->
+    <div id="postsContainer"></div>
+
     <!-- Ad Container -->
     <div class="ad-container">
       <script type="text/javascript">
@@ -275,76 +588,11 @@
       </script>
       <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
     </div>
+  </div>
 
-    <!-- Post 1 -->
-    <div class="post-entry" data-post-id="post1">
-      <p><strong>David</strong> posted a testimony.</p>
-      <p>God has been faithful! Hallelujah!</p>
-      <div class="post-actions">
-        <a href="#" class="like-btn" onclick="toggleLike('post1')">
-          <i class="far fa-thumbs-up"></i> Like 
-          <span class="likes-count" id="likes-post1">0</span>
-        </a>
-        <a href="#" class="comment-btn" onclick="toggleComments('post1')">
-          <i class="far fa-comment"></i> Comment
-        </a>
-        <a href="#" class="share-btn" onclick="sharePost('post1')">
-          <i class="far fa-share-square"></i> Share
-        </a>
-      </div>
-      <div class="comment-section" id="comments-post1">
-        <div class="comment">
-          <strong>Sarah:</strong> Amen! God is good!
-        </div>
-        <div class="comment-input">
-          <input type="text" placeholder="Write a comment..." id="comment-input-post1">
-          <button onclick="postComment('post1')">Post</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ad Container -->
-    <div class="ad-container">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : '85efa5f0e80d427fecd61c27c0ee4887',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
-    </div>
-
-    <!-- Post 2 -->
-    <div class="post-entry" data-post-id="post2">
-      <p><strong>Grace</strong> shared a worship song.</p>
-      <audio controls style="width: 100%">
-        <source src="song.mp3" type="audio/mpeg">
-      </audio>
-      <div class="post-actions">
-        <a href="#" class="like-btn" onclick="toggleLike('post2')">
-          <i class="far fa-thumbs-up"></i> Like 
-          <span class="likes-count" id="likes-post2">0</span>
-        </a>
-        <a href="#" class="comment-btn" onclick="toggleComments('post2')">
-          <i class="far fa-comment"></i> Comment
-        </a>
-        <a href="#" class="share-btn" onclick="sharePost('post2')">
-          <i class="far fa-share-square"></i> Share
-        </a>
-      </div>
-      <div class="comment-section" id="comments-post2">
-        <div class="comment">
-          <strong>Michael:</strong> Beautiful song!
-        </div>
-        <div class="comment-input">
-          <input type="text" placeholder="Write a comment..." id="comment-input-post2">
-          <button onclick="postComment('post2')">Post</button>
-        </div>
-      </div>
-    </div>
+  <!-- Floating Action Button -->
+  <div class="fab-button" onclick="window.location.href='post.html'">
+    <i class="fas fa-plus"></i>
   </div>
 
   <!-- Share Modal -->
@@ -353,7 +601,7 @@
       <h4>Share This Post</h4>
       <div class="share-icons">
         <div class="share-icon facebook" onclick="shareTo('facebook')">
-          <i class="fab fa-facebook"></i>
+          <i class="fab fa-facebook-f"></i>
         </div>
         <div class="share-icon twitter" onclick="shareTo('twitter')">
           <i class="fab fa-twitter"></i>
@@ -362,13 +610,13 @@
           <i class="fab fa-whatsapp"></i>
         </div>
         <div class="share-icon telegram" onclick="shareTo('telegram')">
-          <i class="fab fa-telegram"></i>
+          <i class="fab fa-telegram-plane"></i>
         </div>
         <div class="share-icon linkedin" onclick="shareTo('linkedin')">
-          <i class="fab fa-linkedin"></i>
+          <i class="fab fa-linkedin-in"></i>
         </div>
         <div class="share-icon reddit" onclick="shareTo('reddit')">
-          <i class="fab fa-reddit"></i>
+          <i class="fab fa-reddit-alien"></i>
         </div>
         <div class="share-icon email" onclick="shareTo('email')">
           <i class="fas fa-envelope"></i>
@@ -380,7 +628,7 @@
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <a href="homepage.html"><i class="fas fa-home"></i></a>
+    <a href="homepage.html" class="active"><i class="fas fa-home"></i></a>
     <a href="video.html"><i class="fas fa-video"></i></a>
     <a href="post.html"><i class="fas fa-plus-circle"></i></a>
     <a href="profile.html"><i class="fas fa-user"></i></a>
@@ -419,33 +667,112 @@
     // Track liked posts
     const likedPosts = {};
 
-    // Initialize post data
-    function initPostData(postId) {
-      // Check if post exists in Firestore
-      postsRef.doc(postId).get().then((doc) => {
-        if (!doc.exists) {
-          // Create new post document if it doesn't exist
-          postsRef.doc(postId).set({
-            likes: 0,
-            comments: []
-          });
-        } else {
-          // Update UI with existing data
-          const data = doc.data();
-          document.getElementById(`likes-${postId}`).textContent = data.likes || 0;
-          
-          // Clear existing comments
-          const commentsContainer = document.getElementById(`comments-${postId}`);
-          const commentsList = commentsContainer.querySelectorAll('.comment:not(.comment-input)');
-          commentsList.forEach(comment => comment.remove());
-          
-          // Add comments from Firestore
-          if (data.comments && data.comments.length > 0) {
-            data.comments.forEach(comment => {
-              addCommentToUI(postId, comment.user, comment.text);
-            });
-          }
+    // Function to create a post element
+    function createPostElement(post) {
+      const postElement = document.createElement('div');
+      postElement.className = 'post-entry';
+      postElement.setAttribute('data-post-id', post.id);
+      
+      // Format the date
+      const postDate = post.timestamp?.toDate() || new Date();
+      const formattedDate = postDate.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      // Get first letter of author's name for avatar
+      const avatarLetter = post.author ? post.author.charAt(0).toUpperCase() : 'A';
+      
+      // Create post HTML
+      postElement.innerHTML = `
+        <div class="post-header">
+          <div class="post-avatar">${avatarLetter}</div>
+          <div>
+            <span class="post-author">${post.author || 'Anonymous'}</span>
+            <span class="post-time">${formattedDate}</span>
+          </div>
+        </div>
+        <div class="post-content">
+          <p>${post.content || ''}</p>
+          ${post.media ? `<img src="${post.media}" class="post-media" alt="Post media">` : ''}
+          ${post.audio ? `<audio controls style="width: 100%"><source src="${post.audio}" type="audio/mpeg"></audio>` : ''}
+        </div>
+        <div class="post-actions">
+          <a href="#" class="like-btn" onclick="toggleLike('${post.id}')">
+            <i class="far fa-thumbs-up"></i> Like 
+            <span class="likes-count" id="likes-${post.id}">${post.likes || 0}</span>
+          </a>
+          <a href="#" class="comment-btn" onclick="toggleComments('${post.id}')">
+            <i class="far fa-comment"></i> Comment
+          </a>
+          <a href="#" class="share-btn" onclick="sharePost('${post.id}')">
+            <i class="far fa-share-square"></i> Share
+          </a>
+        </div>
+        <div class="comment-section" id="comments-${post.id}">
+          ${post.comments ? post.comments.map(comment => `
+            <div class="comment">
+              <div class="comment-author">${comment.user}:</div>
+              <div class="comment-text">${comment.text}</div>
+            </div>
+          `).join('') : ''}
+          <div class="comment-input">
+            <input type="text" placeholder="Write a comment..." id="comment-input-${post.id}">
+            <button onclick="postComment('${post.id}')">Post</button>
+          </div>
+        </div>
+      `;
+      
+      return postElement;
+    }
+
+    // Load posts from Firestore
+    function loadPosts() {
+      document.getElementById('loadingSpinner').style.display = 'block';
+      document.getElementById('skeletonLoader').style.display = 'block';
+      document.getElementById('postsContainer').innerHTML = '';
+      
+      postsRef.orderBy('timestamp', 'desc').get().then((querySnapshot) => {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('skeletonLoader').style.display = 'none';
+        
+        if (querySnapshot.empty) {
+          document.getElementById('postsContainer').innerHTML = `
+            <div class="post-entry" style="text-align: center;">
+              <p>No posts yet. Be the first to share!</p>
+            </div>
+          `;
+          return;
         }
+        
+        querySnapshot.forEach((doc) => {
+          const post = {
+            id: doc.id,
+            ...doc.data()
+          };
+          const postElement = createPostElement(post);
+          document.getElementById('postsContainer').appendChild(postElement);
+          
+          // Check if current user has liked this post
+          if (auth.currentUser) {
+            const userId = auth.currentUser.uid;
+            const likeKey = `liked_${post.id}_${userId}`;
+            if (likedPosts[likeKey]) {
+              postElement.querySelector('.like-btn').classList.add('active-like');
+            }
+          }
+        });
+      }).catch((error) => {
+        console.error("Error loading posts: ", error);
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('skeletonLoader').style.display = 'none';
+        document.getElementById('postsContainer').innerHTML = `
+          <div class="post-entry" style="text-align: center;">
+            <p>Error loading posts. Please try again later.</p>
+          </div>
+        `;
       });
     }
 
@@ -522,29 +849,30 @@
       postsRef.doc(postId).update({
         comments: firebase.firestore.FieldValue.arrayUnion(newComment)
       }).then(() => {
-        addCommentToUI(postId, user, commentText);
+        const commentsContainer = document.getElementById(`comments-${postId}`);
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment';
+        commentDiv.innerHTML = `
+          <div class="comment-author">${user}:</div>
+          <div class="comment-text">${commentText}</div>
+        `;
+        commentsContainer.insertBefore(commentDiv, commentsContainer.querySelector('.comment-input'));
         commentInput.value = '';
+      }).catch((error) => {
+        console.error("Error posting comment: ", error);
+        alert("Error posting comment. Please try again.");
       });
-    }
-
-    // Add comment to UI
-    function addCommentToUI(postId, user, text) {
-      const commentsContainer = document.getElementById(`comments-${postId}`);
-      const commentDiv = document.createElement('div');
-      commentDiv.className = 'comment';
-      commentDiv.innerHTML = `<strong>${user}:</strong> ${text}`;
-      commentsContainer.insertBefore(commentDiv, commentsContainer.querySelector('.comment-input'));
     }
 
     // Global variable to store current post being shared
     let currentSharingPost = null;
     
-    // Modified sharePost function
+    // Share post function
     function sharePost(postId) {
       const postElement = document.querySelector(`[data-post-id="${postId}"]`);
       currentSharingPost = {
         id: postId,
-        text: postElement.querySelector('p:nth-of-type(2)')?.textContent || "Check out this inspiring post from Anointed Flames TV",
+        text: postElement.querySelector('.post-content p')?.textContent || "Check out this inspiring post from Anointed Flames TV",
         url: window.location.href.split('#')[0] + '#' + postId
       };
       
@@ -599,27 +927,6 @@
     window.addEventListener('click', function(event) {
       if (event.target === document.getElementById('shareModal')) {
         closeShareModal();
-      }
-    });
-
-    // Initialize posts when auth state changes
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log("User is signed in:", user);
-        // Initialize all posts
-        initPostData('post1');
-        initPostData('post2');
-        
-        // Set up real-time listeners
-        postsRef.doc('post1').onSnapshot((doc) => {
-          updateLikesCount('post1');
-        });
-        
-        postsRef.doc('post2').onSnapshot((doc) => {
-          updateLikesCount('post2');
-        });
-      } else {
-        console.log("No user is signed in");
       }
     });
 
@@ -688,15 +995,30 @@
     // Click to get new verse
     document.getElementById('verseBanner').addEventListener('click', displayDailyVerse);
 
+    // Initialize the app when auth state changes
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User is signed in:", user);
+        // Load posts
+        loadPosts();
+        
+        // Set up real-time listener for new posts
+        postsRef.orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+          // Don't reload if we're just getting metadata changes
+          if (!snapshot.metadata.hasPendingWrites) {
+            loadPosts();
+          }
+        });
+      } else {
+        console.log("No user is signed in");
+        // Still load posts but without like tracking
+        loadPosts();
+      }
+    });
+
     // Call the function when page loads
     window.onload = function() {
       displayDailyVerse();
-      
-      // Initialize posts (will be properly initialized after auth check)
-      document.querySelectorAll('.post-entry').forEach(post => {
-        const postId = post.getAttribute('data-post-id');
-        initPostData(postId);
-      });
     };
   </script>
 </body>

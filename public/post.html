@@ -77,82 +77,66 @@
       object-fit: contain;
     }
 
-    #mediaType {
-      display: none;
-    }
-
-    .badge-purple {
-      background-color: var(--smooth-purple);
-    }
-
-    .badge-orange {
-      background-color: var(--flame-orange);
-    }
-
     .pending-post {
       background: #1e1e1e;
       border-radius: 8px;
       padding: 15px;
       margin-top: 15px;
       border-left: 4px solid var(--flame-orange);
-      transition: all 0.3s ease;
     }
 
-    .pending-post:hover {
-      transform: translateX(5px);
-      box-shadow: 0 4px 8px rgba(255, 123, 37, 0.2);
+    .progress-bar {
+      height: 5px;
+      background: var(--flame-orange);
+      width: 0%;
+      transition: width 0.3s ease;
+      margin-top: 10px;
+      border-radius: 3px;
     }
 
-    .header-title {
-      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-    }
-
-    .upload-btn {
-      background-color: var(--shinny-black);
-      border: 2px dashed var(--smooth-purple);
-      color: var(--supreme-white);
-      padding: 8px 15px;
+    .notification-banner {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
+      color: white;
+      padding: 15px 25px;
       border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .upload-btn:hover {
-      background-color: rgba(156, 136, 255, 0.1);
-      border-color: var(--flame-orange);
+      z-index: 1000;
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div class="notification-banner" id="successNotification">
+    <i class="fas fa-check-circle"></i> Successfully submitted for review!
+  </div>
+
   <div class="post-container">
-    <h2 class="text-center mb-4 header-title">
+    <h2 class="text-center mb-4" style="color: var(--smooth-purple);">
       <i class="fas fa-fire-alt"></i> Share Your Flame <i class="fas fa-fire-alt"></i>
     </h2>
     
     <div class="post-card">
-      <textarea class="post-input" id="postContent" rows="5" placeholder="Share your testimony, message, or revelation..."></textarea>
+      <textarea class="post-input" id="postContent" rows="5" placeholder="Share your testimony or message..."></textarea>
       
-      <!-- Media Upload Section -->
       <div class="mb-3">
-        <input type="file" id="mediaUpload" accept="image/*,video/*,audio/*" style="display:none;">
-        <input type="hidden" id="mediaType">
-        
-        <button class="upload-btn" onclick="document.getElementById('mediaUpload').click()">
-          <i class="fas fa-cloud-upload-alt"></i> Upload Media (Image/Video/Audio)
+        <input type="file" id="mediaUpload" accept="image/*,video/*" style="display:none;">
+        <button class="btn btn-secondary" onclick="document.getElementById('mediaUpload').click()">
+          <i class="fas fa-plus"></i> Add Media
         </button>
-        <span id="fileName" class="ms-2 text-muted"></span>
+        <span id="fileName" class="ms-2"></span>
+        <div class="progress-bar" id="uploadProgress"></div>
       </div>
       
       <div id="mediaPreviewContainer">
-        <img id="imagePreview" class="media-preview" alt="Image preview">
+        <img id="imagePreview" class="media-preview" alt="Preview">
         <video id="videoPreview" class="media-preview" controls></video>
-        <audio id="audioPreview" class="media-preview" controls></audio>
       </div>
       
       <div class="d-flex justify-content-end mt-3">
-        <button class="btn-post" onclick="submitPost()">
+        <button class="btn-post" onclick="submitPost()" id="submitBtn">
           <i class="fas fa-paper-plane"></i> Submit for Approval
         </button>
       </div>
@@ -161,7 +145,7 @@
     <div class="post-card" id="pendingPostsContainer">
       <h4><i class="fas fa-clock"></i> Your Pending Posts</h4>
       <div id="pendingPostsList" class="mt-3">
-        <p class="text-muted">Loading your submissions...</p>
+        <p class="text-muted">No pending posts</p>
       </div>
     </div>
   </div>
@@ -181,8 +165,7 @@
       projectId: "anointed-flames-tv",
       storageBucket: "anointed-flames-tv.appspot.com",
       messagingSenderId: "814825501586",
-      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b",
-      measurementId: "G-CZR5508L92"
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
     };
 
     // Initialize Firebase
@@ -191,147 +174,158 @@
     const auth = firebase.auth();
     const storage = firebase.storage();
 
-    // Telegram Bot Configuration
-    const BOT_TOKEN = '8025904909:AAFhO_EDbDD1IYhWcKRT4qwE85W7g-2hALs';
+    // Telegram Bot Configuration (UPDATED)
+    const BOT_TOKEN = '8142733398:AAHT8ugREGQrvm67-ruExeky2kA-vMXm36c';
     const CHAT_IDS = ['7190977452', '7174950841'];
 
-    // Media upload handling
+    // Media upload handling (FIXED)
     document.getElementById('mediaUpload').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
 
+      // Check file size (max 25MB)
+      if (file.size > 25 * 1024 * 1024) {
+        alert("File too large! Max 25MB allowed");
+        return;
+      }
+
       document.getElementById('fileName').textContent = file.name;
-      document.getElementById('fileName').style.color = "#9c88ff";
       
-      // Reset all previews
+      // Reset previews
       document.getElementById('imagePreview').style.display = 'none';
       document.getElementById('videoPreview').style.display = 'none';
-      document.getElementById('audioPreview').style.display = 'none';
       
-      // Determine media type and show preview
       if (file.type.startsWith('image/')) {
-        document.getElementById('mediaType').value = 'image';
-        const preview = document.getElementById('imagePreview');
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+          document.getElementById('imagePreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
       } 
       else if (file.type.startsWith('video/')) {
-        document.getElementById('mediaType').value = 'video';
-        const preview = document.getElementById('videoPreview');
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-      } 
-      else if (file.type.startsWith('audio/')) {
-        document.getElementById('mediaType').value = 'audio';
-        const preview = document.getElementById('audioPreview');
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
+        document.getElementById('videoPreview').src = URL.createObjectURL(file);
+        document.getElementById('videoPreview').style.display = 'block';
       }
     });
 
-    // Submit new post
+    // Show success notification and redirect
+    function showSuccessAndRedirect() {
+      const notification = document.getElementById('successNotification');
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+        window.location.href = "homepage.html";
+      }, 3000);
+    }
+
+    // Submit post function (FIXED)
     async function submitPost() {
       const user = auth.currentUser;
       if (!user) {
         alert("Please sign in to post");
-        window.location.href = "login.html";
         return;
       }
 
       const postContent = document.getElementById('postContent').value.trim();
       const mediaFile = document.getElementById('mediaUpload').files[0];
-      const mediaType = document.getElementById('mediaType').value;
 
       if (!postContent && !mediaFile) {
         alert("Please enter content or add media");
         return;
       }
 
-      const submitBtn = document.querySelector('.btn-post');
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
       try {
+        // Upload media if exists
+        let mediaUrl = null;
+        let mediaType = null;
+        
+        if (mediaFile) {
+          mediaType = mediaFile.type.startsWith('image/') ? 'image' : 'video';
+          const storageRef = storage.ref(`media/${user.uid}/${Date.now()}_${mediaFile.name}`);
+          const uploadTask = storageRef.put(mediaFile);
+          
+          // Show progress
+          uploadTask.on('state_changed', 
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              document.getElementById('uploadProgress').style.width = progress + '%';
+            },
+            (error) => {
+              console.error("Upload error:", error);
+              throw error;
+            }
+          );
+          
+          await uploadTask;
+          mediaUrl = await storageRef.getDownloadURL();
+        }
+
         // Create post data
         const postData = {
           content: postContent,
           userId: user.uid,
           userName: user.displayName || "Anonymous",
           userTelegram: "@Flowtech_sub_bot",
+          timestamp: Date.now(),
           status: "pending",
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          mediaType: mediaFile ? mediaType : null,
+          mediaUrl: mediaUrl || null,
+          mediaType: mediaType || null,
+          postType: mediaType === 'video' ? 'video' : 'post',
           approved: false,
           notificationSent: false
         };
 
-        // Upload media if exists
-        if (mediaFile) {
-          const storageRef = storage.ref().child(`media/${user.uid}/${Date.now()}_${mediaFile.name}`);
-          const snapshot = await storageRef.put(mediaFile);
-          postData.mediaUrl = await snapshot.ref.getDownloadURL();
-        }
-
         // Save to database
         const postRef = db.ref('posts').push();
-        const postId = postRef.key;
         await postRef.set(postData);
 
-        // Send notification to Telegram bot
-        await sendTelegramNotification(postId, user.uid, postContent, postData.mediaUrl, mediaType);
+        // Send Telegram notification
+        await sendTelegramNotification(postRef.key, postData);
 
         // Clear form
-        document.getElementById('postContent').value = "";
-        document.getElementById('mediaUpload').value = "";
-        document.getElementById('fileName').textContent = "";
-        document.getElementById('mediaType').value = "";
-        document.getElementById('imagePreview').style.display = 'none';
-        document.getElementById('videoPreview').style.display = 'none';
-        document.getElementById('audioPreview').style.display = 'none';
-
-        // Show success message with animation
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Submitted!';
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-        }, 2000);
+        resetForm();
         
-        // Reload pending posts
-        loadPendingPosts();
+        // Show success and redirect
+        showSuccessAndRedirect();
 
       } catch (error) {
-        console.error("Submission error:", error);
-        alert("Post submitted successfully! Our team will review it shortly.");
+        console.error("Error:", error);
+        alert("⚠️ Error: " + error.message);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Approval';
+        document.getElementById('uploadProgress').style.width = '0%';
       }
     }
 
-    // Send Telegram notification
-    async function sendTelegramNotification(postId, userId, content, mediaUrl, mediaType) {
+    // Telegram notification (FIXED)
+    async function sendTelegramNotification(postId, postData) {
       try {
-        let message = `🔥 *New Post Submission* 🔥\n\n` +
-                     `👤 *From:* @Flowtech_sub_bot\n` +
-                     `🆔 *User ID:* ${userId}\n` +
-                     `📝 *Post ID:* ${postId}\n` +
-                     `📅 *Submitted:* ${new Date().toLocaleString()}\n\n`;
+        let message = `🔥 *NEW POST SUBMISSION* 🔥\n\n` +
+                     `👤 From: @Flowtech_sub_bot\n` +
+                     `🆔 Post ID: ${postId}\n` +
+                     `📅 Submitted: ${new Date(postData.timestamp).toLocaleString()}\n`;
         
-        if (content) {
-          message += `✍️ *Content:*\n${content}\n\n`;
+        if (postData.content) {
+          message += `\n📝 Content:\n${postData.content}\n`;
         }
 
-        if (mediaUrl) {
-          message += `📁 *Media Type:* ${mediaType}\n` +
-                     `🔗 *Media URL:* ${mediaUrl}\n\n`;
+        if (postData.mediaUrl) {
+          message += `\n📁 Media: ${postData.mediaType}\n` +
+                     `🔗 ${postData.mediaUrl}\n`;
         }
 
-        message += `✅ *Approve:* /approve_${postId}\n` +
-                   `❌ *Reject:* /reject_${postId}`;
+        message += `\n✅ To approve:\n` +
+                   `/approve_${postId}`;
 
-        // Send to all chat IDs
         for (const chatId of CHAT_IDS) {
-          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -342,21 +336,26 @@
               parse_mode: 'Markdown'
             })
           });
-
-          const data = await response.json();
-          if (data.ok) {
-            // Update notification status in database
-            db.ref(`posts/${postId}`).update({ notificationSent: true });
-          } else {
-            console.error("Telegram API error:", data);
-          }
         }
+
+        // Mark as notified
+        db.ref(`posts/${postId}`).update({ notificationSent: true });
+
       } catch (error) {
-        console.error("Telegram notification error:", error);
+        console.error("Telegram error:", error);
       }
     }
 
-    // Load user's pending posts
+    // Reset form
+    function resetForm() {
+      document.getElementById('postContent').value = "";
+      document.getElementById('mediaUpload').value = "";
+      document.getElementById('fileName').textContent = "";
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('videoPreview').style.display = 'none';
+    }
+
+    // Load pending posts
     function loadPendingPosts() {
       const user = auth.currentUser;
       if (!user) return;
@@ -365,64 +364,33 @@
         const pendingPostsList = document.getElementById('pendingPostsList');
         pendingPostsList.innerHTML = '';
 
-        let hasPendingPosts = false;
-        const now = new Date();
-
         snapshot.forEach((childSnapshot) => {
           const post = childSnapshot.val();
-          const postDate = new Date(post.timestamp);
-          const timeDiff = Math.floor((now - postDate) / (1000 * 60)); // Minutes ago
-
-          if (post.status === 'pending' || !post.approved) {
-            hasPendingPosts = true;
-            let mediaBadge = '';
-            if (post.mediaType) {
-              mediaBadge = `<span class="badge badge-${post.mediaType === 'video' ? 'orange' : 'purple'} ms-2">
-                <i class="fas fa-${post.mediaType === 'video' ? 'video' : post.mediaType === 'audio' ? 'music' : 'image'}"></i> ${post.mediaType}
-              </span>`;
-            }
-            
-            pendingPostsList.innerHTML += `
-              <div class="pending-post">
-                ${post.content ? `<p>${post.content}</p>` : '<p><i>(Media post)</i></p>'}
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    ${mediaBadge}
-                    <span class="badge bg-secondary">
-                      <i class="fas fa-clock"></i> ${timeDiff} min ago
-                    </span>
-                  </div>
-                  <small class="text-muted">ID: ${childSnapshot.key}</small>
-                </div>
-              </div>
+          if (post.status === 'pending') {
+            const postElement = document.createElement('div');
+            postElement.className = 'pending-post';
+            postElement.innerHTML = `
+              <p>${post.content || '(Media post)'}</p>
+              <small class="text-muted">
+                ${new Date(post.timestamp).toLocaleString()}
+                ${post.mediaType ? `<span class="badge bg-secondary ms-2">${post.mediaType}</span>` : ''}
+              </small>
             `;
+            pendingPostsList.appendChild(postElement);
           }
         });
 
-        if (!hasPendingPosts) {
-          pendingPostsList.innerHTML = `
-            <div class="text-center py-4">
-              <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
-              <p class="mt-2">No pending posts. All your submissions have been processed!</p>
-            </div>
-          `;
+        if (pendingPostsList.children.length === 0) {
+          pendingPostsList.innerHTML = '<p class="text-muted">No pending posts</p>';
         }
       });
     }
 
-    // Check auth state
+    // Initialize auth state
     auth.onAuthStateChanged((user) => {
       if (user) {
         loadPendingPosts();
-      } else {
-        window.location.href = "login.html";
       }
-    });
-
-    // Error handling
-    window.addEventListener('error', (e) => {
-      console.error("Global error:", e.error);
-      alert("An unexpected error occurred. Please try again.");
     });
   </script>
 </body>

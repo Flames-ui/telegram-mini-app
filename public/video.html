@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anointed Flames TV - Videos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* === Premium Global Styles === */
+    :root {
+      --smooth-purple: #8a63ff;
+      --deep-purple: #6a3093;
+      --black-bg: #0a0a0a;
+      --shinny-black: #1a1a1a;
+      --supreme-white: #ffffff;
+      --flame-orange: #ff6b35;
+      --gold-accent: #ffd700;
+      --platinum: #e5e4e2;
+    }
+
+    body {
+      background-color: var(--black-bg);
+      color: var(--supreme-white);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 20px;
+      margin-bottom: 80px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(138, 99, 255, 0.05) 0%, rgba(138, 99, 255, 0.05) 90%);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Premium Header Styles */
+    .header-title {
+      background: linear-gradient(135deg, var(--gold-accent), var(--flame-orange), var(--smooth-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(138, 99, 255, 0.3);
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .header-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-accent), var(--flame-orange), transparent);
+    }
+
+    /* Premium Video Card Styles */
+    .video-card {
+      background-color: var(--shinny-black);
+      border-radius: 12px;
+      padding: 0;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(138, 99, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(138, 99, 255, 0.2);
+      border-color: rgba(138, 99, 255, 0.5);
+    }
+
+    .video-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--smooth-purple), var(--flame-orange));
+    }
+
+    /* Video Player Styles */
+    .video-player {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      position: relative;
+      background-color: #000;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+
+    .video-player video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-player .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid var(--gold-accent);
+    }
+
+    .video-player .play-btn:hover {
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--gold-accent);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    /* Video Info Section */
+    .video-info {
+      padding: 20px;
+    }
+
+    .video-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--platinum);
+      margin-bottom: 10px;
+    }
+
+    .video-description {
+      color: var(--platinum);
+      margin: 15px 0;
+      line-height: 1.7;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* Premium Post Header */
+    .video-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 2px solid var(--smooth-purple);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px var(--smooth-purple);
+    }
+
+    .video-user {
+      font-weight: 700;
+      color: var(--gold-accent);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .video-user:hover {
+      color: var(--flame-orange);
+      text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+    }
+
+    .video-time {
+      font-size: 0.85rem;
+      color: #999;
+      margin-left: 8px;
+      font-weight: 300;
+    }
+
+    /* Premium Action Buttons */
+    .video-actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(138, 99, 255, 0.2);
+    }
+
+    .action-btn {
+      color: var(--platinum);
+      text-decoration: none;
+      transition: all 0.3s;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+    }
+
+    .action-btn:hover {
+      color: var(--gold-accent);
+      background-color: rgba(138, 99, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .action-btn.active {
+      color: var(--flame-orange);
+    }
+
+    .action-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--flame-orange);
+      transition: width 0.3s;
+    }
+
+    .action-btn:hover::after {
+      width: 60%;
+    }
+
+    /* Premium Delete Button */
+    .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: #ff6b6b;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.3s;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      padding: 5px;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
+      background-color: rgba(255, 107, 107, 0.1);
+      transform: rotate(15deg);
+    }
+
+    /* Premium Comments Section */
+    .comments-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(138, 99, 255, 0.2);
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 1000px; }
+    }
+
+    .comment {
+      display: flex;
+      margin-bottom: 12px;
+      padding: 12px;
+      background-color: rgba(30, 30, 30, 0.7);
+      border-radius: 8px;
+      border-left: 3px solid var(--smooth-purple);
+      transition: all 0.3s;
+    }
+
+    .comment:hover {
+      background-color: rgba(40, 40, 40, 0.7);
+      transform: translateX(3px);
+    }
+
+    .comment-user {
+      font-weight: 600;
+      color: var(--gold-accent);
+      margin-right: 8px;
+    }
+
+    .comment-input {
+      display: flex;
+      margin-top: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      background-color: rgba(30, 30, 30, 0.8);
+      color: var(--supreme-white);
+      font-size: 0.95rem;
+    }
+
+    .comment-input input::placeholder {
+      color: #777;
+    }
+
+    .comment-input button {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--smooth-purple), var(--deep-purple));
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .comment-input button:hover {
+      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
+      transform: translateX(2px);
+    }
+
+    /* Premium Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--shinny-black);
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+      z-index: 1000;
+      border-top: 1px solid rgba(138, 99, 255, 0.3);
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .bottom-nav a {
+      color: var(--platinum);
+      font-size: 1.5rem;
+      transition: all 0.3s;
+      padding: 5px 15px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .bottom-nav a.active {
+      color: var(--gold-accent);
+      transform: translateY(-5px);
+      text-shadow: 0 0 10px var(--gold-accent);
+    }
+
+    .bottom-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--gold-accent);
+      transition: width 0.3s;
+    }
+
+    .bottom-nav a.active::after {
+      width: 60%;
+    }
+
+    /* Premium Success Alert */
+    .success-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.3s ease-out;
+      border-left: 5px solid var(--gold-accent);
+    }
+
+    @keyframes slideDown {
+      from { top: -50px; opacity: 0; }
+      to { top: 20px; opacity: 1; }
+    }
+
+    .success-alert i {
+      margin-right: 10px;
+      color: var(--gold-accent);
+    }
+
+    /* Premium Ad Containers */
+    .ad-container {
+      margin: 30px 0;
+      padding: 20px;
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      text-align: center;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(138, 99, 255, 0.5);
+      box-shadow: inset 0 0 15px rgba(138, 99, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-container::before {
+      content: 'Advertisement';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 1px;
+    }
+
+    /* Premium Likes Count */
+    .likes-count {
+      font-size: 0.85rem;
+      color: var(--platinum);
+      margin-left: 5px;
+      font-weight: 600;
+    }
+
+    /* Premium Loading Animation */
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .loading {
+      animation: pulse 1.5s infinite;
+      color: var(--platinum);
+    }
+
+    /* Premium Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--shinny-black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--smooth-purple), var(--flame-orange));
+      border-radius: 10px;
+    }
+
+    /* Video Categories */
+    .video-categories {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 15px 0;
+      margin-bottom: 20px;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .video-categories::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
+    .category-btn {
+      padding: 8px 15px;
+      background-color: var(--shinny-black);
+      border: 1px solid var(--smooth-purple);
+      color: var(--platinum);
+      border-radius: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .category-btn.active {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      color: white;
+      border-color: transparent;
+    }
+
+    .category-btn:hover {
+      background-color: rgba(138, 99, 255, 0.2);
+    }
+
+    /* Video View Count */
+    .view-count {
+      font-size: 0.8rem;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-alert" id="successAlert">
+    <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+  </div>
+
+  <div class="container">
+    <h2 class="header-title">
+      <i class="fas fa-video"></i> Anointed Flames TV Videos <i class="fas fa-video"></i>
+    </h2>
+
+    <!-- Video Categories -->
+    <div class="video-categories">
+      <button class="category-btn active" onclick="filterVideos('all')">All Videos</button>
+      <button class="category-btn" onclick="filterVideos('sermon')">Sermons</button>
+      <button class="category-btn" onclick="filterVideos('worship')">Worship</button>
+      <button class="category-btn" onclick="filterVideos('testimony')">Testimonies</button>
+      <button class="category-btn" onclick="filterVideos('teaching')">Teachings</button>
+      <button class="category-btn" onclick="filterVideos('event')">Events</button>
+    </div>
+
+    <!-- Videos Container -->
+    <div id="videosContainer"></div>
+
+    <!-- Ad Container -->
+    <div class="ad-container">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+    </div>
+  </div>
+
+  <!-- Premium Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="homepage.html"><i class="fas fa-home"></i></a>
+    <a href="video.html" class="active"><i class="fas fa-video"></i></a>
+    <a href="post.html"><i class="fas fa-plus-circle"></i></a>
+    <a href="profile.html"><i class="fas fa-user"></i></a>
+    <a href="menu.html"><i class="fas fa-bars"></i></a>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      databaseURL: "https://anointed-flames-tv-default-rtdb.firebaseio.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.appspot.com",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
+    const adminEmail = "anointedflames27@gmail.com";
+
+    // Currently playing video
+    let currentVideo = null;
+
+    // Load videos from Firebase
+    function loadVideos(category = 'all') {
+      document.getElementById('videosContainer').innerHTML = '<div class="video-card text-center py-4"><i class="fas fa-spinner fa-spin loading" style="font-size: 2rem;"></i><p class="mt-3">Loading divine videos...</p></div>';
+      
+      let videosRef = db.ref('posts').orderByChild('timestamp');
+      
+      videosRef.on('value', (snapshot) => {
+        const videosContainer = document.getElementById('videosContainer');
+        videosContainer.innerHTML = '';
+
+        if (!snapshot.exists()) {
+          videosContainer.innerHTML = `
+            <div class="video-card text-center py-4">
+              <i class="fas fa-video-slash" style="font-size: 2rem; color: var(--gold-accent);"></i>
+              <h4 class="mt-3" style="color: var(--platinum);">No videos yet</h4>
+              <p class="mt-2">Be the first to share your divine videos!</p>
+              <a href="post.html" class="btn mt-3" style="background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange)); color: white; border: none; border-radius: 8px; padding: 10px 20px;">Upload Video</a>
+            </div>
+          `;
+          return;
+        }
+
+        let hasVideos = false;
+        
+        snapshot.forEach((childSnapshot) => {
+          const post = childSnapshot.val();
+          const postId = childSnapshot.key;
+          
+          if (post.postType === 'video' && (category === 'all' || post.category === category)) {
+            hasVideos = true;
+            const videoElement = document.createElement('div');
+            videoElement.className = 'video-card';
+            videoElement.id = `video-${postId}`;
+            
+            // Format timestamp
+            const postDate = new Date(post.timestamp);
+            const formattedDate = postDate.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            
+            // Create premium video HTML
+            videoElement.innerHTML = `
+              <div class="video-player" id="player-${postId}">
+                <video id="video-source-${postId}" poster="${post.thumbnailUrl || ''}">
+                  <source src="${post.mediaUrl}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <div class="play-btn" onclick="playVideo('${postId}')">
+                  <i class="fas fa-play"></i>
+                </div>
+              </div>
+              <div class="video-info">
+                <div class="video-header">
+                  <img src="${post.userProfilePic || 'https://via.placeholder.com/48'}" class="profile-pic" alt="Profile">
+                  <div>
+                    <span class="video-user" onclick="viewUserProfile('${post.userId}')">${post.userName}</span>
+                    <span class="video-time">${formattedDate}</span>
+                  </div>
+                  ${(auth.currentUser && (auth.currentUser.uid === post.userId || auth.currentUser.email === adminEmail)) ? 
+                    `<button class="delete-btn" onclick="deleteVideo('${postId}')" title="Delete video"><i class="fas fa-trash"></i></button>` : ''}
+                </div>
+                <h3 class="video-title">${post.title || 'Untitled Video'}</h3>
+                <div class="video-description">${post.description || 'No description provided.'}</div>
+                <div class="view-count">
+                  <i class="fas fa-eye"></i> ${post.views || 0} views
+                </div>
+                <div class="video-actions">
+                  <button class="action-btn like-btn" onclick="toggleLike(event, '${postId}')" aria-label="Like video">
+                    <i class="far fa-thumbs-up"></i> Like <span class="likes-count" id="likes-${postId}">${post.likes ? Object.keys(post.likes).length : 0}</span>
+                  </button>
+                  <button class="action-btn comment-btn" onclick="toggleComments(event, '${postId}')" aria-label="Comment on video">
+                    <i class="far fa-comment"></i> Comment
+                  </button>
+                  <button class="action-btn share-btn" onclick="shareVideo(event, '${postId}')" aria-label="Share video">
+                    <i class="far fa-share-square"></i> Share
+                  </button>
+                </div>
+                <div class="comments-section" id="comments-${postId}">
+                  ${post.comments ? Object.values(post.comments).map(comment => `
+                    <div class="comment">
+                      <span class="comment-user">${comment.userName}:</span>
+                      <span>${comment.text}</span>
+                    </div>
+                  `).join('') : '<div class="text-center py-2" style="color: #777;">No comments yet</div>'}
+                  <div class="comment-input">
+                    <input type="text" placeholder="Write a comment..." id="comment-input-${postId}" aria-label="Comment input">
+                    <button onclick="postComment('${postId}')" aria-label="Post comment"><i class="fas fa-paper-plane"></i></button>
+                  </div>
+                </div>
+              </div>
+            `;
+            videosContainer.prepend(videoElement); // Newest videos first
+            
+            // Check if current user has liked this video
+            if (auth.currentUser && post.likes && post.likes[auth.currentUser.uid]) {
+              document.querySelector(`#video-${postId} .like-btn`).classList.add('active');
+            }
+          }
+        });
+
+        if (!hasVideos) {
+          videosContainer.innerHTML = `
+            <div class="video-card text-center py-4">
+              <i class="fas fa-video-slash" style="font-size: 2rem; color: var(--gold-accent);"></i>
+              <h4 class="mt-3" style="color: var(--platinum);">No ${category === 'all' ? '' : category} videos yet</h4>
+              <p class="mt-2">Check back later or upload a video!</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Filter videos by category
+    function filterVideos(category) {
+      // Update active category button
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      loadVideos(category);
+    }
+
+    // Play video
+    function playVideo(postId) {
+      // Pause currently playing video if any
+      if (currentVideo && currentVideo !== postId) {
+        const prevVideo = document.getElementById(`video-source-${currentVideo}`);
+        if (prevVideo) {
+          prevVideo.pause();
+          document.querySelector(`#player-${currentVideo} .play-btn`).innerHTML = '<i class="fas fa-play"></i>';
+        }
+      }
+      
+      const video = document.getElementById(`video-source-${postId}`);
+      const player = document.getElementById(`player-${postId}`);
+      const playBtn = player.querySelector('.play-btn');
+      
+      if (video.paused) {
+        video.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        playBtn.style.opacity = '0';
+        
+        // Track view count
+        db.ref(`posts/${postId}/views`).transaction((current) => (current || 0) + 1);
+        
+        currentVideo = postId;
+        
+        // When video ends
+        video.onended = function() {
+          playBtn.innerHTML = '<i class="fas fa-play"></i>';
+          playBtn.style.opacity = '1';
+          currentVideo = null;
+        };
+      } else {
+        video.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.style.opacity = '1';
+        currentVideo = null;
+      }
+      
+      // Show play button when mouse moves over player
+      player.addEventListener('mousemove', function() {
+        if (!video.paused) {
+          playBtn.style.opacity = '1';
+          setTimeout(() => {
+            if (!video.paused) playBtn.style.opacity = '0';
+          }, 2000);
+        }
+      });
+    }
+
+    // Toggle like on a video
+    function toggleLike(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (!auth.currentUser) {
+        showAlert("Please login to like videos");
+        return;
+      }
+
+      const userId = auth.currentUser.uid;
+      const likeRef = db.ref(`posts/${postId}/likes/${userId}`);
+      const likeBtn = document.querySelector(`#video-${postId} .like-btn`);
+      const likesCount = document.querySelector(`#likes-${postId}`);
+
+      likeRef.once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          // Unlike
+          likeRef.remove()
+            .then(() => {
+              likeBtn.classList.remove('active');
+              updateLikesCount(postId);
+              showAlert("Like removed");
+            });
+        } else {
+          // Like
+          likeRef.set(true)
+            .then(() => {
+              likeBtn.classList.add('active');
+              updateLikesCount(postId);
+              showAlert("Video liked!");
+            });
+        }
+      });
+    }
+
+    // Update likes count
+    function updateLikesCount(postId) {
+      db.ref(`posts/${postId}/likes`).once('value').then((snapshot) => {
+        const count = snapshot.numChildren();
+        document.querySelector(`#likes-${postId}`).textContent = count;
+      });
+    }
+
+    // Toggle comments section
+    function toggleComments(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const commentsSection = document.getElementById(`comments-${postId}`);
+      const isVisible = commentsSection.style.display === 'block';
+      
+      // Close all other comment sections first
+      document.querySelectorAll('.comments-section').forEach(section => {
+        if (section.id !== `comments-${postId}`) {
+          section.style.display = 'none';
+        }
+      });
+      
+      // Toggle current section
+      commentsSection.style.display = isVisible ? 'none' : 'block';
+      
+      // Focus on comment input if opening
+      if (!isVisible) {
+        setTimeout(() => {
+          document.getElementById(`comment-input-${postId}`).focus();
+        }, 100);
+      }
+    }
+
+    // Post a comment
+    function postComment(postId) {
+      if (!auth.currentUser) {
+        showAlert("Please login to comment");
+        return;
+      }
+
+      const commentInput = document.getElementById(`comment-input-${postId}`);
+      const commentText = commentInput.value.trim();
+      
+      if (!commentText) {
+        showAlert("Comment cannot be empty");
+        return;
+      }
+
+      const userId = auth.currentUser.uid;
+      const userName = auth.currentUser.displayName || "Anonymous";
+      const userProfilePic = auth.currentUser.photoURL || 'https://via.placeholder.com/40';
+      const newComment = {
+        userId: userId,
+        userName: userName,
+        userProfilePic: userProfilePic,
+        text: commentText,
+        timestamp: Date.now()
+      };
+
+      db.ref(`posts/${postId}/comments`).push(newComment)
+        .then(() => {
+          commentInput.value = '';
+          showAlert("Comment posted successfully");
+        })
+        .catch((error) => {
+          console.error("Error posting comment:", error);
+          showAlert("Error posting comment");
+        });
+    }
+
+    // Share a video
+    function shareVideo(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const postRef = db.ref(`posts/${postId}`);
+      postRef.once('value').then((snapshot) => {
+        const post = snapshot.val();
+        const shareUrl = `${window.location.origin}/video.html?video=${postId}`;
+        const shareText = `Watch "${post.title || 'this video'}" on Anointed Flames TV: ${post.description ? post.description.substring(0, 100) : ''}...`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: post.title || 'Video from Anointed Flames TV',
+            text: shareText,
+            url: shareUrl
+          }).catch(() => {
+            // Fallback if share fails
+            copyToClipboard(shareUrl);
+          });
+        } else {
+          // Fallback for browsers without share API
+          copyToClipboard(shareUrl);
+        }
+      });
+    }
+
+    // Copy text to clipboard
+    function copyToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showAlert("Link copied to clipboard!");
+    }
+
+    // Delete a video
+    function deleteVideo(postId) {
+      if (!confirm("Are you sure you want to delete this video? This action cannot be undone.")) return;
+      
+      db.ref(`posts/${postId}`).remove()
+        .then(() => {
+          showAlert("Video deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Error deleting video:", error);
+          showAlert("Error deleting video");
+        });
+    }
+
+    // View user profile
+    function viewUserProfile(userId) {
+      sessionStorage.setItem('viewingUserId', userId);
+      window.location.href = 'profile.html';
+    }
+
+    // Show alert message
+    function showAlert(message) {
+      const alert = document.getElementById('successAlert');
+      document.getElementById('alertMessage').textContent = message;
+      alert.style.display = 'block';
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 3000);
+    }
+
+    // Initialize page
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        loadVideos();
+        
+        // Check for video ID in URL to scroll to specific video
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('video');
+        if (videoId) {
+          setTimeout(() => {
+            const videoElement = document.getElementById(`video-${videoId}`);
+            if (videoElement) {
+              videoElement.scrollIntoView({ behavior: 'smooth' });
+              videoElement.style.animation = 'pulse 2s';
+              setTimeout(() => {
+                videoElement.style.animation = '';
+              }, 2000);
+            }
+          }, 1000);
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>

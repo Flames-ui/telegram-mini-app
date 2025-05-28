@@ -3,266 +3,262 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile - Anointed Flames TV</title>
+  <title>Profile | Anointed Flames TV</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* === Global Styles === */
     :root {
       --smooth-purple: #9c88ff;
       --black-bg: #000000;
       --shinny-black: #121212;
       --supreme-white: #f8f9fa;
       --flame-orange: #ff7b25;
-      --gold-accent: #FFD700;
     }
 
     body {
       background-color: var(--black-bg);
       color: var(--supreme-white);
-      font-family: 'Montserrat', 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 20px;
+      margin-bottom: 80px;
     }
 
-    /* Premium Cover Section */
-    .cover-container {
-      position: relative;
-      height: 350px;
-      background-size: cover;
-      background-position: center;
-      background-color: var(--shinny-black);
-      border-bottom: 3px solid var(--gold-accent);
-      overflow: hidden;
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
     }
 
-    .cover-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
-    }
-
-    /* Premium Profile Actions */
-    .profile-actions {
-      position: absolute;
-      right: 30px;
-      top: 30px;
-      display: flex;
-      gap: 15px;
-      z-index: 10;
-    }
-
-    .premium-edit-btn {
+    /* Header Styles */
+    .header-title {
       background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      font-weight: 600;
-      box-shadow: 0 8px 25px rgba(156, 136, 255, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .premium-edit-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(156, 136, 255, 0.6);
-    }
-
-    .premium-edit-btn i {
-      font-size: 1rem;
-    }
-
-    /* Premium Profile Info */
-    .profile-info {
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
       text-align: center;
-      padding: 30px 20px;
-      position: relative;
-      margin-top: -100px;
-      z-index: 5;
+      margin-bottom: 30px;
     }
 
-    .profile-img-container {
+    /* Profile Header */
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
       position: relative;
-      display: inline-block;
-      margin-bottom: 20px;
     }
 
-    .profile-img {
-      width: 180px;
-      height: 180px;
+    .profile-pic {
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       object-fit: cover;
-      border: 5px solid var(--black-bg);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: all 0.3s ease;
+      border: 5px solid var(--smooth-purple);
+      margin: 0 auto 20px;
+      cursor: pointer;
+      transition: all 0.3s;
     }
 
-    .profile-img:hover {
-      transform: scale(1.03);
+    .profile-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--smooth-purple);
     }
 
-    .profile-verified {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      background: var(--gold-accent);
-      color: var(--black-bg);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      border: 2px solid var(--black-bg);
-    }
-
-    .user-name {
-      color: var(--supreme-white);
-      font-size: 2.2rem;
-      margin: 10px 0 5px;
+    .profile-name {
+      font-size: 1.8rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      color: var(--supreme-white);
+      margin-bottom: 10px;
     }
 
-    .user-handle {
-      color: var(--smooth-purple);
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-      font-weight: 500;
-    }
-
-    .user-bio {
-      color: rgba(255,255,255,0.8);
-      max-width: 600px;
-      margin: 0 auto 25px;
-      line-height: 1.6;
-      font-size: 1.05rem;
+    .profile-bio {
+      color: var(--supreme-white);
+      margin-bottom: 20px;
       padding: 0 20px;
     }
 
-    /* Premium Follow Section */
-    .follow-section {
-      margin: 25px 0;
-    }
-
-    .follow-btn {
-      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
-      color: white;
-      border: none;
-      padding: 12px 35px;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 8px 25px rgba(255, 123, 37, 0.4);
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin: 15px 0;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .follow-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(255, 123, 37, 0.6);
-    }
-
-    .follow-btn.following {
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
-      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-    }
-
-    .follow-btn.following:hover {
-      box-shadow: 0 12px 30px rgba(76, 175, 80, 0.6);
-    }
-
-    /* Premium Stats */
-    .stats-container {
+    .profile-stats {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      margin: 30px 0;
+      gap: 30px;
+      margin-bottom: 30px;
     }
 
     .stat-item {
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 15px 25px;
-      border-radius: 15px;
-      background: rgba(255,255,255,0.05);
-      min-width: 120px;
     }
 
-    .stat-item:hover {
-      background: rgba(156, 136, 255, 0.1);
-      transform: translateY(-3px);
+    .stat-item:hover .stat-number {
+      color: var(--flame-orange);
     }
 
-    .stat-count {
-      font-size: 1.8rem;
+    .stat-number {
+      font-size: 1.5rem;
       font-weight: 700;
-      color: var(--gold-accent);
-      margin-bottom: 5px;
-      font-family: 'Arial', sans-serif;
+      color: var(--smooth-purple);
+      transition: all 0.3s;
     }
 
     .stat-label {
+      color: var(--supreme-white);
       font-size: 0.9rem;
-      color: rgba(255,255,255,0.7);
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
-    /* Premium Posts Section */
-    .posts-section {
-      padding: 30px;
-      max-width: 900px;
-      margin: 0 auto;
+    .profile-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .action-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      color: white;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(156, 136, 255, 0.4);
+    }
+
+    .secondary-btn {
+      background-color: var(--shinny-black);
+      color: var(--supreme-white);
+      border: 1px solid var(--smooth-purple);
+    }
+
+    .secondary-btn:hover {
+      background-color: rgba(156, 136, 255, 0.1);
+    }
+
+    /* Profile Content */
+    .profile-content {
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--smooth-purple);
+      position: relative;
+    }
+
+    .edit-profile-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--smooth-purple);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .edit-profile-btn:hover {
+      color: var(--flame-orange);
+      transform: rotate(15deg);
     }
 
     .section-title {
-      color: var(--flame-orange);
-      border-bottom: 2px solid var(--smooth-purple);
-      padding-bottom: 15px;
-      margin-bottom: 30px;
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--smooth-purple);
+      border-bottom: 1px solid var(--smooth-purple);
+      padding-bottom: 10px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
-    /* Premium Ad Container */
-    .ad-container {
-      margin: 40px auto;
-      padding: 20px;
-      background: linear-gradient(135deg, rgba(156, 136, 255, 0.1), rgba(255, 123, 37, 0.1));
-      border-radius: 15px;
-      text-align: center;
-      min-height: 250px;
+    .edit-section-btn {
+      color: var(--flame-orange);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .edit-section-btn:hover {
+      text-decoration: underline;
+    }
+
+    .about-item {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .about-label {
+      color: var(--flame-orange);
+      font-size: 0.9rem;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: 1px dashed var(--smooth-purple);
-      max-width: 800px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      gap: 5px;
     }
 
-    /* Premium Bottom Navigation */
+    .about-value {
+      color: var(--supreme-white);
+      font-weight: 500;
+      padding-left: 20px;
+    }
+
+    .edit-field-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--smooth-purple);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .edit-field-btn:hover {
+      color: var(--flame-orange);
+    }
+
+    /* Edit Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--shinny-black);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid var(--smooth-purple);
+    }
+
+    .modal-title {
+      color: var(--smooth-purple);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: var(--supreme-white);
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -271,411 +267,151 @@
       background-color: var(--shinny-black);
       display: flex;
       justify-content: space-around;
-      padding: 18px 0;
+      padding: 15px 0;
       z-index: 1000;
-      border-top: 2px solid var(--smooth-purple);
-      box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+      border-top: 1px solid var(--smooth-purple);
     }
 
     .bottom-nav a {
       color: var(--smooth-purple);
-      font-size: 1.6rem;
-      transition: all 0.3s ease;
-      position: relative;
-      padding: 5px 15px;
-      border-radius: 50%;
+      font-size: 1.5rem;
+      transition: all 0.3s;
     }
 
     .bottom-nav a.active {
       color: var(--flame-orange);
-      transform: translateY(-8px);
-      background: rgba(255,123,37,0.1);
-    }
-
-    .bottom-nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 5px;
-      height: 5px;
-      background: var(--flame-orange);
-      border-radius: 50%;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-
-    .bottom-nav a.active::after {
-      opacity: 1;
-      bottom: -3px;
-    }
-
-    /* Premium Post Cards */
-    .post-card {
-      background-color: var(--shinny-black);
-      border-radius: 15px;
-      padding: 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-      border: 1px solid rgba(156, 136, 255, 0.2);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .post-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(156, 136, 255, 0.3);
-      border-color: rgba(156, 136, 255, 0.4);
     }
 
-    .post-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .post-user-img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 15px;
-      border: 2px solid var(--smooth-purple);
-      transition: all 0.3s ease;
-    }
-
-    .post-user-img:hover {
-      transform: scale(1.1);
-    }
-
-    .post-user-info {
-      flex: 1;
-    }
-
-    .post-user-name {
-      font-weight: 600;
-      color: var(--smooth-purple);
-      margin-bottom: 3px;
-    }
-
-    .post-time {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-    }
-
-    .post-content {
-      margin-bottom: 20px;
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-
-    .post-media {
-      max-width: 100%;
-      border-radius: 12px;
-      margin: 15px 0;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-    }
-
-    .post-media:hover {
-      transform: scale(1.01);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    .post-actions {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .post-action {
-      color: rgba(255,255,255,0.7);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-      padding: 8px 15px;
-      border-radius: 20px;
-    }
-
-    .post-action:hover {
-      color: var(--flame-orange);
-      background: rgba(255,123,37,0.1);
-    }
-
-    .post-action i {
-      font-size: 1.1rem;
-    }
-
-    /* Premium Delete Button */
-    .delete-post-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,0,0,0.2);
-      color: #ff6b6b;
-      border: none;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      opacity: 0.7;
-    }
-
-    .delete-post-btn:hover {
-      opacity: 1;
-      background: rgba(255,0,0,0.3);
-      transform: scale(1.1);
-    }
-
-    /* Premium Success Alert */
+    /* Success Alert */
     .success-alert {
       position: fixed;
-      top: 30px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(46, 125, 50, 0.9));
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
       color: white;
-      padding: 18px 30px;
-      border-radius: 12px;
+      padding: 15px 25px;
+      border-radius: 8px;
       z-index: 1000;
       display: none;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      animation: fadeIn 0.5s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
-
-    /* Premium Modal */
-    .premium-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      background: var(--shinny-black);
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-      border: 1px solid rgba(156, 136, 255, 0.2);
-      position: relative;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.5);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .close-modal:hover {
-      color: var(--flame-orange);
-      transform: rotate(90deg);
-    }
-
-    .modal-title {
-      color: var(--flame-orange);
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .modal-input {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: 1px solid rgba(156, 136, 255, 0.3);
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 1rem;
-    }
-
-    .modal-input:focus {
-      outline: none;
-      border-color: var(--smooth-purple);
-      box-shadow: 0 0 0 2px rgba(156, 136, 255, 0.2);
-    }
-
-    .modal-btn {
-      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .modal-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(156, 136, 255, 0.4);
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .cover-container {
-        height: 250px;
-      }
-      
-      .profile-img {
-        width: 140px;
-        height: 140px;
-      }
-      
-      .user-name {
-        font-size: 1.8rem;
-      }
-      
-      .stats-container {
-        gap: 15px;
-      }
-      
-      .stat-item {
-        padding: 10px 15px;
-        min-width: 100px;
-      }
-      
-      .stat-count {
-        font-size: 1.5rem;
-      }
+    /* Ad Container */
+    .ad-container {
+      margin: 30px 0;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <!-- Success Alert -->
   <div class="success-alert" id="successAlert">
     <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
   </div>
 
-  <!-- Edit Profile Modal -->
-  <div class="premium-modal" id="editModal">
+  <div class="container">
+    <h2 class="header-title">
+      <i class="fas fa-user"></i> Profile <i class="fas fa-user"></i>
+    </h2>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <img src="" class="profile-pic" id="profilePicture" onclick="openImageUpload()">
+      <h2 class="profile-name" id="profileName"></h2>
+      <p class="profile-bio" id="profileBio"></p>
+      
+      <div class="profile-stats">
+        <div class="stat-item" onclick="viewPosts()">
+          <div class="stat-number" id="postCount">0</div>
+          <div class="stat-label">Posts</div>
+        </div>
+        <div class="stat-item" onclick="viewFollowers()">
+          <div class="stat-number" id="followerCount">0</div>
+          <div class="stat-label">Followers</div>
+        </div>
+        <div class="stat-item" onclick="viewFollowing()">
+          <div class="stat-number" id="followingCount">0</div>
+          <div class="stat-label">Following</div>
+        </div>
+      </div>
+      
+      <div class="profile-actions" id="profileActions">
+        <!-- Follow/Edit buttons will be added here dynamically -->
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <i class="fas fa-edit edit-profile-btn" onclick="openEditModal('profile')"></i>
+      <div class="section-title">
+        About
+        <span class="edit-section-btn" onclick="openEditModal('about')">Edit</span>
+      </div>
+      
+      <div class="about-item">
+        <div class="about-label"><i class="fas fa-envelope"></i> Email</div>
+        <div class="about-value" id="profileEmail"></div>
+        <span class="edit-field-btn" onclick="openEditModal('email')"><i class="fas fa-edit"></i></span>
+      </div>
+      
+      <div class="about-item">
+        <div class="about-label"><i class="fas fa-phone"></i> Phone</div>
+        <div class="about-value" id="profilePhone"></div>
+        <span class="edit-field-btn" onclick="openEditModal('phone')"><i class="fas fa-edit"></i></span>
+      </div>
+      
+      <div class="about-item">
+        <div class="about-label"><i class="fas fa-map-marker-alt"></i> Location</div>
+        <div class="about-value" id="profileLocation"></div>
+        <span class="edit-field-btn" onclick="openEditModal('location')"><i class="fas fa-edit"></i></span>
+      </div>
+      
+      <div class="about-item">
+        <div class="about-label"><i class="fas fa-calendar"></i> Joined</div>
+        <div class="about-value" id="profileJoinDate"></div>
+      </div>
+    </div>
+
+    <!-- Ad Container -->
+    <div class="ad-container">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : '85efa5f0e80d427fecd61c27c0ee4887',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
+    </div>
+  </div>
+
+  <!-- Edit Modals -->
+  <div class="modal-overlay" id="editProfileModal">
     <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">&times;</button>
+      <span class="modal-close" onclick="closeModal()">&times;</span>
       <h3 class="modal-title">Edit Profile</h3>
-      <input type="text" id="editName" class="modal-input" placeholder="Your Name">
-      <textarea id="editBio" class="modal-input" rows="3" placeholder="Your Bio"></textarea>
-      <button class="modal-btn" onclick="saveProfile()">Save Changes</button>
+      <div id="modalFormContainer">
+        <!-- Form will be loaded here dynamically -->
+      </div>
     </div>
   </div>
 
-  <!-- Cover Photo Section -->
-  <div class="cover-container" id="coverPhoto">
-    <div class="cover-overlay"></div>
-    <div class="profile-actions" id="profileActions">
-      <button class="premium-edit-btn" onclick="openCoverUpload()">
-        <i class="fas fa-camera"></i> Edit Cover
+  <div class="modal-overlay" id="imageUploadModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h3 class="modal-title">Update Profile Picture</h3>
+      <input type="file" id="imageUploadInput" accept="image/*" style="display: none;">
+      <button class="action-btn primary-btn" onclick="document.getElementById('imageUploadInput').click()">
+        <i class="fas fa-upload"></i> Choose Image
       </button>
-      <button class="premium-edit-btn" onclick="openEditModal()">
-        <i class="fas fa-user-edit"></i> Edit Profile
+      <div id="imagePreview" style="margin-top: 20px; text-align: center;"></div>
+      <button class="action-btn primary-btn" id="saveImageBtn" style="margin-top: 20px; display: none;">
+        <i class="fas fa-save"></i> Save Changes
       </button>
     </div>
-  </div>
-
-  <!-- Profile Info Section -->
-  <div class="profile-info">
-    <div class="profile-img-container">
-      <img src="" id="profilePic" class="profile-img" alt="Profile Picture" onclick="openProfileUpload()">
-      <div class="profile-verified">
-        <i class="fas fa-check"></i>
-      </div>
-    </div>
-    
-    <h1 class="user-name" id="displayName"></h1>
-    <p class="user-handle" id="userHandle"></p>
-    <p class="user-bio" id="bioText"></p>
-    
-    <!-- Follow Button -->
-    <button class="follow-btn" id="followButton" onclick="toggleFollow()">
-      Follow
-    </button>
-    
-    <!-- Stats Section -->
-    <div class="stats-container">
-      <div class="stat-item" onclick="showFollowers()">
-        <div class="stat-count" id="followersCount">0</div>
-        <div class="stat-label">Followers</div>
-      </div>
-      <div class="stat-item" onclick="showFollowing()">
-        <div class="stat-count" id="followingCount">0</div>
-        <div class="stat-label">Following</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-count" id="postsCount">0</div>
-        <div class="stat-label">Posts</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ad Container -->
-  <div class="ad-container">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '85efa5f0e80d427fecd61c27c0ee4887',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
-  </div>
-
-  <!-- Posts Section -->
-  <div class="posts-section">
-    <h3 class="section-title" id="postsTitle">
-      <span>Your Posts</span>
-      <button class="premium-edit-btn" onclick="window.location.href='post.html'" style="padding: 8px 15px; font-size: 0.8rem;">
-        <i class="fas fa-plus"></i> New Post
-      </button>
-    </h3>
-    <div id="userPosts"></div>
-  </div>
-
-  <!-- Ad Container -->
-  <div class="ad-container">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '85efa5f0e80d427fecd61c27c0ee4887',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
   </div>
 
   <!-- Bottom Navigation -->
@@ -687,16 +423,11 @@
     <a href="menu.html"><i class="fas fa-bars"></i></a>
   </div>
 
-  <!-- Hidden file inputs -->
-  <input type="file" id="coverUpload" accept="image/*" style="display: none;">
-  <input type="file" id="profileUpload" accept="image/*" style="display: none;">
-
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
     // Firebase configuration
@@ -715,424 +446,502 @@
     const db = firebase.database();
     const auth = firebase.auth();
     const storage = firebase.storage();
-    const firestore = firebase.firestore();
 
-    // Global variables
-    let currentUserId = null;
+    // DOM Elements
+    const successAlert = document.getElementById('successAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    const profileName = document.getElementById('profileName');
+    const profileBio = document.getElementById('profileBio');
+    const profilePicture = document.getElementById('profilePicture');
+    const profileEmail = document.getElementById('profileEmail');
+    const profilePhone = document.getElementById('profilePhone');
+    const profileLocation = document.getElementById('profileLocation');
+    const profileJoinDate = document.getElementById('profileJoinDate');
+    const postCount = document.getElementById('postCount');
+    const followerCount = document.getElementById('followerCount');
+    const followingCount = document.getElementById('followingCount');
+    const profileActions = document.getElementById('profileActions');
+    const editProfileModal = document.getElementById('editProfileModal');
+    const imageUploadModal = document.getElementById('imageUploadModal');
+    const modalFormContainer = document.getElementById('modalFormContainer');
+    const imageUploadInput = document.getElementById('imageUploadInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const saveImageBtn = document.getElementById('saveImageBtn');
+
+    // Global Variables
+    let currentUser = null;
     let viewingUserId = null;
-    let currentUserData = null;
+    let isFollowing = false;
+    let selectedImageFile = null;
+    const defaultProfilePic = 'https://via.placeholder.com/150';
 
-    // Initialize the page
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        currentUserId = user.uid;
-        
-        // Check if we're viewing another user's profile
-        const urlParams = new URLSearchParams(window.location.search);
-        viewingUserId = urlParams.get('userId') || user.uid;
-
-        // Load user profile data
-        await loadProfileData(viewingUserId);
-        
-        // Load follow data
-        await loadFollowStats(viewingUserId);
-        
-        // Check if current user is following this profile
-        if (currentUserId !== viewingUserId) {
-          await checkFollowingStatus();
-        } else {
-          document.getElementById('followButton').style.display = 'none';
-        }
-        
-        // Load user posts
-        await loadUserPosts(viewingUserId);
-      } else {
-        window.location.href = "login.html";
-      }
-    });
-
-    // Load profile data
-    async function loadProfileData(userId) {
-      try {
-        const userDoc = await firestore.collection("users").doc(userId).get();
-        
-        if (userDoc.exists) {
-          currentUserData = userDoc.data();
-          
-          // Set profile picture
-          const profilePic = document.getElementById('profilePic');
-          profilePic.src = currentUserData.profilePic || 'https://via.placeholder.com/150';
-          
-          // Set cover photo
-          const coverPhoto = document.getElementById('coverPhoto');
-          if (currentUserData.coverPhoto) {
-            coverPhoto.style.backgroundImage = `url(${currentUserData.coverPhoto})`;
-          }
-          
-          // Set display name and bio
-          document.getElementById('displayName').textContent = currentUserData.displayName || "User";
-          document.getElementById('userHandle').textContent = `@${currentUserData.username || "user" + userId.substring(0, 6)}`;
-          document.getElementById('bioText').textContent = currentUserData.bio || "No bio yet";
-          
-          // Show/hide edit buttons based on whether it's the current user's profile
-          const profileActions = document.getElementById('profileActions');
-          if (currentUserId === userId) {
-            profileActions.style.display = 'flex';
-          } else {
-            profileActions.style.display = 'none';
-            document.getElementById('followButton').style.display = 'block';
-            
-            // Update posts title
-            document.getElementById('postsTitle').innerHTML = `
-              <span>${currentUserData.displayName}'s Posts</span>
-            `;
-          }
-        } else {
-          // Create user document if it doesn't exist
-          await createUserDocument(userId);
-          await loadProfileData(userId); // Reload after creation
-        }
-      } catch (error) {
-        console.error("Error loading profile data:", error);
-        showAlert("Error loading profile data");
-      }
-    }
-
-    // Create user document if it doesn't exist
-    async function createUserDocument(userId) {
-      const user = auth.currentUser;
-      if (!user) return;
-      
-      await firestore.collection("users").doc(userId).set({
-        displayName: user.displayName || "User",
-        username: user.email ? user.email.split('@')[0] : "user" + userId.substring(0, 6),
-        profilePic: user.photoURL || "https://via.placeholder.com/150",
-        coverPhoto: "https://via.placeholder.com/800x250",
-        bio: "No bio yet",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-
-    // Load follow statistics
-    async function loadFollowStats(userId) {
-      try {
-        // Followers count
-        const followersSnapshot = await firestore.collection("followers").doc(userId)
-          .collection("userFollowers").get();
-        document.getElementById("followersCount").textContent = followersSnapshot.size;
-        
-        // Following count
-        const followingSnapshot = await firestore.collection("following").doc(userId)
-          .collection("userFollowing").get();
-        document.getElementById("followingCount").textContent = followingSnapshot.size;
-        
-        // Posts count
-        const postsSnapshot = await db.ref('posts').orderByChild('userId').equalTo(userId).once('value');
-        document.getElementById("postsCount").textContent = postsSnapshot.numChildren();
-      } catch (error) {
-        console.error("Error loading follow stats:", error);
-      }
-    }
-
-    // Check if current user is following the viewed profile
-    async function checkFollowingStatus() {
-      try {
-        const followDoc = await firestore.collection("following").doc(currentUserId)
-          .collection("userFollowing").doc(viewingUserId).get();
-        
-        const followButton = document.getElementById('followButton');
-        
-        if (followDoc.exists) {
-          followButton.textContent = 'Following';
-          followButton.classList.add('following');
-        } else {
-          followButton.textContent = 'Follow';
-          followButton.classList.remove('following');
-        }
-      } catch (error) {
-        console.error("Error checking follow status:", error);
-      }
-    }
-
-    // Toggle follow status
-    async function toggleFollow() {
-      if (!currentUserId || !viewingUserId) return;
-      
-      try {
-        const followButton = document.getElementById('followButton');
-        const isFollowing = followButton.textContent === 'Following';
-        
-        if (isFollowing) {
-          // Unfollow
-          await firestore.collection("following").doc(currentUserId)
-            .collection("userFollowing").doc(viewingUserId).delete();
-          
-          await firestore.collection("followers").doc(viewingUserId)
-            .collection("userFollowers").doc(currentUserId).delete();
-          
-          followButton.textContent = 'Follow';
-          followButton.classList.remove('following');
-          showAlert(`Unfollowed ${currentUserData.displayName}`);
-        } else {
-          // Follow
-          await firestore.collection("following").doc(currentUserId)
-            .collection("userFollowing").doc(viewingUserId).set({
-              userId: viewingUserId,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-          
-          await firestore.collection("followers").doc(viewingUserId)
-            .collection("userFollowers").doc(currentUserId).set({
-              userId: currentUserId,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-          
-          followButton.textContent = 'Following';
-          followButton.classList.add('following');
-          showAlert(`Followed ${currentUserData.displayName}`);
-        }
-        
-        // Update counts
-        await loadFollowStats(viewingUserId);
-      } catch (error) {
-        console.error("Error toggling follow status:", error);
-        showAlert("Error updating follow status");
-      }
-    }
-
-    // Load user posts
-    async function loadUserPosts(userId) {
-      try {
-        const postsRef = db.ref('posts').orderByChild('userId').equalTo(userId);
-        
-        postsRef.on('value', (snapshot) => {
-          const postsContainer = document.getElementById('userPosts');
-          postsContainer.innerHTML = '';
-
-          snapshot.forEach((childSnapshot) => {
-            const post = childSnapshot.val();
-            const postId = childSnapshot.key;
-            
-            const postElement = document.createElement('div');
-            postElement.className = 'post-card';
-            postElement.innerHTML = `
-              <div class="post-header">
-                <img src="${post.userProfilePic || 'https://via.placeholder.com/50'}" 
-                     class="post-user-img" 
-                     alt="Profile"
-                     onclick="viewUserProfile('${post.userId}')">
-                <div class="post-user-info">
-                  <div class="post-user-name">${post.userName}</div>
-                  <div class="post-time">${formatDate(post.timestamp)}</div>
-                </div>
-                ${currentUserId === post.userId ? `
-                  <button class="delete-post-btn" onclick="deletePost('${postId}')">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                ` : ''}
-              </div>
-              <div class="post-content">
-                ${post.content || ''}
-              </div>
-              ${post.mediaUrl ? 
-                (post.mediaType === 'image' ? 
-                  `<img src="${post.mediaUrl}" class="post-media">` : 
-                  '') : ''}
-              <div class="post-actions">
-                <div class="post-action">
-                  <i class="far fa-thumbs-up"></i> Like
-                </div>
-                <div class="post-action">
-                  <i class="far fa-comment"></i> Comment
-                </div>
-                <div class="post-action">
-                  <i class="far fa-share-square"></i> Share
-                </div>
-              </div>
-            `;
-            postsContainer.appendChild(postElement);
-          });
-
-          if (postsContainer.children.length === 0) {
-            postsContainer.innerHTML = `
-              <div class="post-card" style="text-align: center; padding: 40px;">
-                <h4>No posts yet</h4>
-                ${currentUserId === viewingUserId ? `
-                  <p>Share your first message with the community</p>
-                  <button class="premium-edit-btn" onclick="window.location.href='post.html'">
-                    <i class="fas fa-plus"></i> Create Post
-                  </button>
-                ` : `
-                  <p>This user hasn't posted anything yet</p>
-                `}
-              </div>
-            `;
-          }
-        });
-      } catch (error) {
-        console.error("Error loading user posts:", error);
-        showAlert("Error loading posts");
-      }
+    // Show alert message
+    function showAlert(message, duration = 3000) {
+      alertMessage.textContent = message;
+      successAlert.style.display = 'block';
+      setTimeout(() => {
+        successAlert.style.display = 'none';
+      }, duration);
     }
 
     // Format date
     function formatDate(timestamp) {
-      if (!timestamp) return '';
       const date = new Date(timestamp);
-      return date.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
       });
     }
 
-    // Open cover photo upload
-    function openCoverUpload() {
-      document.getElementById('coverUpload').click();
-    }
-
-    // Open profile picture upload
-    function openProfileUpload() {
-      if (currentUserId === viewingUserId) {
-        document.getElementById('profileUpload').click();
-      } else {
-        // View profile picture in full size if it's not the current user
-        window.open(document.getElementById('profilePic').src, '_blank');
-      }
-    }
-
-    // Handle cover photo upload
-    document.getElementById('coverUpload').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      try {
-        showAlert("Uploading cover photo...");
-        
-        const storageRef = storage.ref(`cover_photos/${currentUserId}/${file.name}`);
-        await storageRef.put(file);
-        const downloadURL = await storageRef.getDownloadURL();
-
-        await firestore.collection("users").doc(currentUserId).update({
-          coverPhoto: downloadURL
-        });
-
-        document.getElementById("coverPhoto").style.backgroundImage = `url(${downloadURL})`;
-        showAlert("Cover photo updated successfully");
-      } catch (error) {
-        console.error("Error uploading cover photo:", error);
-        showAlert("Error uploading cover photo");
-      }
-    });
-
-    // Handle profile picture upload
-    document.getElementById('profileUpload').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      try {
-        showAlert("Uploading profile picture...");
-        
-        const storageRef = storage.ref(`profile_pictures/${currentUserId}/${file.name}`);
-        await storageRef.put(file);
-        const downloadURL = await storageRef.getDownloadURL();
-
-        await firestore.collection("users").doc(currentUserId).update({
-          profilePic: downloadURL
-        });
-
-        document.getElementById("profilePic").src = downloadURL;
-        showAlert("Profile picture updated successfully");
-      } catch (error) {
-        console.error("Error uploading profile picture:", error);
-        showAlert("Error uploading profile picture");
-      }
-    });
-
-    // Open edit modal
-    function openEditModal() {
-      if (currentUserId !== viewingUserId) return;
-      
-      document.getElementById('editName').value = currentUserData.displayName || "";
-      document.getElementById('editBio').value = currentUserData.bio || "";
-      document.getElementById('editModal').style.display = 'flex';
+    // Open modal
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
     }
 
     // Close modal
     function closeModal() {
-      document.getElementById('editModal').style.display = 'none';
+      document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.style.display = 'none';
+      });
+      imagePreview.innerHTML = '';
+      saveImageBtn.style.display = 'none';
+      selectedImageFile = null;
     }
 
+    // Open edit modal for specific section
+    function openEditModal(section) {
+      let formHTML = '';
+      let title = '';
+      
+      switch(section) {
+        case 'profile':
+          title = 'Edit Profile';
+          formHTML = `
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" id="editName" value="${profileName.textContent}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Bio</label>
+              <textarea class="form-control" id="editBio" rows="3">${profileBio.textContent}</textarea>
+            </div>
+            <button class="action-btn primary-btn w-100" onclick="saveProfileChanges()">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          `;
+          break;
+          
+        case 'about':
+          title = 'Edit About Info';
+          formHTML = `
+            <div class="mb-3">
+              <label class="form-label"><i class="fas fa-phone"></i> Phone</label>
+              <input type="text" class="form-control" id="editPhone" value="${profilePhone.textContent}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label"><i class="fas fa-map-marker-alt"></i> Location</label>
+              <input type="text" class="form-control" id="editLocation" value="${profileLocation.textContent}">
+            </div>
+            <button class="action-btn primary-btn w-100" onclick="saveAboutChanges()">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          `;
+          break;
+          
+        case 'email':
+          title = 'Update Email';
+          formHTML = `
+            <div class="mb-3">
+              <label class="form-label">New Email</label>
+              <input type="email" class="form-control" id="editEmail" value="${profileEmail.textContent}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirmPassword">
+            </div>
+            <button class="action-btn primary-btn w-100" onclick="updateEmail()">
+              <i class="fas fa-save"></i> Update Email
+            </button>
+          `;
+          break;
+          
+        case 'phone':
+          title = 'Update Phone';
+          formHTML = `
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="editPhoneNumber" value="${profilePhone.textContent}">
+            </div>
+            <button class="action-btn primary-btn w-100" onclick="savePhoneNumber()">
+              <i class="fas fa-save"></i> Save Phone
+            </button>
+          `;
+          break;
+          
+        case 'location':
+          title = 'Update Location';
+          formHTML = `
+            <div class="mb-3">
+              <label class="form-label">Location</label>
+              <input type="text" class="form-control" id="editUserLocation" value="${profileLocation.textContent}">
+            </div>
+            <button class="action-btn primary-btn w-100" onclick="saveLocation()">
+              <i class="fas fa-save"></i> Save Location
+            </button>
+          `;
+          break;
+      }
+      
+      modalFormContainer.innerHTML = `
+        <h3 class="modal-title">${title}</h3>
+        ${formHTML}
+      `;
+      openModal('editProfileModal');
+    }
+
+    // Open image upload modal
+    function openImageUpload() {
+      if (viewingUserId === currentUser.uid) {
+        openModal('imageUploadModal');
+      }
+    }
+
+    // Handle image selection
+    imageUploadInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          imagePreview.innerHTML = `
+            <img src="${event.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+          `;
+          saveImageBtn.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Save profile image
+    saveImageBtn.addEventListener('click', () => {
+      if (selectedImageFile) {
+        const storageRef = storage.ref(`profile_pictures/${currentUser.uid}`);
+        const uploadTask = storageRef.put(selectedImageFile);
+        
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            // Progress monitoring can be added here
+          },
+          (error) => {
+            console.error("Upload error:", error);
+            showAlert("Error uploading image");
+          },
+          () => {
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              db.ref(`users/${currentUser.uid}/profilePicture`).set(downloadURL)
+                .then(() => {
+                  profilePicture.src = downloadURL;
+                  closeModal();
+                  showAlert("Profile picture updated successfully");
+                })
+                .catch((error) => {
+                  console.error("Error saving URL:", error);
+                  showAlert("Error saving profile picture");
+                });
+            });
+          }
+        );
+      }
+    });
+
     // Save profile changes
-    async function saveProfile() {
+    function saveProfileChanges() {
       const newName = document.getElementById('editName').value.trim();
       const newBio = document.getElementById('editBio').value.trim();
       
       if (!newName) {
-        showAlert("Please enter a name");
+        showAlert("Name cannot be empty");
         return;
       }
       
-      try {
-        await firestore.collection("users").doc(currentUserId).update({
-          displayName: newName,
-          bio: newBio
-        });
-        
-        document.getElementById("displayName").textContent = newName;
-        document.getElementById("bioText").textContent = newBio;
-        closeModal();
-        showAlert("Profile updated successfully");
-      } catch (error) {
-        console.error("Error updating profile:", error);
-        showAlert("Error updating profile");
-      }
-    }
-
-    // Show followers list
-    function showFollowers() {
-      // Implement modal or page to show followers list
-      alert("Followers list will be shown here");
-    }
-
-    // Show following list
-    function showFollowing() {
-      // Implement modal or page to show following list
-      alert("Following list will be shown here");
-    }
-
-    // View user profile
-    function viewUserProfile(userId) {
-      if (userId === currentUserId) {
-        window.location.href = 'profile.html';
-      } else {
-        window.location.href = `profile.html?userId=${userId}`;
-      }
-    }
-
-    // Delete post
-    function deletePost(postId) {
-      if (!confirm("Are you sure you want to delete this post?")) return;
+      const updates = {
+        name: newName,
+        bio: newBio || "No bio available"
+      };
       
-      db.ref(`posts/${postId}`).remove()
+      db.ref(`users/${currentUser.uid}`).update(updates)
         .then(() => {
-          showAlert("Post deleted successfully");
+          profileName.textContent = newName;
+          profileBio.textContent = updates.bio;
+          closeModal();
+          showAlert("Profile updated successfully");
         })
         .catch((error) => {
-          console.error("Error deleting post:", error);
-          showAlert("Error deleting post");
+          console.error("Error updating profile:", error);
+          showAlert("Error updating profile");
         });
     }
 
-    // Show alert message
-    function showAlert(message) {
-      const alert = document.getElementById('successAlert');
-      document.getElementById('alertMessage').textContent = message;
-      alert.style.display = 'block';
-      setTimeout(() => alert.style.display = 'none', 3000);
+    // Save about changes
+    function saveAboutChanges() {
+      const newPhone = document.getElementById('editPhone').value.trim();
+      const newLocation = document.getElementById('editLocation').value.trim();
+      
+      const updates = {
+        phone: newPhone || "Not specified",
+        location: newLocation || "Not specified"
+      };
+      
+      db.ref(`users/${currentUser.uid}`).update(updates)
+        .then(() => {
+          profilePhone.textContent = updates.phone;
+          profileLocation.textContent = updates.location;
+          closeModal();
+          showAlert("About info updated successfully");
+        })
+        .catch((error) => {
+          console.error("Error updating about info:", error);
+          showAlert("Error updating about info");
+        });
     }
+
+    // Update email
+    function updateEmail() {
+      const newEmail = document.getElementById('editEmail').value.trim();
+      const password = document.getElementById('confirmPassword').value;
+      
+      if (!newEmail) {
+        showAlert("Email cannot be empty");
+        return;
+      }
+      
+      if (!password) {
+        showAlert("Please enter your password");
+        return;
+      }
+      
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        currentUser.email, 
+        password
+      );
+      
+      currentUser.reauthenticateWithCredential(credential)
+        .then(() => {
+          currentUser.updateEmail(newEmail)
+            .then(() => {
+              db.ref(`users/${currentUser.uid}/email`).set(newEmail)
+                .then(() => {
+                  profileEmail.textContent = newEmail;
+                  closeModal();
+                  showAlert("Email updated successfully");
+                })
+                .catch((error) => {
+                  console.error("Error saving email:", error);
+                  showAlert("Error saving email");
+                });
+            })
+            .catch((error) => {
+              console.error("Error updating email:", error);
+              showAlert("Error updating email");
+            });
+        })
+        .catch((error) => {
+          console.error("Authentication failed:", error);
+          showAlert("Incorrect password");
+        });
+    }
+
+    // Save phone number
+    function savePhoneNumber() {
+      const newPhone = document.getElementById('editPhoneNumber').value.trim();
+      
+      db.ref(`users/${currentUser.uid}/phone`).set(newPhone || "Not specified")
+        .then(() => {
+          profilePhone.textContent = newPhone || "Not specified";
+          closeModal();
+          showAlert("Phone number updated");
+        })
+        .catch((error) => {
+          console.error("Error updating phone:", error);
+          showAlert("Error updating phone");
+        });
+    }
+
+    // Save location
+    function saveLocation() {
+      const newLocation = document.getElementById('editUserLocation').value.trim();
+      
+      db.ref(`users/${currentUser.uid}/location`).set(newLocation || "Not specified")
+        .then(() => {
+          profileLocation.textContent = newLocation || "Not specified";
+          closeModal();
+          showAlert("Location updated");
+        })
+        .catch((error) => {
+          console.error("Error updating location:", error);
+          showAlert("Error updating location");
+        });
+    }
+
+    // Toggle follow status
+    function toggleFollow() {
+      if (!currentUser) {
+        showAlert("Please login to follow users");
+        return;
+      }
+      
+      const followerRef = db.ref(`followers/${viewingUserId}/${currentUser.uid}`);
+      const followingRef = db.ref(`following/${currentUser.uid}/${viewingUserId}`);
+      
+      if (isFollowing) {
+        // Unfollow
+        followerRef.remove();
+        followingRef.remove()
+          .then(() => {
+            isFollowing = false;
+            updateFollowButton();
+            followerCount.textContent = parseInt(followerCount.textContent) - 1;
+            showAlert("Unfollowed successfully");
+          });
+      } else {
+        // Follow
+        followerRef.set(true);
+        followingRef.set(true)
+          .then(() => {
+            isFollowing = true;
+            updateFollowButton();
+            followerCount.textContent = parseInt(followerCount.textContent) + 1;
+            showAlert("Followed successfully");
+          });
+      }
+    }
+
+    // Update follow button
+    function updateFollowButton() {
+      if (viewingUserId === currentUser.uid) {
+        profileActions.innerHTML = `
+          <button class="action-btn primary-btn" onclick="openEditModal('profile')">
+            <i class="fas fa-edit"></i> Edit Profile
+          </button>
+        `;
+      } else {
+        profileActions.innerHTML = `
+          <button class="action-btn ${isFollowing ? 'secondary-btn' : 'primary-btn'}" onclick="toggleFollow()">
+            <i class="fas fa-${isFollowing ? 'user-minus' : 'user-plus'}"></i> ${isFollowing ? 'Following' : 'Follow'}
+          </button>
+        `;
+      }
+    }
+
+    // Check follow status
+    function checkFollowStatus() {
+      if (currentUser && viewingUserId !== currentUser.uid) {
+        db.ref(`followers/${viewingUserId}/${currentUser.uid}`).once('value')
+          .then((snapshot) => {
+            isFollowing = snapshot.exists();
+            updateFollowButton();
+          });
+      } else {
+        updateFollowButton();
+      }
+    }
+
+    // View posts
+    function viewPosts() {
+      showAlert("View posts functionality coming soon!");
+    }
+
+    // View followers
+    function viewFollowers() {
+      showAlert("View followers functionality coming soon!");
+    }
+
+    // View following
+    function viewFollowing() {
+      showAlert("View following functionality coming soon!");
+    }
+
+    // Load profile data
+    function loadProfileData(userId) {
+      db.ref(`users/${userId}`).once('value').then((snapshot) => {
+        const userData = snapshot.val();
+        
+        if (userData) {
+          // Basic Info
+          profileName.textContent = userData.name || 'Anonymous';
+          profileBio.textContent = userData.bio || 'No bio available';
+          
+          // Profile Picture
+          profilePicture.src = userData.profilePicture || defaultProfilePic;
+          
+          // Contact Info
+          profileEmail.textContent = userData.email || 'Not specified';
+          profilePhone.textContent = userData.phone || 'Not specified';
+          profileLocation.textContent = userData.location || 'Not specified';
+          profileJoinDate.textContent = formatDate(userData.joinDate || Date.now());
+        } else {
+          // If user doesn't exist in database, create basic entry
+          if (userId === currentUser.uid) {
+            const newUserData = {
+              name: currentUser.displayName || 'Anonymous',
+              email: currentUser.email || 'Not specified',
+              joinDate: Date.now(),
+              profilePicture: currentUser.photoURL || defaultProfilePic
+            };
+            
+            db.ref(`users/${userId}`).set(newUserData)
+              .then(() => {
+                loadProfileData(userId);
+              });
+          }
+        }
+      }).catch((error) => {
+        console.error("Error loading profile:", error);
+        showAlert("Error loading profile data");
+      });
+    }
+
+    // Load profile stats
+    function loadProfileStats(userId) {
+      // Post Count
+      db.ref('posts').orderByChild('userId').equalTo(userId).once('value').then((snapshot) => {
+        postCount.textContent = snapshot.numChildren();
+      });
+      
+      // Follower Count
+      db.ref(`followers/${userId}`).once('value').then((snapshot) => {
+        followerCount.textContent = snapshot.numChildren();
+      });
+      
+      // Following Count
+      db.ref(`following/${userId}`).once('value').then((snapshot) => {
+        followingCount.textContent = snapshot.numChildren();
+      });
+    }
+
+    // Initialize the page
+    function init() {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          currentUser = user;
+          
+          // Check if viewing another user's profile
+          const urlParams = new URLSearchParams(window.location.search);
+          viewingUserId = urlParams.get('user') || user.uid;
+          
+          // Load profile data
+          loadProfileData(viewingUserId);
+          loadProfileStats(viewingUserId);
+          checkFollowStatus();
+        } else {
+          window.location.href = "login.html";
+        }
+      });
+    }
+
+    // Start the app
+    init();
   </script>
 </body>
 </html>

@@ -7,21 +7,25 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* === Global Styles === */
+    /* === Premium Global Styles === */
     :root {
-      --smooth-purple: #9c88ff;
-      --black-bg: #000000;
-      --shinny-black: #121212;
-      --supreme-white: #f8f9fa;
-      --flame-orange: #ff7b25;
+      --smooth-purple: #8a63ff;
+      --deep-purple: #6a3093;
+      --black-bg: #0a0a0a;
+      --shinny-black: #1a1a1a;
+      --supreme-white: #ffffff;
+      --flame-orange: #ff6b35;
+      --gold-accent: #ffd700;
+      --platinum: #e5e4e2;
     }
 
     body {
       background-color: var(--black-bg);
       color: var(--supreme-white);
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       padding-top: 20px;
       margin-bottom: 80px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(138, 99, 255, 0.05) 0%, rgba(138, 99, 255, 0.05) 90%);
     }
 
     .container {
@@ -30,76 +34,316 @@
       padding: 20px;
     }
 
-    /* Header Styles */
+    /* Premium Header Styles */
     .header-title {
-      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      background: linear-gradient(135deg, var(--gold-accent), var(--flame-orange), var(--smooth-purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 700;
+      font-weight: 800;
       text-align: center;
       margin-bottom: 30px;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(138, 99, 255, 0.3);
+      position: relative;
+      padding-bottom: 15px;
     }
 
-    /* Card Styles */
+    .header-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-accent), var(--flame-orange), transparent);
+    }
+
+    /* Premium Card Styles */
     .card {
       background-color: var(--shinny-black);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(156, 136, 255, 0.1);
-      border: 1px solid var(--smooth-purple);
-      transition: transform 0.3s;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(138, 99, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
     }
 
     .card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(138, 99, 255, 0.2);
+      border-color: rgba(138, 99, 255, 0.5);
     }
 
-    /* Verse Banner */
-    .verse-banner {
-      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
-      color: white;
-      padding: 15px;
-      border-radius: 8px;
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--smooth-purple), var(--flame-orange));
+    }
+
+    /* Post Text Content - Premium Styling */
+    .post-content {
+      color: var(--platinum);
+      margin: 20px 0;
+      line-height: 1.7;
+      font-size: 1.05rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* Premium Post Header */
+    .post-header {
+      display: flex;
+      align-items: center;
       margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 2px solid var(--smooth-purple);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px var(--smooth-purple);
+    }
+
+    .post-user {
+      font-weight: 700;
+      color: var(--gold-accent);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .post-user:hover {
+      color: var(--flame-orange);
+      text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+    }
+
+    .post-time {
+      font-size: 0.85rem;
+      color: #999;
+      margin-left: 8px;
+      font-weight: 300;
+    }
+
+    /* Premium Verse Banner */
+    .verse-banner {
+      background: linear-gradient(135deg, var(--deep-purple), var(--flame-orange));
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(106, 48, 147, 0.3);
+      position: relative;
+      overflow: hidden;
+      border: none;
     }
 
     .verse-banner:hover {
-      transform: scale(1.01);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(106, 48, 147, 0.4);
     }
 
-    /* Media Elements */
+    .verse-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.1) 100%);
+    }
+
+    .verse-banner i {
+      margin-right: 10px;
+      color: var(--gold-accent);
+    }
+
+    /* Premium Media Elements */
     .media-preview {
-      margin-top: 15px;
+      margin-top: 20px;
       max-width: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
       max-height: 500px;
       object-fit: contain;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(138, 99, 255, 0.2);
+      transition: all 0.3s;
     }
 
-    /* Action Buttons */
+    .media-preview:hover {
+      transform: scale(1.005);
+      box-shadow: 0 5px 15px rgba(138, 99, 255, 0.3);
+    }
+
+    /* Premium Action Buttons */
     .actions {
       display: flex;
       justify-content: space-around;
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid #333;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(138, 99, 255, 0.2);
     }
 
-    .actions a {
-      color: var(--smooth-purple);
+    .action-btn {
+      color: var(--platinum);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: all 0.3s;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: relative;
     }
 
-    .actions a:hover {
+    .action-btn:hover {
+      color: var(--gold-accent);
+      background-color: rgba(138, 99, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .action-btn.active {
       color: var(--flame-orange);
     }
 
-    /* Navigation */
+    .action-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--flame-orange);
+      transition: width 0.3s;
+    }
+
+    .action-btn:hover::after {
+      width: 60%;
+    }
+
+    /* Premium Delete Button */
+    .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: #ff6b6b;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.3s;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      padding: 5px;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
+      background-color: rgba(255, 107, 107, 0.1);
+      transform: rotate(15deg);
+    }
+
+    /* Premium Comments Section */
+    .comments-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(138, 99, 255, 0.2);
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 1000px; }
+    }
+
+    .comment {
+      display: flex;
+      margin-bottom: 12px;
+      padding: 12px;
+      background-color: rgba(30, 30, 30, 0.7);
+      border-radius: 8px;
+      border-left: 3px solid var(--smooth-purple);
+      transition: all 0.3s;
+    }
+
+    .comment:hover {
+      background-color: rgba(40, 40, 40, 0.7);
+      transform: translateX(3px);
+    }
+
+    .comment-user {
+      font-weight: 600;
+      color: var(--gold-accent);
+      margin-right: 8px;
+    }
+
+    .comment-input {
+      display: flex;
+      margin-top: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      background-color: rgba(30, 30, 30, 0.8);
+      color: var(--supreme-white);
+      font-size: 0.95rem;
+    }
+
+    .comment-input input::placeholder {
+      color: #777;
+    }
+
+    .comment-input button {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--smooth-purple), var(--deep-purple));
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .comment-input button:hover {
+      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
+      transform: translateX(2px);
+    }
+
+    /* Premium Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -110,21 +354,42 @@
       justify-content: space-around;
       padding: 15px 0;
       z-index: 1000;
-      border-top: 1px solid var(--smooth-purple);
+      border-top: 1px solid rgba(138, 99, 255, 0.3);
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
     }
 
     .bottom-nav a {
-      color: var(--smooth-purple);
+      color: var(--platinum);
       font-size: 1.5rem;
       transition: all 0.3s;
+      padding: 5px 15px;
+      border-radius: 8px;
+      position: relative;
     }
 
     .bottom-nav a.active {
-      color: var(--flame-orange);
+      color: var(--gold-accent);
       transform: translateY(-5px);
+      text-shadow: 0 0 10px var(--gold-accent);
     }
 
-    /* Success Alert */
+    .bottom-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--gold-accent);
+      transition: width 0.3s;
+    }
+
+    .bottom-nav a.active::after {
+      width: 60%;
+    }
+
+    /* Premium Success Alert */
     .success-alert {
       position: fixed;
       top: 20px;
@@ -132,31 +397,101 @@
       transform: translateX(-50%);
       background: linear-gradient(135deg, #4CAF50, #2E7D32);
       color: white;
-      padding: 15px 25px;
-      border-radius: 8px;
+      padding: 15px 30px;
+      border-radius: 10px;
       z-index: 1000;
       display: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.3s ease-out;
+      border-left: 5px solid var(--gold-accent);
     }
 
-    /* Ad Containers */
+    @keyframes slideDown {
+      from { top: -50px; opacity: 0; }
+      to { top: 20px; opacity: 1; }
+    }
+
+    .success-alert i {
+      margin-right: 10px;
+      color: var(--gold-accent);
+    }
+
+    /* Premium Ad Containers */
     .ad-container {
-      margin: 25px 0;
-      padding: 15px;
+      margin: 30px 0;
+      padding: 20px;
       background-color: var(--shinny-black);
-      border-radius: 8px;
+      border-radius: 10px;
       text-align: center;
       min-height: 250px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px dashed var(--smooth-purple);
+      border: 1px dashed rgba(138, 99, 255, 0.5);
+      box-shadow: inset 0 0 15px rgba(138, 99, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ad-container::before {
+      content: 'Advertisement';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 1px;
+    }
+
+    /* Premium Likes Count */
+    .likes-count {
+      font-size: 0.85rem;
+      color: var(--platinum);
+      margin-left: 5px;
+      font-weight: 600;
+    }
+
+    /* Premium Loading Animation */
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .loading {
+      animation: pulse 1.5s infinite;
+      color: var(--platinum);
+    }
+
+    /* Premium Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--shinny-black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--smooth-purple), var(--flame-orange));
+      border-radius: 10px;
+    }
+
+    /* Premium Verse Transition */
+    .verse-transition {
+      animation: fadeInOut 0.5s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(5px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="success-alert" id="successAlert">
-    <i class="fas fa-check-circle"></i> Post published successfully!
+    <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
   </div>
 
   <div class="container">
@@ -164,13 +499,13 @@
       <i class="fas fa-fire-alt"></i> Anointed Flames TV <i class="fas fa-fire-alt"></i>
     </h2>
 
-    <!-- Bible Verse Banner -->
+    <!-- Premium Bible Verse Banner -->
     <div class="verse-banner" id="verseBanner">
       <i class="fas fa-bible"></i>
-      <span id="daily-verse">Loading verse...</span>
+      <span id="daily-verse" class="verse-transition">Loading verse...</span>
     </div>
 
-    <!-- Ad Container -->
+    <!-- Premium Ad Container -->
     <div class="ad-container">
       <script type="text/javascript">
         atOptions = {
@@ -184,10 +519,10 @@
       <script type="text/javascript" src="//www.highperformanceformat.com/85efa5f0e80d427fecd61c27c0ee4887/invoke.js"></script>
     </div>
 
-    <!-- Posts Container -->
+    <!-- Premium Posts Container -->
     <div id="postsContainer"></div>
 
-    <!-- Ad Container -->
+    <!-- Premium Ad Container -->
     <div class="ad-container">
       <script type="text/javascript">
         atOptions = {
@@ -202,7 +537,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Premium Bottom Navigation -->
   <div class="bottom-nav">
     <a href="homepage.html" class="active"><i class="fas fa-home"></i></a>
     <a href="video.html"><i class="fas fa-video"></i></a>
@@ -233,52 +568,340 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const auth = firebase.auth();
+    const storage = firebase.storage();
+    const adminEmail = "anointedflames27@gmail.com";
+
+    // Track liked posts
+    const likedPosts = {};
 
     // Load posts from Firebase
     function loadPosts() {
+      document.getElementById('postsContainer').innerHTML = '<div class="card text-center py-4"><i class="fas fa-spinner fa-spin loading" style="font-size: 2rem;"></i><p class="mt-3">Loading divine inspiration...</p></div>';
+      
       db.ref('posts').orderByChild('timestamp').limitToLast(20).on('value', (snapshot) => {
         const postsContainer = document.getElementById('postsContainer');
         postsContainer.innerHTML = '';
 
+        if (!snapshot.exists()) {
+          postsContainer.innerHTML = `
+            <div class="card text-center py-4">
+              <i class="fas fa-feather-alt" style="font-size: 2rem; color: var(--gold-accent);"></i>
+              <h4 class="mt-3" style="color: var(--platinum);">No posts yet</h4>
+              <p class="mt-2">Be the first to share your divine inspiration!</p>
+              <a href="post.html" class="btn mt-3" style="background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange)); color: white; border: none; border-radius: 8px; padding: 10px 20px;">Create Post</a>
+            </div>
+          `;
+          return;
+        }
+
         snapshot.forEach((childSnapshot) => {
           const post = childSnapshot.val();
-          // REMOVED THE APPROVAL CHECK - posts will show immediately
+          const postId = childSnapshot.key;
+          
           if (post.postType !== 'video') {
             const postElement = document.createElement('div');
             postElement.className = 'card';
+            postElement.id = `post-${postId}`;
+            
+            // Format timestamp
+            const postDate = new Date(post.timestamp);
+            const formattedDate = postDate.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            
+            // Create premium post HTML
             postElement.innerHTML = `
-              <p><strong>${post.userName}</strong> ${post.mediaType ? 'shared a '+post.mediaType : 'posted'}</p>
-              ${post.content ? `<p>${post.content}</p>` : ''}
+              <div class="post-header">
+                <img src="${post.userProfilePic || 'https://via.placeholder.com/48'}" class="profile-pic" alt="Profile">
+                <div>
+                  <span class="post-user" onclick="viewUserProfile('${post.userId}')">${post.userName}</span>
+                  <span class="post-time">${formattedDate}</span>
+                </div>
+                ${(auth.currentUser && (auth.currentUser.uid === post.userId || auth.currentUser.email === adminEmail)) ? 
+                  `<button class="delete-btn" onclick="deletePost('${postId}')" title="Delete post"><i class="fas fa-trash"></i></button>` : ''}
+              </div>
+              <div class="post-content">${post.content || ''}</div>
               ${post.mediaUrl ? 
                 (post.mediaType === 'image' ? 
-                  `<img src="${post.mediaUrl}" class="media-preview">` : 
+                  `<img src="${post.mediaUrl}" class="media-preview" alt="Post media">` : 
                   '') : ''}
               <div class="actions">
-                <a href="#"><i class="far fa-thumbs-up"></i> Like</a>
-                <a href="#"><i class="far fa-comment"></i> Comment</a>
-                <a href="#"><i class="far fa-share-square"></i> Share</a>
+                <button class="action-btn like-btn" onclick="toggleLike(event, '${postId}')" aria-label="Like post">
+                  <i class="far fa-thumbs-up"></i> Like <span class="likes-count" id="likes-${postId}">${post.likes ? Object.keys(post.likes).length : 0}</span>
+                </button>
+                <button class="action-btn comment-btn" onclick="toggleComments(event, '${postId}')" aria-label="Comment on post">
+                  <i class="far fa-comment"></i> Comment
+                </button>
+                <button class="action-btn share-btn" onclick="sharePost(event, '${postId}')" aria-label="Share post">
+                  <i class="far fa-share-square"></i> Share
+                </button>
+              </div>
+              <div class="comments-section" id="comments-${postId}">
+                ${post.comments ? Object.values(post.comments).map(comment => `
+                  <div class="comment">
+                    <span class="comment-user">${comment.userName}:</span>
+                    <span>${comment.text}</span>
+                  </div>
+                `).join('') : '<div class="text-center py-2" style="color: #777;">No comments yet</div>'}
+                <div class="comment-input">
+                  <input type="text" placeholder="Write a comment..." id="comment-input-${postId}" aria-label="Comment input">
+                  <button onclick="postComment('${postId}')" aria-label="Post comment"><i class="fas fa-paper-plane"></i></button>
+                </div>
               </div>
             `;
-            postsContainer.appendChild(postElement);
+            postsContainer.prepend(postElement); // Newest posts first
+            
+            // Check if current user has liked this post
+            if (auth.currentUser && post.likes && post.likes[auth.currentUser.uid]) {
+              document.querySelector(`#post-${postId} .like-btn`).classList.add('active');
+            }
           }
         });
+      });
+    }
 
-        if (postsContainer.children.length === 0) {
-          postsContainer.innerHTML = '<div class="card text-center py-4">No posts yet. Be the first to share!</div>';
+    // Toggle like on a post
+    function toggleLike(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (!auth.currentUser) {
+        showAlert("Please login to like posts");
+        return;
+      }
+
+      const userId = auth.currentUser.uid;
+      const likeRef = db.ref(`posts/${postId}/likes/${userId}`);
+      const likeBtn = document.querySelector(`#post-${postId} .like-btn`);
+      const likesCount = document.querySelector(`#likes-${postId}`);
+
+      likeRef.once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          // Unlike
+          likeRef.remove()
+            .then(() => {
+              likeBtn.classList.remove('active');
+              updateLikesCount(postId);
+              showAlert("Like removed");
+            });
+        } else {
+          // Like
+          likeRef.set(true)
+            .then(() => {
+              likeBtn.classList.add('active');
+              updateLikesCount(postId);
+              showAlert("Post liked!");
+            });
         }
       });
     }
 
-    // Daily Verse Rotation
+    // Update likes count
+    function updateLikesCount(postId) {
+      db.ref(`posts/${postId}/likes`).once('value').then((snapshot) => {
+        const count = snapshot.numChildren();
+        document.querySelector(`#likes-${postId}`).textContent = count;
+      });
+    }
+
+    // Toggle comments section
+    function toggleComments(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const commentsSection = document.getElementById(`comments-${postId}`);
+      const isVisible = commentsSection.style.display === 'block';
+      
+      // Close all other comment sections first
+      document.querySelectorAll('.comments-section').forEach(section => {
+        if (section.id !== `comments-${postId}`) {
+          section.style.display = 'none';
+        }
+      });
+      
+      // Toggle current section
+      commentsSection.style.display = isVisible ? 'none' : 'block';
+      
+      // Focus on comment input if opening
+      if (!isVisible) {
+        setTimeout(() => {
+          document.getElementById(`comment-input-${postId}`).focus();
+        }, 100);
+      }
+    }
+
+    // Post a comment
+    function postComment(postId) {
+      if (!auth.currentUser) {
+        showAlert("Please login to comment");
+        return;
+      }
+
+      const commentInput = document.getElementById(`comment-input-${postId}`);
+      const commentText = commentInput.value.trim();
+      
+      if (!commentText) {
+        showAlert("Comment cannot be empty");
+        return;
+      }
+
+      const userId = auth.currentUser.uid;
+      const userName = auth.currentUser.displayName || "Anonymous";
+      const userProfilePic = auth.currentUser.photoURL || 'https://via.placeholder.com/40';
+      const newComment = {
+        userId: userId,
+        userName: userName,
+        userProfilePic: userProfilePic,
+        text: commentText,
+        timestamp: Date.now()
+      };
+
+      db.ref(`posts/${postId}/comments`).push(newComment)
+        .then(() => {
+          commentInput.value = '';
+          showAlert("Comment posted successfully");
+        })
+        .catch((error) => {
+          console.error("Error posting comment:", error);
+          showAlert("Error posting comment");
+        });
+    }
+
+    // Share a post
+    function sharePost(event, postId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const postRef = db.ref(`posts/${postId}`);
+      postRef.once('value').then((snapshot) => {
+        const post = snapshot.val();
+        const shareUrl = `${window.location.origin}${window.location.pathname}?post=${postId}`;
+        const shareText = `${post.userName}'s post on Anointed Flames TV: ${post.content ? post.content.substring(0, 100) : ''}...`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Check out this post from Anointed Flames TV',
+            text: shareText,
+            url: shareUrl
+          }).catch(() => {
+            // Fallback if share fails
+            copyToClipboard(shareUrl);
+          });
+        } else {
+          // Fallback for browsers without share API
+          copyToClipboard(shareUrl);
+        }
+      });
+    }
+
+    // Copy text to clipboard
+    function copyToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showAlert("Link copied to clipboard!");
+    }
+
+    // Delete a post
+    function deletePost(postId) {
+      if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) return;
+      
+      db.ref(`posts/${postId}`).remove()
+        .then(() => {
+          showAlert("Post deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Error deleting post:", error);
+          showAlert("Error deleting post");
+        });
+    }
+
+    // View user profile
+    function viewUserProfile(userId) {
+      sessionStorage.setItem('viewingUserId', userId);
+      window.location.href = 'profile.html';
+    }
+
+    // Show alert message
+    function showAlert(message) {
+      const alert = document.getElementById('successAlert');
+      document.getElementById('alertMessage').textContent = message;
+      alert.style.display = 'block';
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 3000);
+    }
+
+    // Premium Daily Verse Rotation (50 verses)
     const dailyVerses = [
       '"For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, plans to give you hope and a future." - Jeremiah 29:11',
       '"Trust in the Lord with all your heart and lean not on your own understanding." - Proverbs 3:5',
-      '"I can do all things through Christ who strengthens me." - Philippians 4:13'
+      '"I can do all things through Christ who strengthens me." - Philippians 4:13',
+      '"The Lord is my shepherd; I shall not want." - Psalm 23:1',
+      '"Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go." - Joshua 1:9',
+      '"But seek first his kingdom and his righteousness, and all these things will be given to you as well." - Matthew 6:33',
+      '"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life." - John 3:16',
+      '"Cast all your anxiety on him because he cares for you." - 1 Peter 5:7',
+      '"The Lord is close to the brokenhearted and saves those who are crushed in spirit." - Psalm 34:18',
+      '"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." - Philippians 4:6',
+      '"And we know that in all things God works for the good of those who love him, who have been called according to his purpose." - Romans 8:28',
+      '"But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint." - Isaiah 40:31',
+      '"Jesus looked at them and said, "With man this is impossible, but with God all things are possible."" - Matthew 19:26',
+      '"For the word of God is alive and active. Sharper than any double-edged sword, it penetrates even to dividing soul and spirit, joints and marrow; it judges the thoughts and attitudes of the heart." - Hebrews 4:12',
+      '"Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!" - 2 Corinthians 5:17',
+      '"But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control. Against such things there is no law." - Galatians 5:22-23',
+      '"So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand." - Isaiah 41:10',
+      '"The name of the Lord is a fortified tower; the righteous run to it and are safe." - Proverbs 18:10',
+      '"But you will receive power when the Holy Spirit comes on you; and you will be my witnesses in Jerusalem, and in all Judea and Samaria, and to the ends of the earth." - Acts 1:8',
+      '"Come to me, all you who are weary and burdened, and I will give you rest." - Matthew 11:28',
+      '"The Lord is my light and my salvation—whom shall I fear? The Lord is the stronghold of my life—of whom shall I be afraid?" - Psalm 27:1',
+      '"He gives strength to the weary and increases the power of the weak." - Isaiah 40:29',
+      '"But the Lord is faithful, and he will strengthen you and protect you from the evil one." - 2 Thessalonians 3:3',
+      '"Your word is a lamp for my feet, a light on my path." - Psalm 119:105',
+      '"Love is patient, love is kind. It does not envy, it does not boast, it is not proud." - 1 Corinthians 13:4',
+      '"Rejoice always, pray continually, give thanks in all circumstances; for this is God\'s will for you in Christ Jesus." - 1 Thessalonians 5:16-18',
+      '"The Lord will fight for you; you need only to be still." - Exodus 14:14',
+      '"But God demonstrates his own love for us in this: While we were still sinners, Christ died for us." - Romans 5:8',
+      '"In the same way, let your light shine before others, that they may see your good deeds and glorify your Father in heaven." - Matthew 5:16',
+      '"Whoever dwells in the shelter of the Most High will rest in the shadow of the Almighty." - Psalm 91:1',
+      '"For where two or three gather in my name, there am I with them." - Matthew 18:20',
+      '"The Lord is good, a refuge in times of trouble. He cares for those who trust in him." - Nahum 1:7',
+      '"But the wisdom that comes from heaven is first of all pure; then peace-loving, considerate, submissive, full of mercy and good fruit, impartial and sincere." - James 3:17',
+      '"Do not let any unwholesome talk come out of your mouths, but only what is helpful for building others up according to their needs, that it may benefit those who listen." - Ephesians 4:29',
+      '"Therefore encourage one another and build each other up, just as in fact you are doing." - 1 Thessalonians 5:11',
+      '"Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you." - Ephesians 4:32',
+      '"And my God will meet all your needs according to the riches of his glory in Christ Jesus." - Philippians 4:19',
+      '"This is the day the Lord has made; let us rejoice and be glad in it." - Psalm 118:24',
+      '"The Lord is not slow in keeping his promise, as some understand slowness. Instead he is patient with you, not wanting anyone to perish, but everyone to come to repentance." - 2 Peter 3:9',
+      '"If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness." - 1 John 1:9',
+      '"For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord." - Romans 6:23',
+      '"But you, Lord, are a shield around me, my glory, the One who lifts my head high." - Psalm 3:3',
+      '"The Lord is my strength and my shield; my heart trusts in him, and he helps me. My heart leaps for joy, and with my song I praise him." - Psalm 28:7',
+      '"But thanks be to God! He gives us the victory through our Lord Jesus Christ." - 1 Corinthians 15:57',
+      '"Let everything that has breath praise the Lord. Praise the Lord." - Psalm 150:6',
+      '"And surely I am with you always, to the very end of the age." - Matthew 28:20',
+      '"For we are God\'s handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do." - Ephesians 2:10',
+      '"May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit." - Romans 15:13',
+      '"Now faith is confidence in what we hope for and assurance about what we do not see." - Hebrews 11:1'
     ];
 
     function displayDailyVerse() {
+      const verseElement = document.getElementById('daily-verse');
+      verseElement.classList.remove('verse-transition');
+      
+      // Force reflow to restart animation
+      void verseElement.offsetWidth;
+      
       const randomIndex = Math.floor(Math.random() * dailyVerses.length);
-      document.getElementById('daily-verse').textContent = dailyVerses[randomIndex];
+      verseElement.textContent = dailyVerses[randomIndex];
+      verseElement.classList.add('verse-transition');
     }
 
     // Initialize page
@@ -287,17 +910,28 @@
         loadPosts();
         displayDailyVerse();
         
+        // Display new verse when banner is clicked
         document.getElementById('verseBanner').addEventListener('click', displayDailyVerse);
+        
+        // Check for post ID in URL to scroll to specific post
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('post');
+        if (postId) {
+          setTimeout(() => {
+            const postElement = document.getElementById(`post-${postId}`);
+            if (postElement) {
+              postElement.scrollIntoView({ behavior: 'smooth' });
+              postElement.style.animation = 'pulse 2s';
+              setTimeout(() => {
+                postElement.style.animation = '';
+              }, 2000);
+            }
+          }, 1000);
+        }
       } else {
         window.location.href = "login.html";
       }
     });
-
-    function showSuccess() {
-      const alert = document.getElementById('successAlert');
-      alert.style.display = 'block';
-      setTimeout(() => alert.style.display = 'none', 3000);
-    }
   </script>
 </body>
 </html>

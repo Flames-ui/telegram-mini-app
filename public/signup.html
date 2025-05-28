@@ -184,12 +184,7 @@
         const db = firebase.firestore();
 
         // Check auth state to prevent redirect loops
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in, redirect to profile setup
-                window.location.href = "profile-setup.html";
-            }
-        });
+        auth.onAuthStateChanged((user))
 
         // Signup form handler
         document.getElementById('signup-form').addEventListener('submit', async (e) => {

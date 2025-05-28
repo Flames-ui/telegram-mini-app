@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu | Anointed Flames TV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* === Global Styles === */
+    :root {
+      --smooth-purple: #9c88ff;
+      --black-bg: #000000;
+      --shinny-black: #121212;
+      --supreme-white: #f8f9fa;
+      --flame-orange: #ff7b25;
+    }
+
+    body {
+      background-color: var(--black-bg);
+      color: var(--supreme-white);
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 20px;
+      margin-bottom: 80px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header Styles */
+    .header-title {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* Menu Header */
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .menu-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      color: white;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(156, 136, 255, 0.4);
+    }
+
+    .secondary-btn {
+      background-color: var(--shinny-black);
+      color: var(--supreme-white);
+      border: 1px solid var(--smooth-purple);
+    }
+
+    .secondary-btn:hover {
+      background-color: rgba(156, 136, 255, 0.1);
+    }
+
+    /* Menu Items */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .menu-card {
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--smooth-purple);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(156, 136, 255, 0.2);
+    }
+
+    .menu-icon {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--smooth-purple);
+    }
+
+    .menu-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .menu-desc {
+      font-size: 0.9rem;
+      color: var(--supreme-white);
+      opacity: 0.8;
+    }
+
+    /* About Section */
+    .about-section {
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      border: 1px solid var(--smooth-purple);
+    }
+
+    .about-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--smooth-purple);
+      border-bottom: 1px solid var(--smooth-purple);
+      padding-bottom: 10px;
+    }
+
+    .about-content {
+      line-height: 1.6;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--shinny-black);
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+      z-index: 1000;
+      border-top: 1px solid var(--smooth-purple);
+    }
+
+    .bottom-nav a {
+      color: var(--smooth-purple);
+      font-size: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .bottom-nav a.active {
+      color: var(--flame-orange);
+      transform: translateY(-5px);
+    }
+
+    /* Success Alert */
+    .success-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="success-alert" id="successAlert">
+    <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+  </div>
+
+  <div class="container">
+    <h2 class="header-title">
+      <i class="fas fa-fire-alt"></i> Anointed Flames TV <i class="fas fa-fire-alt"></i>
+    </h2>
+
+    <!-- Menu Header -->
+    <div class="menu-header">
+      <button class="menu-btn primary-btn" onclick="window.location.href='dashboard.html'">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+      <button class="menu-btn secondary-btn" id="themeToggleBtn">
+        <i class="fas fa-moon"></i> Dark Mode
+      </button>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid">
+      <div class="menu-card" onclick="window.location.href='bible.html'">
+        <div class="menu-icon">
+          <i class="fas fa-bible"></i>
+        </div>
+        <h3 class="menu-title">Bible</h3>
+        <p class="menu-desc">Read and study the Word of God</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='devotional.html'">
+        <div class="menu-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h3 class="menu-title">Daily Devotional</h3>
+        <p class="menu-desc">Spiritual nourishment for each day</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='prayer.html'">
+        <div class="menu-icon">
+          <i class="fas fa-praying-hands"></i>
+        </div>
+        <h3 class="menu-title">Prayer Guide</h3>
+        <p class="menu-desc">Powerful prayer points and guidance</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='hymns.html'">
+        <div class="menu-icon">
+          <i class="fas fa-music"></i>
+        </div>
+        <h3 class="menu-title">Hymns & Worship</h3>
+        <p class="menu-desc">Traditional hymns and worship songs</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='testimonies.html'">
+        <div class="menu-icon">
+          <i class="fas fa-cross"></i>
+        </div>
+        <h3 class="menu-title">Testimonies</h3>
+        <p class="menu-desc">Share and read powerful testimonies</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='events.html'">
+        <div class="menu-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <h3 class="menu-title">Events</h3>
+        <p class="menu-desc">Upcoming Christian events</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='give.html'">
+        <div class="menu-icon">
+          <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <h3 class="menu-title">Give</h3>
+        <p class="menu-desc">Support the ministry</p>
+      </div>
+
+      <div class="menu-card" onclick="window.location.href='settings.html'">
+        <div class="menu-icon">
+          <i class="fas fa-cog"></i>
+        </div>
+        <h3 class="menu-title">Settings</h3>
+        <p class="menu-desc">App preferences and account</p>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="about-section">
+      <h3 class="about-title">About</h3>
+      <div class="about-content">
+        <p><strong>About the App:</strong> Anointed Flames TV is a gospel app designed to bring you closer to God through His Word, prayer, worship, and Christian community. Our mission is to spread the fire of the Holy Spirit worldwide.</p>
+        
+        <p><strong>About the Owner:</strong> Agbasionwe Emmanuel Chiemelie is a passionate minister of the gospel, dedicated to using technology to spread God's Word. With a calling to evangelism and discipleship, he created this platform to reach souls for Christ.</p>
+        
+        <p>Contact: <a href="mailto:anointedflames27@gmail.com" style="color: var(--smooth-purple);">anointedflames27@gmail.com</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="homepage.html"><i class="fas fa-home"></i></a>
+    <a href="video.html"><i class="fas fa-video"></i></a>
+    <a href="post.html"><i class="fas fa-plus-circle"></i></a>
+    <a href="profile.html"><i class="fas fa-user"></i></a>
+    <a href="menu.html" class="active"><i class="fas fa-bars"></i></a>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      databaseURL: "https://anointed-flames-tv-default-rtdb.firebaseio.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.appspot.com",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // DOM Elements
+    const successAlert = document.getElementById('successAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+    // Show alert message
+    function showAlert(message, duration = 3000) {
+      alertMessage.textContent = message;
+      successAlert.style.display = 'block';
+      setTimeout(() => {
+        successAlert.style.display = 'none';
+      }, duration);
+    }
+
+    // Theme Toggle
+    let darkMode = true;
+    themeToggleBtn.addEventListener('click', () => {
+      darkMode = !darkMode;
+      updateTheme();
+    });
+
+    function updateTheme() {
+      if (darkMode) {
+        document.documentElement.style.setProperty('--black-bg', '#000000');
+        document.documentElement.style.setProperty('--shinny-black', '#121212');
+        document.documentElement.style.setProperty('--supreme-white', '#f8f9fa');
+        themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+      } else {
+        document.documentElement.style.setProperty('--black-bg', '#f8f9fa');
+        document.documentElement.style.setProperty('--shinny-black', '#ffffff');
+        document.documentElement.style.setProperty('--supreme-white', '#000000');
+        themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+      }
+    }
+
+    // Initialize theme
+    updateTheme();
+
+    // Check authentication state
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Sample function for menu items (would be expanded in actual pages)
+    function showComingSoon() {
+      showAlert("This feature is coming soon!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Anointed Flames TV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* === Premium Global Styles === */
+    :root {
+      --smooth-purple: #8a63ff;
+      --deep-purple: #6a3093;
+      --black-bg: #0a0a0a;
+      --shinny-black: #1a1a1a;
+      --supreme-white: #ffffff;
+      --flame-orange: #ff6b35;
+      --gold-accent: #ffd700;
+      --platinum: #e5e4e2;
+    }
+
+    body {
+      background-color: var(--black-bg);
+      color: var(--supreme-white);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 20px;
+      margin-bottom: 80px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(138, 99, 255, 0.05) 0%, rgba(138, 99, 255, 0.05) 90%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Premium Header Styles */
+    .header-title {
+      background: linear-gradient(135deg, var(--gold-accent), var(--flame-orange), var(--smooth-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(138, 99, 255, 0.3);
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .header-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-accent), var(--flame-orange), transparent);
+    }
+
+    /* Premium Card Styles */
+    .card {
+      background-color: var(--shinny-black);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(138, 99, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(138, 99, 255, 0.2);
+      border-color: rgba(138, 99, 255, 0.5);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--smooth-purple), var(--flame-orange));
+    }
+
+    /* Premium Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .data-table th {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--deep-purple));
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+    }
+
+    .data-table tr:hover {
+      background-color: rgba(138, 99, 255, 0.05);
+    }
+
+    /* Premium Button Styles */
+    .btn-premium {
+      background: linear-gradient(135deg, var(--smooth-purple), var(--flame-orange));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(138, 99, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(138, 99, 255, 0.3);
+      background: linear-gradient(135deg, var(--flame-orange), var(--smooth-purple));
+    }
+
+    .btn-premium:active {
+      transform: translateY(0);
+    }
+
+    .btn-premium i {
+      font-size: 1.1em;
+    }
+
+    /* Premium Form Styles */
+    .form-control-premium {
+      background-color: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(138, 99, 255, 0.3);
+      color: var(--supreme-white);
+      border-radius: 8px;
+      padding: 12px 15px;
+      transition: all 0.3s;
+    }
+
+    .form-control-premium:focus {
+      border-color: var(--smooth-purple);
+      box-shadow: 0 0 0 0.25rem rgba(138, 99, 255, 0.25);
+      background-color: rgba(40, 40, 40, 0.8);
+    }
+
+    /* Premium Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--shinny-black);
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+      z-index: 1000;
+      border-top: 1px solid rgba(138, 99, 255, 0.3);
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .bottom-nav a {
+      color: var(--platinum);
+      font-size: 1.5rem;
+      transition: all 0.3s;
+      padding: 5px 15px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .bottom-nav a.active {
+      color: var(--gold-accent);
+      transform: translateY(-5px);
+      text-shadow: 0 0 10px var(--gold-accent);
+    }
+
+    .bottom-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--gold-accent);
+      transition: width 0.3s;
+    }
+
+    .bottom-nav a.active::after {
+      width: 60%;
+    }
+
+    /* Premium Success Alert */
+    .success-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--deep-purple), var(--smooth-purple));
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.3s ease-out;
+      border-left: 5px solid var(--gold-accent);
+    }
+
+    @keyframes slideDown {
+      from { top: -50px; opacity: 0; }
+      to { top: 20px; opacity: 1; }
+    }
+
+    /* Premium Stats Cards */
+    .stat-card {
+      background-color: var(--shinny-black);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--smooth-purple);
+      transition: all 0.3s;
+      height: 100%;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(138, 99, 255, 0.1);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-accent), var(--flame-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 10px 0;
+    }
+
+    /* Premium Admin Panel */
+    .admin-panel {
+      background-color: rgba(10, 10, 10, 0.9);
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 40px;
+      border: 1px solid rgba(138, 99, 255, 0.3);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .admin-tab {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .admin-tab.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Premium Loading Animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(138, 99, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--smooth-purple);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Spacing improvements */
+    .section-spacing {
+      margin-top: 40px;
+    }
+
+    .card-spacing {
+      margin-bottom: 30px;
+    }
+
+    /* Post preview styling */
+    .post-preview {
+      border: 1px solid rgba(138, 99, 255, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: rgba(30, 30, 30, 0.5);
+    }
+
+    .post-preview img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .post-preview video {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Status badges */
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background-color: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+    }
+
+    .status-approved {
+      background-color: rgba(40, 167, 69, 0.2);
+      color: #28a745;
+    }
+
+    .status-rejected {
+      background-color: rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+    }
+
+    /* Tab content spacing */
+    .tab-content {
+      padding: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-alert" id="successAlert">
+    <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+  </div>
+
+  <div class="container">
+    <h2 class="header-title">
+      <i class="fas fa-tachometer-alt"></i> Dashboard <i class="fas fa-tachometer-alt"></i>
+    </h2>
+
+    <!-- Earnings Section -->
+    <div class="row card-spacing">
+      <div class="col-md-6">
+        <div class="stat-card">
+          <h4><i class="fas fa-coins"></i> Total Earnings</h4>
+          <div class="stat-value" id="totalEarnings">$0.00</div>
+          <p>Available: <span id="availableBalance" class="text-success">$0.00</span></p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="stat-card">
+          <h4><i class="fas fa-chart-line"></i> This Month</h4>
+          <div class="stat-value" id="monthEarnings">$0.00</div>
+          <p><span id="earningsChange" class="text-success">+0%</span> from last month</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="row card-spacing">
+      <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+          <h5><i class="fas fa-font"></i> Text Clicks</h5>
+          <div class="stat-value" id="textClicks">0</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+          <h5><i class="fas fa-image"></i> Image Clicks</h5>
+          <div class="stat-value" id="imageClicks">0</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+          <h5><i class="fas fa-video"></i> Video Views</h5>
+          <div class="stat-value" id="videoViews">0</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card text-center">
+          <h5><i class="fas fa-users"></i> Referrals</h5>
+          <div class="stat-value" id="referralCount">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referral Section -->
+    <div class="card card-spacing">
+      <div class="card-header" style="background: linear-gradient(135deg, var(--smooth-purple), var(--deep-purple));">
+        <h4 class="mb-0"><i class="fas fa-user-plus"></i> Your Referral Link</h4>
+      </div>
+      <div class="card-body">
+        <div class="input-group">
+          <input type="text" class="form-control-premium" id="referralLink" value="Loading..." readonly>
+          <button class="btn-premium" onclick="copyReferralLink()">
+            <i class="fas fa-copy"></i> Copy
+          </button>
+        </div>
+        <p class="mt-3">Earn <span class="text-warning">$0.00005</span> for each user who signs up using your link</p>
+      </div>
+    </div>
+
+    <!-- Withdrawal Section -->
+    <div class="card card-spacing">
+      <div class="card-header" style="background: linear-gradient(135deg, var(--flame-orange), #ff8c42);">
+        <h4 class="mb-0"><i class="fas fa-wallet"></i> Withdraw Earnings</h4>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-dark">
+          Minimum withdrawal amount: <strong>$1.00</strong>
+        </div>
+        
+        <ul class="nav nav-tabs" id="withdrawalTabs">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#bankTab">Bank Transfer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#paypalTab">PayPal</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#cryptoTab">USDT (Crypto)</a>
+          </li>
+        </ul>
+        
+        <div class="tab-content mt-3">
+          <!-- Bank Transfer Form -->
+          <div class="tab-pane fade show active" id="bankTab">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control-premium" id="bankName" placeholder="Account holder name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Bank Name</label>
+              <input type="text" class="form-control-premium" id="bankBankName" placeholder="Your bank name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Account Number</label>
+              <input type="text" class="form-control-premium" id="bankAccount" placeholder="Your account number">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount ($)</label>
+              <input type="number" class="form-control-premium" id="bankAmount" placeholder="1.00" min="1" step="0.01">
+            </div>
+            <button class="btn-premium w-100" onclick="requestWithdrawal('bank')">
+              <i class="fas fa-paper-plane"></i> Request Withdrawal
+            </button>
+          </div>
+          
+          <!-- PayPal Form -->
+          <div class="tab-pane fade" id="paypalTab">
+            <div class="mb-3">
+              <label class="form-label">PayPal Email</label>
+              <input type="email" class="form-control-premium" id="paypalEmail" placeholder="Your PayPal email">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount ($)</label>
+              <input type="number" class="form-control-premium" id="paypalAmount" placeholder="1.00" min="1" step="0.01">
+            </div>
+            <button class="btn-premium w-100" onclick="requestWithdrawal('paypal')">
+              <i class="fas fa-paper-plane"></i> Request Withdrawal
+            </button>
+          </div>
+          
+          <!-- Crypto Form -->
+          <div class="tab-pane fade" id="cryptoTab">
+            <div class="mb-3">
+              <label class="form-label">USDT Wallet Address</label>
+              <input type="text" class="form-control-premium" id="cryptoAddress" placeholder="Your USDT wallet address">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Network</label>
+              <select class="form-control-premium" id="cryptoNetwork">
+                <option value="TRC20">TRC20</option>
+                <option value="ERC20">ERC20</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount ($)</label>
+              <input type="number" class="form-control-premium" id="cryptoAmount" placeholder="1.00" min="1" step="0.01">
+            </div>
+            <button class="btn-premium w-100" onclick="requestWithdrawal('crypto')">
+              <i class="fas fa-paper-plane"></i> Request Withdrawal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card card-spacing">
+      <div class="card-header" style="background: linear-gradient(135deg, #6a3093, #8a63ff);">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><i class="fas fa-history"></i> Transaction History</h4>
+          <button class="btn-premium btn-sm" onclick="loadTransactions()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTable">
+              <tr>
+                <td colspan="4" class="text-center py-4">
+                  <div class="loading-spinner"></div>
+                  <p class="mt-2">Loading transactions...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel section-spacing">
+      <h3 class="text-center mb-4" style="background: linear-gradient(135deg, var(--gold-accent), var(--flame-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <i class="fas fa-lock"></i> Admin Controls
+      </h3>
+
+      <!-- Password Verification -->
+      <div id="adminAuth" class="text-center">
+        <div class="card bg-dark border-purple">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-shield-alt"></i> Admin Authentication</h5>
+            <div class="mb-3">
+              <input type="password" class="form-control-premium mx-auto" id="adminPassword" placeholder="Enter admin password" style="max-width: 300px;">
+            </div>
+            <button class="btn-premium" onclick="verifyAdminAccess()">
+              <i class="fas fa-unlock"></i> Unlock Admin Features
+            </button>
+            <p id="passwordError" class="text-danger mt-2" style="display: none;">
+              <i class="fas fa-times-circle"></i> Invalid password
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Features (hidden until auth) -->
+      <div id="adminFeatures" style="display: none;">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" onclick="showAdminTab('adminWithdrawals')">
+              <i class="fas fa-money-bill-wave"></i> Withdrawals
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="showAdminTab('adminUsers')">
+              <i class="fas fa-users"></i> Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="showAdminTab('adminPosts')">
+              <i class="fas fa-newspaper"></i> Post Approvals
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="showAdminTab('adminSettings')">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+          </li>
+        </ul>
+
+        <!-- Withdrawals Tab -->
+        <div id="adminWithdrawals" class="admin-tab active">
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <h4><i class="fas fa-money-check-alt"></i> Pending Withdrawals</h4>
+            <button class="btn-premium btn-sm" onclick="loadAdminWithdrawals()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminWithdrawalsTable">
+                <tr>
+                  <td colspan="5" class="text-center py-4">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-2">Loading withdrawals...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="adminUsers" class="admin-tab">
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <h4><i class="fas fa-user-friends"></i> User Management</h4>
+            <div class="input-group" style="max-width: 300px;">
+              <input type="text" class="form-control-premium" id="userSearch" placeholder="Search users...">
+              <button class="btn-premium" onclick="searchUsers()">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Balance</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTable">
+                <tr>
+                  <td colspan="5" class="text-center py-4">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-2">Loading users...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Post Approvals Tab -->
+        <div id="adminPosts" class="admin-tab">
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+            <h4><i class="fas fa-check-circle"></i> Pending Post Approvals</h4>
+            <button class="btn-premium btn-sm" onclick="loadPendingPosts()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+
+          <div id="pendingPostsContainer">
+            <div class="text-center py-4">
+              <div class="loading-spinner"></div>
+              <p class="mt-2">Loading pending posts...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="adminSettings" class="admin-tab">
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div class="card bg-dark border-purple mb-4">
+                <div class="card-header">
+                  <h5><i class="fas fa-key"></i> Change Admin Password</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" class="form-control-premium" id="currentPassword">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-control-premium" id="newPassword">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control-premium" id="confirmPassword">
+                  </div>
+                  <button class="btn-premium w-100" onclick="updateAdminPassword()">
+                    <i class="fas fa-save"></i> Update Password
+                  </button>
+                  <div id="passwordUpdateResult" class="mt-3"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="card bg-dark border-purple">
+                <div class="card-header">
+                  <h5><i class="fas fa-sliders-h"></i> System Settings</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label class="form-label">Earning Rates</label>
+                    <div class="row g-2">
+                      <div class="col-md-6">
+                        <label class="small">Text Click ($)</label>
+                        <input type="number" class="form-control-premium" id="textRate" step="0.00001" min="0" value="0.00001">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="small">Image Click ($)</label>
+                        <input type="number" class="form-control-premium" id="imageRate" step="0.00001" min="0" value="0.00001">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="small">Video View ($)</label>
+                        <input type="number" class="form-control-premium" id="videoRate" step="0.00001" min="0" value="0.00002">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="small">Referral ($)</label>
+                        <input type="number" class="form-control-premium" id="referralRate" step="0.00001" min="0" value="0.00005">
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn-premium w-100" onclick="updateSystemSettings()">
+                    <i class="fas fa-save"></i> Save Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="homepage.html"><i class="fas fa-home"></i></a>
+    <a href="video.html"><i class="fas fa-video"></i></a>
+    <a href="post.html"><i class="fas fa-plus-circle"></i></a>
+    <a href="profile.html"><i class="fas fa-user"></i></a>
+    <a href="menu.html"><i class="fas fa-bars"></i></a>
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // =====================
+    // CONFIGURATION
+    // =====================
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8DFd227dgvCh9TKZ3pe3I0tdDd9MIHp0",
+      authDomain: "anointed-flames-tv.firebaseapp.com",
+      databaseURL: "https://anointed-flames-tv-default-rtdb.firebaseio.com",
+      projectId: "anointed-flames-tv",
+      storageBucket: "anointed-flames-tv.appspot.com",
+      messagingSenderId: "814825501586",
+      appId: "1:814825501586:web:3fb1feb13746bce2e1c74b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+    // Admin configuration
+    const ADMIN_PASSWORD = "1234567890"; // Initial admin password
+    let currentUser = null;
+    let isAdmin = false;
+
+    // =====================
+    // UTILITY FUNCTIONS
+    // =====================
+    function showAlert(message, duration = 3000) {
+      const alert = document.getElementById('successAlert');
+      document.getElementById('alertMessage').textContent = message;
+      alert.style.display = 'block';
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, duration);
+    }
+
+    function formatMoney(amount) {
+      return '$' + parseFloat(amount || 0).toFixed(5);
+    }
+
+    function formatDate(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // =====================
+    // DASHBOARD FUNCTIONS
+    // =====================
+    function loadDashboardData() {
+      if (!currentUser) return;
+      
+      // Load user stats
+      db.ref(`users/${currentUser.uid}`).on('value', (snapshot) => {
+        const userData = snapshot.val();
+        if (userData) {
+          // Calculate earnings
+          const textEarnings = (userData.textClicks || 0) * (userData.rates?.text || 0.00001);
+          const imageEarnings = (userData.imageClicks || 0) * (userData.rates?.image || 0.00001);
+          const videoEarnings = (userData.videoViews || 0) * (userData.rates?.video || 0.00002);
+          const referralEarnings = (userData.referrals || 0) * (userData.rates?.referral || 0.00005);
+          const total = textEarnings + imageEarnings + videoEarnings + referralEarnings;
+          
+          // Update UI
+          document.getElementById('totalEarnings').textContent = formatMoney(total);
+          document.getElementById('availableBalance').textContent = formatMoney(userData.balance || 0);
+          document.getElementById('textClicks').textContent = userData.textClicks || 0;
+          document.getElementById('imageClicks').textContent = userData.imageClicks || 0;
+          document.getElementById('videoViews').textContent = userData.videoViews || 0;
+          document.getElementById('referralCount').textContent = userData.referrals || 0;
+          
+          // Set referral link
+          document.getElementById('referralLink').value = 
+            `${window.location.origin}/register.html?ref=${currentUser.uid}`;
+        }
+      });
+
+      // Load transactions
+      loadTransactions();
+    }
+
+    function copyReferralLink() {
+      const link = document.getElementById('referralLink');
+      link.select();
+      document.execCommand('copy');
+      showAlert('Referral link copied to clipboard!');
+    }
+
+    function requestWithdrawal(method) {
+      if (!currentUser) {
+        showAlert('Please login to request withdrawal');
+        return;
+      }
+
+      let amount, details;
+      
+      switch(method) {
+        case 'bank':
+          amount = parseFloat(document.getElementById('bankAmount').value);
+          if (isNaN(amount) || amount <= 0) {
+            showAlert('Please enter a valid amount');
+            return;
+          }
+          details = {
+            name: document.getElementById('bankName').value.trim(),
+            bankName: document.getElementById('bankBankName').value.trim(),
+            account: document.getElementById('bankAccount').value.trim()
+          };
+          if (!details.name || !details.bankName || !details.account) {
+            showAlert('Please fill all bank details');
+            return;
+          }
+          break;
+          
+        case 'paypal':
+          amount = parseFloat(document.getElementById('paypalAmount').value);
+          if (isNaN(amount) || amount <= 0) {
+            showAlert('Please enter a valid amount');
+            return;
+          }
+          const email = document.getElementById('paypalEmail').value.trim();
+          if (!email.includes('@') || !email.includes('.')) {
+            showAlert('Please enter a valid PayPal email');
+            return;
+          }
+          details = { email };
+          break;
+          
+        case 'crypto':
+          amount = parseFloat(document.getElementById('cryptoAmount').value);
+          if (isNaN(amount) || amount <= 0) {
+            showAlert('Please enter a valid amount');
+            return;
+          }
+          const address = document.getElementById('cryptoAddress').value.trim();
+          if (address.length < 10) {
+            showAlert('Please enter a valid wallet address');
+            return;
+          }
+          details = {
+            address,
+            network: document.getElementById('cryptoNetwork').value
+          };
+          break;
+      }
+
+      // Check if user has enough balance
+      db.ref(`users/${currentUser.uid}/balance`).once('value').then(snapshot => {
+        const balance = parseFloat(snapshot.val() || 0);
+        if (balance < amount) {
+          showAlert('Insufficient balance for this withdrawal');
+          return;
+        }
+
+        // Create withdrawal request
+        const withdrawalData = {
+          userId: currentUser.uid,
+          userName: currentUser.displayName || 'Anonymous',
+          userEmail: currentUser.email,
+          amount: amount,
+          method: method,
+          details: details,
+          timestamp: Date.now(),
+          status: 'pending'
+        };
+
+        db.ref('withdrawals').push(withdrawalData)
+          .then(() => {
+            // Deduct from user balance
+            db.ref(`users/${currentUser.uid}/balance`).set(balance - amount);
+            
+            // Add to user's transactions
+            db.ref(`users/${currentUser.uid}/transactions`).push({
+              type: 'withdrawal',
+              amount: amount,
+              status: 'pending',
+              timestamp: withdrawalData.timestamp
+            });
+            
+            showAlert('Withdrawal request submitted!');
+            
+            // Reset form
+            if (method === 'bank') document.getElementById('bankAmount').value = '';
+            if (method === 'paypal') document.getElementById('paypalAmount').value = '';
+            if (method === 'crypto') document.getElementById('cryptoAmount').value = '';
+            
+            // Reload dashboard data
+            loadDashboardData();
+          })
+          .catch(error => {
+            console.error('Error submitting withdrawal:', error);
+            showAlert('Error submitting withdrawal request');
+          });
+      });
+    }
+
+    function loadTransactions() {
+      if (!currentUser) return;
+      
+      db.ref(`users/${currentUser.uid}/transactions`).orderByChild('timestamp').limitToLast(10).on('value', (snapshot) => {
+        const table = document.getElementById('transactionsTable');
+        table.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center py-4">No transactions yet</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        snapshot.forEach(tx => {
+          const data = tx.val();
+          const statusClass = data.status === 'completed' ? 'text-success' : 
+                            data.status === 'pending' ? 'text-warning' : 'text-danger';
+          
+          table.innerHTML += `
+            <tr>
+              <td>${formatDate(data.timestamp)}</td>
+              <td>${data.type}</td>
+              <td>${formatMoney(data.amount)}</td>
+              <td><span class="${statusClass}">${data.status}</span></td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    // =====================
+    // ADMIN FUNCTIONS
+    // =====================
+    function verifyAdminAccess() {
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === ADMIN_PASSWORD) {
+        isAdmin = true;
+        document.getElementById('adminFeatures').style.display = 'block';
+        document.getElementById('adminAuth').style.display = 'none';
+        loadAdminData();
+        showAlert('Admin access granted');
+      } else {
+        document.getElementById('passwordError').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('passwordError').style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    function showAdminTab(tabId) {
+      document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.getElementById(tabId).classList.add('active');
+      
+      // Load data when tab is shown
+      if (tabId === 'adminPosts') {
+        loadPendingPosts();
+      } else if (tabId === 'adminUsers') {
+        loadAllUsers();
+      } else if (tabId === 'adminWithdrawals') {
+        loadAdminWithdrawals();
+      } else if (tabId === 'adminSettings') {
+        loadSystemSettings();
+      }
+    }
+
+    function loadAdminData() {
+      if (!isAdmin) return;
+      
+      loadAdminWithdrawals();
+      loadAllUsers();
+      loadPendingPosts();
+      loadSystemSettings();
+    }
+
+    function loadAdminWithdrawals() {
+      db.ref('withdrawals').orderByChild('status').equalTo('pending').on('value', (snapshot) => {
+        const table = document.getElementById('adminWithdrawalsTable');
+        table.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4">No pending withdrawals</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        snapshot.forEach(withdrawal => {
+          const data = withdrawal.val();
+          
+          table.innerHTML += `
+            <tr>
+              <td>${data.userName || 'Anonymous'}</td>
+              <td>${formatMoney(data.amount)}</td>
+              <td>${data.method}</td>
+              <td>${formatDate(data.timestamp)}</td>
+              <td>
+                <button class="btn-premium btn-sm" onclick="processWithdrawal('${withdrawal.key}', 'approved')">
+                  <i class="fas fa-check"></i> Approve
+                </button>
+                <button class="btn-premium btn-sm" style="background: linear-gradient(135deg, #ff6b6b, #e74c3c);" onclick="processWithdrawal('${withdrawal.key}', 'rejected')">
+                  <i class="fas fa-times"></i> Reject
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    function processWithdrawal(id, action) {
+      if (!confirm(`Are you sure you want to ${action} this withdrawal?`)) return;
+      
+      db.ref(`withdrawals/${id}/status`).set(action)
+        .then(() => {
+          // Update user's transaction status
+          db.ref('withdrawals/' + id).once('value').then(snap => {
+            const withdrawal = snap.val();
+            db.ref(`users/${withdrawal.userId}/transactions`).orderByChild('timestamp').equalTo(withdrawal.timestamp).once('value')
+              .then(snapshot => {
+                snapshot.forEach(tx => {
+                  db.ref(`users/${withdrawal.userId}/transactions/${tx.key}/status`).set(action === 'approved' ? 'completed' : 'rejected');
+                });
+              });
+          });
+          
+          showAlert(`Withdrawal ${action} successfully!`);
+          loadAdminWithdrawals();
+        })
+        .catch(error => {
+          console.error('Error processing withdrawal:', error);
+          showAlert('Error processing withdrawal');
+        });
+    }
+
+    function loadAllUsers() {
+      db.ref('users').limitToLast(50).on('value', (snapshot) => {
+        const table = document.getElementById('adminUsersTable');
+        table.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4">No users found</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        snapshot.forEach(user => {
+          const data = user.val();
+          const isBanned = data.banned || false;
+          
+          table.innerHTML += `
+            <tr>
+              <td>${data.name || 'Anonymous'}</td>
+              <td>${data.email || 'No email'}</td>
+              <td>${formatMoney(data.balance || 0)}</td>
+              <td>
+                <span class="badge ${isBanned ? 'bg-danger' : 'bg-success'}">
+                  ${isBanned ? 'Banned' : 'Active'}
+                </span>
+              </td>
+              <td>
+                ${!isBanned ? `
+                  <button class="btn-premium btn-sm" style="background: linear-gradient(135deg, #ff6b6b, #e74c3c);" onclick="toggleUserBan('${user.key}', true)">
+                    <i class="fas fa-ban"></i> Ban
+                  </button>
+                ` : `
+                  <button class="btn-premium btn-sm" onclick="toggleUserBan('${user.key}', false)">
+                    <i class="fas fa-check-circle"></i> Unban
+                  </button>
+                `}
+                <button class="btn-premium btn-sm" onclick="viewUserDetails('${user.key}')">
+                  <i class="fas fa-eye"></i> View
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    function toggleUserBan(userId, ban) {
+      if (!confirm(`Are you sure you want to ${ban ? 'ban' : 'unban'} this user?`)) return;
+      
+      db.ref(`users/${userId}/banned`).set(ban)
+        .then(() => {
+          showAlert(`User ${ban ? 'banned' : 'unbanned'} successfully!`);
+          loadAllUsers();
+        })
+        .catch(error => {
+          console.error('Error updating user status:', error);
+          showAlert('Error updating user status');
+        });
+    }
+
+    function viewUserDetails(userId) {
+      // In a full implementation, this would open a modal with detailed user info
+      showAlert(`Viewing details for user ${userId}`);
+    }
+
+    function searchUsers() {
+      const query = document.getElementById('userSearch').value.toLowerCase();
+      if (!query) {
+        loadAllUsers();
+        return;
+      }
+
+      db.ref('users').once('value').then(snapshot => {
+        const table = document.getElementById('adminUsersTable');
+        table.innerHTML = '';
+        
+        let found = false;
+        snapshot.forEach(user => {
+          const data = user.val();
+          const name = (data.name || '').toLowerCase();
+          const email = (data.email || '').toLowerCase();
+          
+          if (name.includes(query) || email.includes(query)) {
+            found = true;
+            const isBanned = data.banned || false;
+            
+            table.innerHTML += `
+              <tr>
+                <td>${data.name || 'Anonymous'}</td>
+                <td>${data.email || 'No email'}</td>
+                <td>${formatMoney(data.balance || 0)}</td>
+                <td>
+                  <span class="badge ${isBanned ? 'bg-danger' : 'bg-success'}">
+                    ${isBanned ? 'Banned' : 'Active'}
+                  </span>
+                </td>
+                <td>
+                  ${!isBanned ? `
+                    <button class="btn-premium btn-sm" style="background: linear-gradient(135deg, #ff6b6b, #e74c3c);" onclick="toggleUserBan('${user.key}', true)">
+                      <i class="fas fa-ban"></i> Ban
+                    </button>
+                  ` : `
+                    <button class="btn-premium btn-sm" onclick="toggleUserBan('${user.key}', false)">
+                      <i class="fas fa-check-circle"></i> Unban
+                    </button>
+                  `}
+                  <button class="btn-premium btn-sm" onclick="viewUserDetails('${user.key}')">
+                    <i class="fas fa-eye"></i> View
+                  </button>
+                </td>
+              </tr>
+            `;
+          }
+        });
+        
+        if (!found) {
+          table.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4">No users found matching "${query}"</td>
+            </tr>
+          `;
+        }
+      });
+    }
+
+    function loadPendingPosts() {
+      db.ref('posts').orderByChild('status').equalTo('pending').once('value').then(snapshot => {
+        const container = document.getElementById('pendingPostsContainer');
+        container.innerHTML = '';
+        
+        if (!snapshot.exists()) {
+          container.innerHTML = `
+            <div class="text-center py-4">
+              <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--gold-accent);"></i>
+              <p class="mt-3">No pending posts to approve</p>
+            </div>
+          `;
+          return;
+        }
+        
+        snapshot.forEach(post => {
+          const data = post.val();
+          const postId = post.key;
+          
+          let mediaContent = '';
+          if (data.type === 'image' && data.imageUrl) {
+            mediaContent = `<img src="${data.imageUrl}" alt="Post image" class="img-fluid">`;
+          } else if (data.type === 'video' && data.videoUrl) {
+            mediaContent = `
+              <video controls class="img-fluid">
+                <source src="${data.videoUrl}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            `;
+          }
+          
+          const postElement = document.createElement('div');
+          postElement.className = 'post-preview';
+          postElement.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5>${data.title || 'Untitled Post'}</h5>
+                <p class="mb-1"><small>Posted by: ${data.authorName || 'Anonymous'}</small></p>
+                <p class="mb-1"><small>Type: ${data.type}</small></p>
+                <span class="status-badge status-pending">Pending Approval</span>
+              </div>
+              <small>${formatDate(data.timestamp)}</small>
+            </div>
+            ${data.content ? `<p class="mt-2">${data.content}</p>` : ''}
+            ${mediaContent}
+            <div class="post-actions">
+              <button class="btn-premium btn-sm" onclick="approvePost('${postId}', '${data.type}')">
+                <i class="fas fa-check"></i> Approve
+              </button>
+              <button class="btn-premium btn-sm" style="background: linear-gradient(135deg, #ff6b6b, #e74c3c);" onclick="rejectPost('${postId}')">
+                <i class="fas fa-times"></i> Reject
+              </button>
+              <button class="btn-premium btn-sm" style="background: linear-gradient(135deg, #6c757d, #495057);" onclick="viewPostDetails('${postId}')">
+                <i class="fas fa-info-circle"></i> Details
+              </button>
+            </div>
+          `;
+          
+          container.appendChild(postElement);
+        });
+      });
+    }
+
+    function approvePost(postId, postType) {
+      if (!confirm('Are you sure you want to approve this post?')) return;
+      
+      // Update post status
+      db.ref(`posts/${postId}/status`).set('approved')
+        .then(() => {
+          // Move to appropriate location based on type
+          if (postType === 'video') {
+            db.ref(`approvedVideos/${postId}`).set(db.ref(`posts/${postId}`).once('value'))
+              .then(() => {
+                db.ref(`posts/${postId}`).remove();
+              });
+          } else {
+            db.ref(`approvedPosts/${postId}`).set(db.ref(`posts/${postId}`).once('value'))
+              .then(() => {
+                db.ref(`posts/${postId}`).remove();
+              });
+          }
+          
+          showAlert('Post approved successfully!');
+          loadPendingPosts();
+        })
+        .catch(error => {
+          console.error('Error approving post:', error);
+          showAlert('Error approving post');
+        });
+    }
+
+    function rejectPost(postId) {
+      if (!confirm('Are you sure you want to reject this post?')) return;
+      
+      db.ref(`posts/${postId}`).remove()
+        .then(() => {
+          showAlert('Post rejected successfully!');
+          loadPendingPosts();
+        })
+        .catch(error => {
+          console.error('Error rejecting post:', error);
+          showAlert('Error rejecting post');
+        });
+    }
+
+    function viewPostDetails(postId) {
+      // In a full implementation, this would show more details in a modal
+      showAlert(`Viewing details for post ${postId}`);
+    }
+
+    function loadSystemSettings() {
+      db.ref('systemSettings').once('value').then(snapshot => {
+        const settings = snapshot.val() || {};
+        document.getElementById('textRate').value = settings.textRate || 0.00001;
+        document.getElementById('imageRate').value = settings.imageRate || 0.00001;
+        document.getElementById('videoRate').value = settings.videoRate || 0.00002;
+        document.getElementById('referralRate').value = settings.referralRate || 0.00005;
+      });
+    }
+
+    function updateSystemSettings() {
+      const settings = {
+        textRate: parseFloat(document.getElementById('textRate').value),
+        imageRate: parseFloat(document.getElementById('imageRate').value),
+        videoRate: parseFloat(document.getElementById('videoRate').value),
+        referralRate: parseFloat(document.getElementById('referralRate').value)
+      };
+
+      // Validate rates
+      if (Object.values(settings).some(rate => isNaN(rate) || rate < 0)) {
+        showAlert('Please enter valid rates (positive numbers)');
+        return;
+      }
+
+      db.ref('systemSettings').set(settings)
+        .then(() => {
+          showAlert('System settings updated successfully!');
+        })
+        .catch(error => {
+          console.error('Error updating settings:', error);
+          showAlert('Error updating system settings');
+        });
+    }
+
+    function updateAdminPassword() {
+      const current = document.getElementById('currentPassword').value;
+      const newPass = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      
+      if (current !== ADMIN_PASSWORD) {
+        document.getElementById('passwordUpdateResult').innerHTML = `
+          <div class="alert alert-danger">Current password is incorrect</div>
+        `;
+        return;
+      }
+      
+      if (newPass !== confirm) {
+        document.getElementById('passwordUpdateResult').innerHTML = `
+          <div class="alert alert-danger">New passwords don't match</div>
+        `;
+        return;
+      }
+      
+      if (newPass.length < 8) {
+        document.getElementById('passwordUpdateResult').innerHTML = `
+          <div class="alert alert-danger">Password must be at least 8 characters</div>
+        `;
+        return;
+      }
+      
+      // In a real app, you would update this in a secure database
+      // For this demo, we'll just show a success message
+      document.getElementById('passwordUpdateResult').innerHTML = `
+        <div class="alert alert-success">Password updated successfully!</div>
+      `;
+      
+      // Show the new password (for demo purposes only - remove in production)
+      console.log('New admin password:', newPass);
+    }
+
+    // =====================
+    // INITIALIZATION
+    // =====================
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        loadDashboardData();
+        
+        // Show admin panel if user is admin
+        if (user.email === "anointedflames27@gmail.com") {
+          document.getElementById('adminPanel').style.display = 'block';
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Initialize Bootstrap tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+  </script>
+</body>
+</html>

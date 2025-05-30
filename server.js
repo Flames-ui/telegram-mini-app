@@ -1,58 +1,94 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const db = require('./config/database');
-const storageService = require('./services/storage');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { Pool } from 'pg';
+import jwt from 'jsonwebtoken';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 
-// Initialize Express
+dotenv.config();
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(helmet());
-app.use(cors({ origin: process.env.ALLOWED_ORIGINS.split(',') }));
-app.use(express.json({ limit: '50mb' }));
+// ✅ PostgreSQL Setup
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // for Render PostgreSQL
+});
 
-// Rate limiting
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000
+// ✅ CORS Setup
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error('CORS Not Allowed'));
+  },
+  credentials: true,
 }));
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Hello from Anointed Flames TV!');
+// ✅ Middleware
+app.use(express.json({ limit: `${process.env.UPLOAD_LIMIT_MB || 10}mb` }));
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ Storage Path
+const storagePath = process.env.STORAGE_PATH || './storage';
+if (!fs.existsSync(storagePath)) fs.mkdirSync(storagePath, { recursive: true });
+
+// ✅ File Upload (Multer)
+const upload = multer({
+  dest: storagePath,
+  limits: { fileSize: parseInt(process.env.UPLOAD_LIMIT_MB || '10') * 1024 * 1024 },
 });
 
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/media', require('./routes/mediaRoutes'));
-app.use('/api/posts', require('./routes/postRoutes'));
+// ✅ JWT Middleware
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
 
-// Database connection
-db.raw('SELECT 1')
-  .then(() => console.log('Database connected'))
-  .catch(err => {
-    console.error('Database connection failed:', err);
-    process.exit(1);
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+    req.user = decoded;
+    next();
+  });
+};
+
+// ✅ Routes
+
+app.get('/', (req, res) => {
+  res.send('🔥 Anointed Flames TV Backend Running!');
+});
+
+// 🔐 Protected Route Example
+app.get('/api/protected', verifyToken, (req, res) => {
+  res.json({ message: `Welcome, user ${req.user.id}` });
+});
+
+// 📤 Upload Route Example
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  res.json({
+    message: 'File uploaded successfully',
+    filename: req.file.filename,
+    originalName: req.file.originalname,
+  });
+});
+
+// 🧪 Auth Route (Test Purpose)
+app.post('/api/login', async (req, res) => {
+  const { username } = req.body;
+
+  // Simulate user fetch
+  const userId = username || 'user1';
+
+  const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 
-// Request logging
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
+  res.json({ token });
 });
 
-// Error handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
-// Start server
-const PORT = process.env.PORT || 5000;
+// ✅ Start Server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Storage path: ${storageService.basePath}`);
+  console.log(`🚀 Server listening on port ${PORT}`);
 });

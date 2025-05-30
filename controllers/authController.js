@@ -4,15 +4,24 @@ const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { email, password, name } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12);
     
     const [user] = await db('users')
-      .insert({ email, password_hash: hashedPassword })
+      .insert({ 
+        email, 
+        name,
+        password_hash: hashedPassword 
+      })
       .returning('*');
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.json({ user, token });
+    const token = jwt.sign(
+      { id: user.id, isAdmin: user.is_admin }, 
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(400).json({ error: 'Registration failed' });
   }
@@ -27,7 +36,12 @@ exports.login = async (req, res) => {
       throw new Error('Invalid credentials');
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { id: user.id, isAdmin: user.is_admin },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
     res.json({ user, token });
   } catch (error) {
     res.status(401).json({ error: 'Login failed' });

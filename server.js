@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const db = require('./config/database');
+const storageService = require('./services/storage');
 
 // Initialize Express
 const app = express();
@@ -19,6 +20,11 @@ app.use(rateLimit({
   max: 1000
 }));
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('Hello from Anointed Flames TV!');
+});
+
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/media', require('./routes/mediaRoutes'));
@@ -32,12 +38,6 @@ db.raw('SELECT 1')
     process.exit(1);
   });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Storage path: ${require('./services/storage').basePath}`);
-});
 // Request logging
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
@@ -48,4 +48,11 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Storage path: ${storageService.basePath}`);
 });

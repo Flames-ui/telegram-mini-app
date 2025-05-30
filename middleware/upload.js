@@ -1,36 +1,24 @@
 const multer = require('multer');
 const path = require('path');
-const storage = require('../services/storage');
+const { v4: uuidv4 } = require('uuid');
 
-const fileFilter = (req, file, cb) => {
-  const validTypes = [
-    'image/jpeg', 
-    'image/png', 
-    'image/webp',
-    'video/mp4',
-    'video/quicktime'
-  ];
-  
-  if (validTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file type'), false);
-  }
-};
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path.join(process.env.STORAGE_PATH, 'uploads'));
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-    }
-  }),
-  limits: {
-    fileSize: parseInt(process.env.UPLOAD_LIMIT_MB) * 1024 * 1024
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    let folder = 'uploads/';
+    if (file.mimetype.startsWith('image/')) folder += 'images/';
+    else if (file.mimetype.startsWith('video/')) folder += 'videos/';
+    cb(null, path.join(__dirname, '../../storage', folder));
   },
-  fileFilter
+  filename: (req, file, cb) => {
+    cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
+  }
 });
 
-module.exports = upload;
+exports.upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * parseInt(process.env.UPLOAD_LIMIT_MB) },
+  fileFilter: (req, file, cb) => {
+    const validTypes = ['image/jpeg', 'image/png', 'video/mp4'];
+    cb(null, validTypes.includes(file.mimetype));
+  }
+});

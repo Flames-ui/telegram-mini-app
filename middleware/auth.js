@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 
-const authenticate = async (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   
   if (!token) {
-    return res.status(401).json({ error: 'Token required' });
+    return res.status(401).json({ error: 'Authorization token required' });
   }
 
   try {
@@ -13,11 +13,17 @@ const authenticate = async (req, res, next) => {
     const user = await db('users').where({ id: decoded.id }).first();
     
     if (!user) throw new Error('User not found');
-    req.user = user; // Attach user to request
+    
+    req.user = user;
     next();
   } catch (error) {
     res.status(403).json({ error: 'Invalid token' });
   }
 };
 
-module.exports = authenticate;
+exports.isAdmin = (req, res, next) => {
+  if (!req.user?.is_admin) {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  next();
+};
